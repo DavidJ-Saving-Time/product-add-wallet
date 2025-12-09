@@ -49,8 +49,19 @@
       padding: 16px;
       border-radius: 8px;
       background-color: #fff;
+      position: relative;
     }
     svg { width: 100%; height: auto; }
+    #svg-overlay-buttons {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .svg-overlay-btn {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      pointer-events: auto;
+    }
   </style>
 </head>
 <body>
@@ -1759,7 +1770,7 @@
        d="m 626.849,1012.36 4.806,1.02"
        id="path90-7"
        transform="translate(-448.32098,-240.19721)" /></g></svg>
-
+        <div id="svg-overlay-buttons"></div>
 
         </div>
       </div>
@@ -1952,6 +1963,8 @@
         buildSwatchSelect($select);
         $select.trigger('change');
       });
+
+      buildSvgOverlayButtons();
     }
 
     function updateSelection($thumb, $name, $value, image, label, colorHex, isColorOnly) {
@@ -2003,6 +2016,51 @@
       $('#swatch-preview').addClass('d-none');
     }
 
+    function buildSvgOverlayButtons() {
+      const svg = document.querySelector('#svg-wrapper svg');
+      const $wrapper = $('#svg-wrapper');
+      if (!svg || !$wrapper.length) return;
+
+      let $overlay = $('#svg-overlay-buttons');
+      if (!$overlay.length) {
+        $overlay = $('<div id="svg-overlay-buttons"></div>');
+        $wrapper.append($overlay);
+      }
+
+      $overlay.empty();
+
+      const overlayMappings = [
+        { selectId: 'color-outer', groupSelector: '#g46', label: 'Outer leather' },
+        { selectId: 'color-interior', groupSelector: '#g45', label: 'Top pocket' },
+        { selectId: 'color-pockets', groupSelector: '#g44', label: 'Bottom pocket' },
+      ];
+
+      const wrapperRect = $wrapper[0].getBoundingClientRect();
+
+      overlayMappings.forEach((mapping) => {
+        const target = svg.querySelector(mapping.groupSelector);
+        const $select = $('#' + mapping.selectId);
+        if (!target || !$select.length) return;
+
+        const rect = target.getBoundingClientRect();
+        const left = rect.left - wrapperRect.left + rect.width / 2;
+        const top = rect.top - wrapperRect.top + rect.height / 2;
+
+        const $button = $('<button type="button" class="btn btn-light btn-sm shadow svg-overlay-btn">View leather</button>');
+        $button.css({ top: `${top}px`, left: `${left}px` });
+
+        $button.on('click', function (event) {
+          event.stopPropagation();
+          const $selected = $select.find(':selected');
+          const image = $selected.data('image') || fallbackSwatch;
+          const label = `${mapping.label}: ${$selected.text().trim()}`;
+          showSwatchPreview(image, label);
+        });
+
+        $overlay.append($button);
+      });
+    }
+
     function bindSvgColoring() {
       const mappings = [
         { inputId: 'color-outer', inputGroup: '#g46', mode: 'fill' },
@@ -2046,6 +2104,8 @@
       });
 
       bindSvgColoring();
+      buildSvgOverlayButtons();
+      $(window).on('resize', buildSvgOverlayButtons);
     });
   </script>
 
