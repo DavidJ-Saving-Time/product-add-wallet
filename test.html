@@ -62,6 +62,15 @@
     </div>
 
     <div class="row g-4">
+      <div class="col-12">
+        <label class="form-label" for="leather-collection">Leather collection</label>
+        <select class="form-select" id="leather-collection">
+          <option value="buttero" selected>Buttero</option>
+          <option value="badalassi">Badalassi Carlo Wax</option>
+        </select>
+        <div class="form-text">Swap between Buttero and Badalassi Carlo Wax leather swatches.</div>
+      </div>
+
       <div class="col-12 col-lg-6">
         <div class="row g-3">
           <div class="col-sm-6">
@@ -1759,27 +1768,56 @@
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
   <script>
-    // Map option labels to swatch images inside the local images folder
-    const swatchImages = {
-      Tan: "images/buttero/WALPIER-BUTTERO-023-TAN-2-WM_b3c3cd0a-0a97-48cf-9a0a-172ad1b32709.webp",
-      "Dark Brown": "images/buttero/WALPIER-BUTTERO-07-MEDUM-BROWN-2-WM.webp",
-      Chocolate: "images/buttero/WALPIER-BUTTERO-02-WHISKEY-2-WM.webp",
-      Black: "images/buttero/WALPIER-BUTTERO-04-NAVY-2-WM.webp", // placeholder dark tone
-      Oxblood: "images/buttero/WALPIER-BUTTERO-05-BURGUNDY-2-WM.webp",
-      Walnut: "images/buttero/WALPIER-BUTTERO-03-BISCUIT-2-WM.webp",
-      Sand: "images/buttero/WALPIER-BUTTERO-016-YELLOW-2-WM_b3ef4c01-42f2-462c-ab4e-c282e573c76c.webp",
-      Navy: "images/buttero/WALPIER-BUTTERO-04-NAVY-2-WM.webp",
-      Olive: "images/buttero/WALPIER-BUTTERO-19-OLIVE-2-WM.webp",
-      Burgundy: "images/buttero/WALPIER-BUTTERO-05-BURGUNDY-2-WM.webp",
-      Yellow: "images/buttero/WALPIER-BUTTERO-016-YELLOW-2-WM_b3ef4c01-42f2-462c-ab4e-c282e573c76c.webp",
-      Pink: "images/buttero/WALPIER-BUTTERO-101-PINK-2-WM.jpg",
-      Blue: "images/buttero/WALPIER-BUTTERO-102-BLUE-2-WM.webp",
-      Green: "images/buttero/WALPIER-BUTTERO-11-GREEN-2-WM_3dc4f045-eebd-490c-918f-e13e9d29e822.webp",
-      Orange: "images/buttero/WALPIER-BUTTERO-12-ORANGE-2-WM.webp",
-      Foresta: "images/buttero/WALPIER-BUTTERO-FORESTA-2-WM_eca494e3-598d-4966-814d-4b236efe786e.webp"
+    const leatherCollections = {
+      buttero: {
+        label: "Buttero",
+        swatches: [
+          { label: "Tan", color: "#c28e5a", image: "images/buttero/WALPIER-BUTTERO-023-TAN-2-WM_b3c3cd0a-0a97-48cf-9a0a-172ad1b32709.webp" },
+          { label: "Dark Brown", color: "#8b5a2b", image: "images/buttero/WALPIER-BUTTERO-07-MEDUM-BROWN-2-WM.webp" },
+          { label: "Chocolate", color: "#3b2a1a", image: "images/buttero/WALPIER-BUTTERO-02-WHISKEY-2-WM.webp" },
+          { label: "Black", color: "#000000", image: "images/buttero/WALPIER-BUTTERO-04-NAVY-2-WM.webp" },
+          { label: "Oxblood", color: "#4a2f2f", image: "images/buttero/WALPIER-BUTTERO-05-BURGUNDY-2-WM.webp" },
+          { label: "Walnut", color: "#6b4f3a", image: "images/buttero/WALPIER-BUTTERO-03-BISCUIT-2-WM.webp" },
+          { label: "Sand", color: "#d2a679", image: "images/buttero/WALPIER-BUTTERO-016-YELLOW-2-WM_b3ef4c01-42f2-462c-ab4e-c282e573c76c.webp" },
+          { label: "Navy", color: "#3a4f6b", image: "images/buttero/WALPIER-BUTTERO-04-NAVY-2-WM.webp" },
+          { label: "Olive", color: "#374331", image: "images/buttero/WALPIER-BUTTERO-19-OLIVE-2-WM.webp" },
+          { label: "Burgundy", color: "#7b3f61", image: "images/buttero/WALPIER-BUTTERO-05-BURGUNDY-2-WM.webp" },
+          { label: "Yellow", color: "#ffdd33", image: "images/buttero/WALPIER-BUTTERO-016-YELLOW-2-WM_b3ef4c01-42f2-462c-ab4e-c282e573c76c.webp" },
+          { label: "Pink", color: "#ffc0cb", image: "images/buttero/WALPIER-BUTTERO-101-PINK-2-WM.jpg" },
+          { label: "Blue", color: "#102f6b", image: "images/buttero/WALPIER-BUTTERO-102-BLUE-2-WM.webp" },
+          { label: "Green", color: "#2f5a32", image: "images/buttero/WALPIER-BUTTERO-11-GREEN-2-WM_3dc4f045-eebd-490c-918f-e13e9d29e822.webp" },
+          { label: "Orange", color: "#f4801f", image: "images/buttero/WALPIER-BUTTERO-12-ORANGE-2-WM.webp" },
+          { label: "Foresta", color: "#37523d", image: "images/buttero/WALPIER-BUTTERO-FORESTA-2-WM_eca494e3-598d-4966-814d-4b236efe786e.webp" },
+        ],
+      },
+      badalassi: {
+        label: "Badalassi Carlo Wax",
+        swatches: [
+          { label: "Cognac", color: "#b36a3c", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-cognac1.webp" },
+          { label: "Grigio", color: "#7b7b7b", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-grigio1.jpeg" },
+          { label: "Napoli", color: "#d8a23f", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-napoli1.webp" },
+          { label: "Oliva", color: "#566d3b", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-oliva1.webp" },
+          { label: "Olmo", color: "#8b5a2b", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-olmo1.webp" },
+          { label: "Ortensia", color: "#2f4f9f", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-ortensia1.webp" },
+          { label: "Papavero", color: "#b22222", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-papavero1.webp" },
+          { label: "Prugna", color: "#70304a", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-prugna1.webp" },
+          { label: "Tabacco", color: "#7b4b26", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-tabacco1.webp" },
+        ],
+      },
     };
 
+    const leatherSelectIds = ["color-outer", "color-interior", "color-pockets"];
+    let currentLeatherCollection = "buttero";
     const fallbackSwatch = "leather.jpg";
+
+    function buildSwatchImageMap(collectionKey) {
+      return leatherCollections[collectionKey].swatches.reduce((map, swatch) => {
+        map[swatch.label] = swatch.image;
+        return map;
+      }, {});
+    }
+
+    let swatchImages = buildSwatchImageMap(currentLeatherCollection);
 
     function buildSwatchSelect($select) {
       const isColorOnly = $select.is('#color-stitching, #color-stitching2');
@@ -1871,15 +1909,49 @@
         });
       }
 
-      $(document).on('click', function (e) {
-        if (!$.contains($wrapper[0], e.target)) {
-          $menu.hide();
-          $toggle.attr('aria-expanded', 'false');
-        }
-      });
+      const docEventNamespace = `click.swatch-${$select.attr('id') || Math.random().toString(36).slice(2)}`;
+      $(document)
+        .off(docEventNamespace)
+        .on(docEventNamespace, function (e) {
+          if (!$.contains($wrapper[0], e.target)) {
+            $menu.hide();
+            $toggle.attr('aria-expanded', 'false');
+          }
+        });
 
       $wrapper.append($toggle, $menu);
       $select.after($wrapper).addClass('visually-hidden');
+    }
+
+    function rebuildLeatherSelects(collectionKey) {
+      swatchImages = buildSwatchImageMap(collectionKey);
+      leatherSelectIds.forEach((id) => {
+        const $select = $('#' + id);
+        if (!$select.length) return;
+
+        const previousValue = $select.val();
+        $select.empty();
+
+        leatherCollections[collectionKey].swatches.forEach(({ label, color, image }) => {
+          const $option = $('<option></option>')
+            .text(label)
+            .val(color)
+            .attr('data-color', color)
+            .attr('data-image', image);
+          $select.append($option);
+        });
+
+        const fallbackValue = leatherCollections[collectionKey].swatches[0]?.color;
+        const nextValue = leatherCollections[collectionKey].swatches.some((swatch) => swatch.color === previousValue)
+          ? previousValue
+          : fallbackValue;
+        $select.val(nextValue);
+
+        $select.next('.swatch-select').remove();
+        $select.removeClass('visually-hidden');
+        buildSwatchSelect($select);
+        $select.trigger('change');
+      });
     }
 
     function updateSelection($thumb, $name, $value, image, label, colorHex, isColorOnly) {
@@ -1962,8 +2034,15 @@
     }
 
     $(function () {
-      $('select.form-select').each(function () {
+      rebuildLeatherSelects(currentLeatherCollection);
+
+      $('#color-stitching, #color-stitching2').each(function () {
         buildSwatchSelect($(this));
+      });
+
+      $('#leather-collection').on('change', function () {
+        currentLeatherCollection = $(this).val();
+        rebuildLeatherSelects(currentLeatherCollection);
       });
 
       bindSvgColoring();
