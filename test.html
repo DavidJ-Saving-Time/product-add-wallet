@@ -2030,7 +2030,7 @@
       $overlay.empty();
 
       const overlayMappings = [
-        { selectId: 'color-outer', groupSelector: '#g46', label: 'Outer leather' },
+        { selectId: 'color-outer', groupSelector: '#g46', label: 'Outer leather', customTop: 80 },
         { selectId: 'color-interior', groupSelector: '#g45', label: 'Top pocket' },
         { selectId: 'color-pockets', groupSelector: '#g44', label: 'Bottom pocket' },
       ];
@@ -2044,7 +2044,7 @@
 
         const rect = target.getBoundingClientRect();
         const left = rect.left - wrapperRect.left + rect.width / 2;
-        const top = rect.top - wrapperRect.top + rect.height / 2;
+        const top = mapping.customTop ?? rect.top - wrapperRect.top + rect.height / 2;
 
         const $button = $('<button type="button" class="btn btn-light btn-sm shadow svg-overlay-btn">View leather</button>');
         $button.css({ top: `${top}px`, left: `${left}px` });
