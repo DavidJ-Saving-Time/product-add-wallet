@@ -29,6 +29,20 @@
     .swatch-item:hover { background-color: #f1f3f5; }
     .swatch-name { flex: 1; }
     .swatch-value { font-size: 0.85rem; color: #6c757d; }
+    .swatch-thumb.color-only { background-image: none !important; border: 1px solid #ced4da; }
+    .swatch-preview-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1050;
+    }
+    .swatch-preview-card {
+      max-width: 520px;
+      width: 92%;
+    }
     #svg-wrapper {
       max-width: 720px;
       border: 1px solid #dee2e6;
@@ -1768,6 +1782,7 @@
     const fallbackSwatch = "leather.jpg";
 
     function buildSwatchSelect($select) {
+      const isColorOnly = $select.is('#color-stitching, #color-stitching2');
       const $wrapper = $('<div class="swatch-select"></div>');
       const $toggle = $(
         '<button type="button" class="swatch-toggle w-100 d-flex align-items-center justify-content-between" aria-haspopup="listbox" aria-expanded="false"></button>'
@@ -1779,19 +1794,37 @@
       const $value = $('<span class="swatch-value"></span>');
       $textWrap.append($name, $value);
       $selected.append($thumb, $textWrap);
-      $toggle.append($selected, '<span class="ms-2">▼</span>');
+      const $previewBtn = isColorOnly
+        ? null
+        : $('<button type="button" class="btn btn-link btn-sm text-decoration-none">View leather</button>');
+      const $chevron = $('<span class="ms-2">▼</span>');
+      const $rightStack = $('<span class="d-flex align-items-center gap-2"></span>');
+
+      if ($previewBtn) $rightStack.append($previewBtn);
+      $rightStack.append($chevron);
+
+      $toggle.append($selected, $rightStack);
 
       const $menu = $('<ul class="swatch-menu" role="listbox"></ul>');
+      let currentImage = null;
+      let currentLabel = '';
 
       $select.find('option').each(function () {
         const $option = $(this);
         const label = $option.text().trim();
         const colorHex = $option.data('color') || $option.val();
-        const image = $option.data('image') || swatchImages[label] || fallbackSwatch;
-        $option.attr('data-image', image);
+        const image = isColorOnly ? null : $option.data('image') || swatchImages[label] || fallbackSwatch;
+        if (image) {
+          $option.attr('data-image', image);
+        }
 
         const $item = $('<li class="swatch-item" role="option"></li>');
-        const $itemThumb = $('<span class="swatch-thumb"></span>').css('background-image', `url(${image})`);
+        const $itemThumb = $('<span class="swatch-thumb"></span>');
+        if (isColorOnly) {
+          $itemThumb.addClass('color-only').css('background-color', colorHex);
+        } else {
+          $itemThumb.css('background-image', `url(${image})`);
+        }
         const $itemText = $('<span class="swatch-name fw-semibold"></span>').text(label);
         const $itemValue = $('<span class="swatch-value"></span>').text(colorHex);
         const $textGroup = $('<span class="d-flex flex-column flex-grow-1"></span>').append($itemText, $itemValue);
@@ -1800,12 +1833,16 @@
 
         if ($option.is(':selected')) {
           $item.attr('aria-selected', 'true');
-          updateSelection($thumb, $name, $value, image, label, colorHex);
+          updateSelection($thumb, $name, $value, image, label, colorHex, isColorOnly);
+          currentImage = image;
+          currentLabel = label;
         }
 
         $item.on('click', function () {
           $select.val($option.val()).trigger('change');
-          updateSelection($thumb, $name, $value, image, label, colorHex);
+          updateSelection($thumb, $name, $value, image, label, colorHex, isColorOnly);
+          currentImage = image;
+          currentLabel = label;
           $menu.find('[aria-selected]')?.removeAttr('aria-selected');
           $item.attr('aria-selected', 'true');
           $menu.hide();
@@ -1825,6 +1862,15 @@
         }
       });
 
+      if ($previewBtn) {
+        $previewBtn.on('click', function (event) {
+          event.stopPropagation();
+          if (currentImage) {
+            showSwatchPreview(currentImage, currentLabel);
+          }
+        });
+      }
+
       $(document).on('click', function (e) {
         if (!$.contains($wrapper[0], e.target)) {
           $menu.hide();
@@ -1836,10 +1882,53 @@
       $select.after($wrapper).addClass('visually-hidden');
     }
 
-    function updateSelection($thumb, $name, $value, image, label, colorHex) {
-      $thumb.css('background-image', `url(${image})`);
+    function updateSelection($thumb, $name, $value, image, label, colorHex, isColorOnly) {
+      if (isColorOnly) {
+        $thumb.addClass('color-only').css({ backgroundColor: colorHex, backgroundImage: 'none' });
+      } else {
+        $thumb.removeClass('color-only').css({ backgroundImage: `url(${image})`, backgroundColor: '' });
+      }
       $name.text(label);
       $value.text(colorHex);
+    }
+
+    function ensurePreviewShell() {
+      let $preview = $('#swatch-preview');
+      if ($preview.length) return $preview;
+
+      $preview = $(
+        '<div id="swatch-preview" class="swatch-preview-backdrop d-none" role="dialog" aria-label="Leather preview">\
+          <div class="card swatch-preview-card">\
+            <div class="card-body">\
+              <div class="d-flex justify-content-end">\
+                <button type="button" class="btn-close" aria-label="Close preview"></button>\
+              </div>\
+              <img src="" alt="Leather preview" class="img-fluid rounded mb-2">\
+              <div class="fw-semibold" id="swatch-preview-label"></div>\
+            </div>\
+          </div>\
+        </div>'
+      );
+
+      $preview.on('click', function (event) {
+        if (event.target === this || $(event.target).hasClass('btn-close')) {
+          hideSwatchPreview();
+        }
+      });
+
+      $('body').append($preview);
+      return $preview;
+    }
+
+    function showSwatchPreview(imageSrc, label) {
+      const $preview = ensurePreviewShell();
+      $preview.find('img').attr('src', imageSrc).attr('alt', `${label} leather preview`);
+      $preview.find('#swatch-preview-label').text(label);
+      $preview.removeClass('d-none');
+    }
+
+    function hideSwatchPreview() {
+      $('#swatch-preview').addClass('d-none');
     }
 
     function bindSvgColoring() {
