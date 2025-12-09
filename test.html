@@ -19,6 +19,16 @@
       min-height: 116px;
       line-height: 116px;
     }
+    /* Custom swatch dropdown built with jQuery */
+    .swatch-select { position: relative; }
+    .swatch-toggle { background-color: #fff; border: 1px solid #ced4da; min-height: 64px; }
+    .swatch-label { gap: 12px; }
+    .swatch-thumb { width: 72px; height: 48px; border-radius: 6px; background-size: cover; background-position: center; border: 1px solid #dee2e6; }
+    .swatch-menu { position: absolute; z-index: 10; width: 100%; background: #fff; border: 1px solid #ced4da; border-radius: 8px; margin-top: 6px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); max-height: 320px; overflow-y: auto; display: none; }
+    .swatch-item { padding: 10px 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .swatch-item:hover { background-color: #f1f3f5; }
+    .swatch-name { flex: 1; }
+    .swatch-value { font-size: 0.85rem; color: #6c757d; }
     #svg-wrapper {
       max-width: 720px;
       border: 1px solid #dee2e6;
@@ -1733,51 +1743,141 @@
     </div>
   </div>
 
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script>
-    function setOptionImages() {
-      document.querySelectorAll('select').forEach(select => {
-        select.querySelectorAll('option').forEach(option => {
-          const color = option.dataset.color;
-          if (!color) return;
-          const label = option.textContent.trim();
-          const swatch = `./leather.jpg`;
-          option.style.backgroundImage = `url("${swatch}")`;
-          option.classList.add('swatch-option');
+    // Map option labels to swatch images inside the local images folder
+    const swatchImages = {
+      Tan: "images/buttero/WALPIER-BUTTERO-023-TAN-2-WM_b3c3cd0a-0a97-48cf-9a0a-172ad1b32709.webp",
+      "Dark Brown": "images/buttero/WALPIER-BUTTERO-07-MEDUM-BROWN-2-WM.webp",
+      Chocolate: "images/buttero/WALPIER-BUTTERO-02-WHISKEY-2-WM.webp",
+      Black: "images/buttero/WALPIER-BUTTERO-04-NAVY-2-WM.webp", // placeholder dark tone
+      Oxblood: "images/buttero/WALPIER-BUTTERO-05-BURGUNDY-2-WM.webp",
+      Walnut: "images/buttero/WALPIER-BUTTERO-03-BISCUIT-2-WM.webp",
+      Sand: "images/buttero/WALPIER-BUTTERO-016-YELLOW-2-WM_b3ef4c01-42f2-462c-ab4e-c282e573c76c.webp",
+      Navy: "images/buttero/WALPIER-BUTTERO-04-NAVY-2-WM.webp",
+      Olive: "images/buttero/WALPIER-BUTTERO-19-OLIVE-2-WM.webp",
+      Burgundy: "images/buttero/WALPIER-BUTTERO-05-BURGUNDY-2-WM.webp",
+      Yellow: "images/buttero/WALPIER-BUTTERO-016-YELLOW-2-WM_b3ef4c01-42f2-462c-ab4e-c282e573c76c.webp",
+      Pink: "images/buttero/WALPIER-BUTTERO-101-PINK-2-WM.jpg",
+      Blue: "images/buttero/WALPIER-BUTTERO-102-BLUE-2-WM.webp",
+      Green: "images/buttero/WALPIER-BUTTERO-11-GREEN-2-WM_3dc4f045-eebd-490c-918f-e13e9d29e822.webp",
+      Orange: "images/buttero/WALPIER-BUTTERO-12-ORANGE-2-WM.webp",
+      Foresta: "images/buttero/WALPIER-BUTTERO-FORESTA-2-WM_eca494e3-598d-4966-814d-4b236efe786e.webp"
+    };
+
+    const fallbackSwatch = "leather.jpg";
+
+    function buildSwatchSelect($select) {
+      const $wrapper = $('<div class="swatch-select"></div>');
+      const $toggle = $(
+        '<button type="button" class="swatch-toggle w-100 d-flex align-items-center justify-content-between" aria-haspopup="listbox" aria-expanded="false"></button>'
+      );
+      const $selected = $('<span class="swatch-label d-flex align-items-center"></span>');
+      const $thumb = $('<span class="swatch-thumb flex-shrink-0"></span>');
+      const $textWrap = $('<span class="d-flex flex-column flex-grow-1 text-start"></span>');
+      const $name = $('<span class="fw-semibold"></span>');
+      const $value = $('<span class="swatch-value"></span>');
+      $textWrap.append($name, $value);
+      $selected.append($thumb, $textWrap);
+      $toggle.append($selected, '<span class="ms-2">▼</span>');
+
+      const $menu = $('<ul class="swatch-menu" role="listbox"></ul>');
+
+      $select.find('option').each(function () {
+        const $option = $(this);
+        const label = $option.text().trim();
+        const colorHex = $option.data('color') || $option.val();
+        const image = $option.data('image') || swatchImages[label] || fallbackSwatch;
+        $option.attr('data-image', image);
+
+        const $item = $('<li class="swatch-item" role="option"></li>');
+        const $itemThumb = $('<span class="swatch-thumb"></span>').css('background-image', `url(${image})`);
+        const $itemText = $('<span class="swatch-name fw-semibold"></span>').text(label);
+        const $itemValue = $('<span class="swatch-value"></span>').text(colorHex);
+        const $textGroup = $('<span class="d-flex flex-column flex-grow-1"></span>').append($itemText, $itemValue);
+
+        $item.append($itemThumb, $textGroup).attr('data-value', $option.val());
+
+        if ($option.is(':selected')) {
+          $item.attr('aria-selected', 'true');
+          updateSelection($thumb, $name, $value, image, label, colorHex);
+        }
+
+        $item.on('click', function () {
+          $select.val($option.val()).trigger('change');
+          updateSelection($thumb, $name, $value, image, label, colorHex);
+          $menu.find('[aria-selected]')?.removeAttr('aria-selected');
+          $item.attr('aria-selected', 'true');
+          $menu.hide();
+          $toggle.attr('aria-expanded', 'false');
         });
+
+        $menu.append($item);
+      });
+
+      $toggle.on('click', function () {
+        const isOpen = $menu.is(':visible');
+        $('.swatch-menu').hide();
+        $('.swatch-toggle').attr('aria-expanded', 'false');
+        if (!isOpen) {
+          $menu.show();
+          $toggle.attr('aria-expanded', 'true');
+        }
+      });
+
+      $(document).on('click', function (e) {
+        if (!$.contains($wrapper[0], e.target)) {
+          $menu.hide();
+          $toggle.attr('aria-expanded', 'false');
+        }
+      });
+
+      $wrapper.append($toggle, $menu);
+      $select.after($wrapper).addClass('visually-hidden');
+    }
+
+    function updateSelection($thumb, $name, $value, image, label, colorHex) {
+      $thumb.css('background-image', `url(${image})`);
+      $name.text(label);
+      $value.text(colorHex);
+    }
+
+    function bindSvgColoring() {
+      const mappings = [
+        { inputId: 'color-outer', inputGroup: '#g46', mode: 'fill' },
+        { inputId: 'color-interior', inputGroup: '#g45', mode: 'fill' },
+        { inputId: 'color-pockets', inputGroup: '#g44', mode: 'fill' },
+        { inputId: 'color-stitching', inputGroup: '#g43', mode: 'stroke' },
+        { inputId: 'color-stitching2', inputGroup: '#g42', mode: 'stroke' },
+      ];
+
+      mappings.forEach(({ inputId, inputGroup, mode }) => {
+        const $select = $('#' + inputId);
+        const $group = $(inputGroup);
+        if (!$select.length || !$group.length) return;
+
+        function applyColor() {
+          const color = $select.val();
+          $group.find('*').each(function () {
+            if (mode === 'fill') {
+              this.style.fill = color;
+            } else if (mode === 'stroke') {
+              this.style.stroke = color;
+            }
+          });
+        }
+
+        $select.on('change', applyColor);
+        applyColor();
       });
     }
 
-    const mappings = [
-      { inputId: 'color-outer',     groupId: 'g46',     mode: 'fill'   },
-      { inputId: 'color-interior',  groupId: 'g45',  mode: 'fill'   },
-      { inputId: 'color-pockets',   groupId: 'g44',   mode: 'fill'   },
-      { inputId: 'color-stitching', groupId: 'g43', mode: 'stroke' },
-      { inputId: 'color-stitching2', groupId: 'g42', mode: 'stroke' },
+    $(function () {
+      $('select.form-select').each(function () {
+        buildSwatchSelect($(this));
+      });
 
-    ];
-
-    setOptionImages();
-
-    mappings.forEach(({ inputId, groupId, mode }) => {
-      const select = document.getElementById(inputId);
-      const group  = document.getElementById(groupId);
-      if (!select || !group) return;
-
-      const elements = group.querySelectorAll('*');
-
-      function applyColor() {
-        const color = select.value;
-        elements.forEach(el => {
-          if (mode === 'fill') {
-            el.style.fill = color;
-          } else if (mode === 'stroke') {
-            el.style.stroke = color;
-          }
-        });
-      }
-
-      select.addEventListener('change', applyColor);
-      applyColor(); // initial
+      bindSvgColoring();
     });
   </script>
 
