@@ -3,101 +3,125 @@
 <head>
   <meta charset="utf-8">
   <title>Wallet SVG Colour Select Test</title>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    crossorigin="anonymous"
+  >
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    .controls { margin-bottom: 20px; display: flex; gap: 20px; flex-wrap: wrap; }
-    .controls label { display: flex; flex-direction: column; font-size: 14px; }
-    .controls select { margin-top: 4px; }
-    #svg-wrapper { max-width: 600px; border: 1px solid #ccc; padding: 10px; margin-top: 20px; }
+    body { background-color: #f8f9fa; }
+    .swatch-option {
+      background-repeat: no-repeat;
+      background-position: 8px center;
+      background-size: 18px 18px;
+      padding-left: 32px;
+    }
+    #svg-wrapper {
+      max-width: 720px;
+      border: 1px solid #dee2e6;
+      padding: 16px;
+      border-radius: 8px;
+      background-color: #fff;
+    }
     svg { width: 100%; height: auto; }
   </style>
 </head>
 <body>
 
-  <h1>Wallet Colour Test (Static Palette)</h1>
+  <div class="container py-4">
+    <div class="text-center mb-4">
+      <h1 class="h3 mb-2">Wallet Colour Test (Static Palette)</h1>
+      <p class="text-muted mb-0">Pick a colour for each part of the wallet and preview it instantly.</p>
+    </div>
 
-  <div class="controls">
-    <label>
-      Outer leather
-      <select id="color-outer">
-        <option value="#8b5a2b">Dark Brown</option>
-        <option value="#c28e5a">Tan</option>
-        <option value="#3b2a1a">Chocolate</option>
-        <option value="#000000">Black</option>
-        <option value="#4a2f2f">Oxblood</option>
-        <option value="#6b4f3a">Walnut</option>
-        <option value="#d2a679">Sand</option>
-        <option value="#3a4f6b">Navy</option>
-        <option value="#374331">Olive</option>
-        <option value="#7b3f61">Burgundy</option>
-      </select>
-    </label>
+    <div class="row g-4">
+      <div class="col-12 col-lg-6">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="form-label" for="color-outer">Outer leather</label>
+            <select class="form-select" id="color-outer">
+              <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Dark Brown</option>
+              <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
+              <option value="#3b2a1a" data-color="#3b2a1a" class="swatch-option">Chocolate</option>
+              <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
+              <option value="#4a2f2f" data-color="#4a2f2f" class="swatch-option">Oxblood</option>
+              <option value="#6b4f3a" data-color="#6b4f3a" class="swatch-option">Walnut</option>
+              <option value="#d2a679" data-color="#d2a679" class="swatch-option">Sand</option>
+              <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
+              <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
+              <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
+            </select>
+          </div>
 
-    <label>
-      Interior leather
-      <select id="color-interior">
-        <option value="#c28e5a">Tan</option>
-        <option value="#8b5a2b">Dark Brown</option>
-        <option value="#3b2a1a">Chocolate</option>
-        <option value="#d2a679">Sand</option>
-        <option value="#6b4f3a">Walnut</option>
-        <option value="#374331">Olive</option>
-        <option value="#3a4f6b">Navy</option>
-        <option value="#000000">Black</option>
-        <option value="#7b3f61">Burgundy</option>
-        <option value="#4a2f2f">Oxblood</option>
-      </select>
-    </label>
+          <div class="col-sm-6">
+            <label class="form-label" for="color-interior">Interior leather</label>
+            <select class="form-select" id="color-interior">
+              <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
+              <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Dark Brown</option>
+              <option value="#3b2a1a" data-color="#3b2a1a" class="swatch-option">Chocolate</option>
+              <option value="#d2a679" data-color="#d2a679" class="swatch-option">Sand</option>
+              <option value="#6b4f3a" data-color="#6b4f3a" class="swatch-option">Walnut</option>
+              <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
+              <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
+              <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
+              <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
+              <option value="#4a2f2f" data-color="#4a2f2f" class="swatch-option">Oxblood</option>
+            </select>
+          </div>
 
-    <label>
-      Pockets leather
-      <select id="color-pockets">
-        <option value="#3b2a1a">Chocolate</option>
-        <option value="#8b5a2b">Dark Brown</option>
-        <option value="#c28e5a">Tan</option>
-        <option value="#000000">Black</option>
-        <option value="#3a4f6b">Navy</option>
-        <option value="#374331">Olive</option>
-        <option value="#6b4f3a">Walnut</option>
-        <option value="#7b3f61">Burgundy</option>
-        <option value="#d2a679">Sand</option>
-        <option value="#4a2f2f">Oxblood</option>
-      </select>
-    </label>
+          <div class="col-sm-6">
+            <label class="form-label" for="color-pockets">Pockets leather</label>
+            <select class="form-select" id="color-pockets">
+              <option value="#3b2a1a" data-color="#3b2a1a" class="swatch-option">Chocolate</option>
+              <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Dark Brown</option>
+              <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
+              <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
+              <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
+              <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
+              <option value="#6b4f3a" data-color="#6b4f3a" class="swatch-option">Walnut</option>
+              <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
+              <option value="#d2a679" data-color="#d2a679" class="swatch-option">Sand</option>
+              <option value="#4a2f2f" data-color="#4a2f2f" class="swatch-option">Oxblood</option>
+            </select>
+          </div>
 
-    <label>
-      Stitching
-      <select id="color-stitching">
-        <option value="#ffffff">White</option>
-        <option value="#f5e6c8">Cream</option>
-        <option value="#d2a679">Beige</option>
-        <option value="#000000">Black</option>
-        <option value="#8b5a2b">Brown</option>
-        <option value="#c28e5a">Tan</option>
-        <option value="#ffdd33">Yellow</option>
-        <option value="#3a4f6b">Navy</option>
-        <option value="#7b3f61">Burgundy</option>
-        <option value="#374331">Olive</option>
-      </select>
-    </label>
-  <label>
-      Stitching 2
-      <select id="color-stitching2">
-        <option value="#ffffff">White</option>
-        <option value="#f5e6c8">Cream</option>
-        <option value="#d2a679">Beige</option>
-        <option value="#000000">Black</option>
-        <option value="#8b5a2b">Brown</option>
-        <option value="#c28e5a">Tan</option>
-        <option value="#ffdd33">Yellow</option>
-        <option value="#3a4f6b">Navy</option>
-        <option value="#7b3f61">Burgundy</option>
-        <option value="#374331">Olive</option>
-      </select>
-    </label>
- </div>
+          <div class="col-sm-6">
+            <label class="form-label" for="color-stitching">Stitching</label>
+            <select class="form-select" id="color-stitching">
+              <option value="#ffffff" data-color="#ffffff" class="swatch-option">White</option>
+              <option value="#f5e6c8" data-color="#f5e6c8" class="swatch-option">Cream</option>
+              <option value="#d2a679" data-color="#d2a679" class="swatch-option">Beige</option>
+              <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
+              <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Brown</option>
+              <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
+              <option value="#ffdd33" data-color="#ffdd33" class="swatch-option">Yellow</option>
+              <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
+              <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
+              <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
+            </select>
+          </div>
 
-  <div id="svg-wrapper">
+          <div class="col-sm-6">
+            <label class="form-label" for="color-stitching2">Stitching 2</label>
+            <select class="form-select" id="color-stitching2">
+              <option value="#ffffff" data-color="#ffffff" class="swatch-option">White</option>
+              <option value="#f5e6c8" data-color="#f5e6c8" class="swatch-option">Cream</option>
+              <option value="#d2a679" data-color="#d2a679" class="swatch-option">Beige</option>
+              <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
+              <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Brown</option>
+              <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
+              <option value="#ffdd33" data-color="#ffdd33" class="swatch-option">Yellow</option>
+              <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
+              <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
+              <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <div id="svg-wrapper" class="shadow-sm">
     <!-- DEMO SVG – replace with your own later, keep group ids or update JS -->
  
 <svg
@@ -1702,9 +1726,25 @@
        transform="translate(-448.32098,-240.19721)" /></g></svg>
 
 
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
+    function setOptionImages() {
+      document.querySelectorAll('select').forEach(select => {
+        select.querySelectorAll('option').forEach(option => {
+          const color = option.dataset.color;
+          if (!color) return;
+          const encodedColor = color.replace('#', '%23');
+          const swatch = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='2' y='2' width='20' height='20' rx='4' fill='${encodedColor}' stroke='%23d1d5db' stroke-width='1.5'/></svg>`;
+          option.style.backgroundImage = `url("${swatch}")`;
+          option.classList.add('swatch-option');
+        });
+      });
+    }
+
     const mappings = [
       { inputId: 'color-outer',     groupId: 'g46',     mode: 'fill'   },
       { inputId: 'color-interior',  groupId: 'g45',  mode: 'fill'   },
@@ -1713,6 +1753,8 @@
       { inputId: 'color-stitching2', groupId: 'g42', mode: 'stroke' },
 
     ];
+
+    setOptionImages();
 
     mappings.forEach(({ inputId, groupId, mode }) => {
       const select = document.getElementById(inputId);
