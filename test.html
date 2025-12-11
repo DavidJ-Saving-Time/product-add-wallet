@@ -2374,14 +2374,17 @@
           pattern.appendChild(image);
         }
 
-        // Use objectBoundingBox units so a single image covers the target bounds
-        // once, respecting its aspect ratio and avoiding tiling.
+        // Anchor the pattern to the target's bounding box so a single image is drawn
+        // and clipped without tiling. Using object bounding box units keeps the
+        // coordinates normalized (0–1) so the image always covers the target even
+        // when it is transformed or nested in another viewBox.
         pattern.setAttribute('patternUnits', 'objectBoundingBox');
         pattern.setAttribute('patternContentUnits', 'objectBoundingBox');
         pattern.setAttribute('x', 0);
         pattern.setAttribute('y', 0);
         pattern.setAttribute('width', 1);
         pattern.setAttribute('height', 1);
+        pattern.removeAttribute('viewBox');
         pattern.removeAttribute('patternTransform');
 
         const imageEl = pattern.querySelector('image');
