@@ -2347,6 +2347,9 @@
       function ensurePatternFill(svg, patternId, imageUrl, targetElement) {
         if (!svg || !imageUrl || !targetElement) return null;
 
+        const bbox = targetElement.getBBox?.();
+        if (!bbox || bbox.width === 0 || bbox.height === 0) return null;
+
         const svgns = 'http://www.w3.org/2000/svg';
         const xlinkns = 'http://www.w3.org/1999/xlink';
 
