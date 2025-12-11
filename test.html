@@ -1851,14 +1851,10 @@
       const $previewBtn = isColorOnly
         ? null
         : $('<button type="button" class="btn btn-link btn-sm text-decoration-none">View leather</button>');
-      const $modalBtn = isColorOnly
-        ? null
-        : $('<button type="button" class="btn btn-outline-primary btn-sm">Choose leather</button>');
       const $chevron = $('<span class="ms-2">▼</span>');
       const $rightStack = $('<span class="d-flex align-items-center gap-2"></span>');
 
       if ($previewBtn) $rightStack.append($previewBtn);
-      if ($modalBtn) $rightStack.append($modalBtn);
       $rightStack.append($chevron);
 
       $toggle.append($selected, $rightStack);
@@ -1943,13 +1939,6 @@
           if (currentImage) {
             showSwatchPreview(currentImage, currentLabel);
           }
-        });
-      }
-
-      if ($modalBtn) {
-        $modalBtn.on('click', function (event) {
-          event.stopPropagation();
-          openLeatherModal($select, syncFromSelect);
         });
       }
 
@@ -2150,10 +2139,11 @@
         const left = rect.left - wrapperRect.left + rect.width / 2;
         const top = mapping.customTop ?? rect.top - wrapperRect.top + rect.height / 2;
 
-        const $button = $('<button type="button" class="btn btn-light btn-sm shadow svg-overlay-btn">View leather</button>');
-        $button.css({ top: `${top}px`, left: `${left}px` });
+        const $buttonContainer = $('<div class="svg-overlay-btn d-flex gap-2"></div>');
+        $buttonContainer.css({ top: `${top}px`, left: `${left}px` });
 
-        $button.on('click', function (event) {
+        const $viewButton = $('<button type="button" class="btn btn-light btn-sm shadow">View leather</button>');
+        $viewButton.on('click', function (event) {
           event.stopPropagation();
           const $selected = $select.find(':selected');
           const image = $selected.data('image') || fallbackSwatch;
@@ -2161,7 +2151,15 @@
           showSwatchPreview(image, label);
         });
 
-        $overlay.append($button);
+        const $chooseButton = $('<button type="button" class="btn btn-outline-primary btn-sm shadow-sm">Choose leather</button>');
+        $chooseButton.on('click', function (event) {
+          event.stopPropagation();
+          openLeatherModal($select);
+        });
+
+        $buttonContainer.append($viewButton, $chooseButton);
+
+        $overlay.append($buttonContainer);
       });
     }
 
