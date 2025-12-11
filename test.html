@@ -43,6 +43,44 @@
       max-width: 520px;
       width: 92%;
     }
+    .leather-modal-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .leather-modal-option {
+      border: 1px solid #ced4da;
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      text-align: center;
+    }
+    .leather-modal-option:hover,
+    .leather-modal-option:focus-visible {
+      border-color: #86b7fe;
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+      outline: none;
+    }
+    .leather-swatch-thumb {
+      width: 300px;
+      height: 300px;
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border: 1px solid #dee2e6;
+    }
+    .leather-modal-label {
+      font-weight: 600;
+    }
+    .leather-modal-value {
+      color: #6c757d;
+      font-size: 0.95rem;
+    }
     #svg-wrapper {
       max-width: 720px;
       border: 1px solid #dee2e6;
@@ -2047,14 +2085,14 @@
 
       $modal = $(
         '<div class="modal fade" id="leather-picker-modal" tabindex="-1" aria-hidden="true">\
-          <div class="modal-dialog modal-dialog-centered">\
+          <div class="modal-dialog modal-dialog-centered modal-xl">\
             <div class="modal-content">\
               <div class="modal-header">\
                 <h5 class="modal-title leather-modal-title">Choose leather</h5>\
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
               </div>\
               <div class="modal-body">\
-                <div class="list-group leather-modal-options"></div>\
+                <div class="leather-modal-options"></div>\
               </div>\
             </div>\
           </div>\
@@ -2083,14 +2121,10 @@
         const colorHex = $option.data('color') || value;
         const image = $option.data('image') || swatchImages[optionLabel] || fallbackSwatch;
 
-        const $item = $(
-          '<button type="button" class="list-group-item list-group-item-action d-flex align-items-center gap-3"></button>'
-        );
-        const $thumb = $('<span class="swatch-thumb flex-shrink-0"></span>').css('background-image', `url(${image})`);
-        const $textColumn = $('<span class="d-flex flex-column text-start"></span>');
-        const $itemName = $('<span class="fw-semibold"></span>').text(optionLabel);
-        const $itemValue = $('<small class="text-muted"></small>').text(colorHex);
-        $textColumn.append($itemName, $itemValue);
+        const $item = $('<button type="button" class="leather-modal-option"></button>');
+        const $thumb = $('<span class="leather-swatch-thumb"></span>').css('background-image', `url(${image})`);
+        const $itemName = $('<span class="leather-modal-label"></span>').text(optionLabel);
+        const $itemValue = $('<span class="leather-modal-value"></span>').text(colorHex);
 
         if (value === currentValue) {
           $item.addClass('active');
@@ -2102,7 +2136,7 @@
           modalInstance.hide();
         });
 
-        $item.append($thumb, $textColumn);
+        $item.append($thumb, $itemName, $itemValue);
         $optionsList.append($item);
       });
 
