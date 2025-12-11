@@ -2344,69 +2344,58 @@
         { inputId: 'color-stitching2', inputGroup: '#g42', mode: 'stroke' },
       ];
 
-      function ensurePatternFill(svg, patternId, imageUrl, targetElement) {
-        if (!svg || !imageUrl || !targetElement) return null;
+ function ensurePatternFill(svg, patternId, imageUrl) {
+  if (!svg || !imageUrl) return null;
 
-        const bbox = targetElement.getBBox?.();
-        if (!bbox || bbox.width === 0 || bbox.height === 0) return null;
+  const svgns = 'http://www.w3.org/2000/svg';
+  const xlinkns = 'http://www.w3.org/1999/xlink';
 
-        const svgns = 'http://www.w3.org/2000/svg';
-        const xlinkns = 'http://www.w3.org/1999/xlink';
+  // Ensure xlink namespace is present for SVG image references
+  if (!svg.getAttribute('xmlns:xlink')) {
+    svg.setAttribute('xmlns:xlink', xlinkns);
+  }
 
-        // Ensure xlink namespace is present for SVG image references
-        if (!svg.getAttribute('xmlns:xlink')) {
-          svg.setAttribute('xmlns:xlink', xlinkns);
-        }
+  let defs = svg.querySelector('defs');
+  if (!defs) {
+    defs = document.createElementNS(svgns, 'defs');
+    svg.prepend(defs);
+  }
 
-        let defs = svg.querySelector('defs');
+  let pattern = svg.querySelector(`#${patternId}`);
+  if (!pattern) {
+    pattern = document.createElementNS(svgns, 'pattern');
+    pattern.setAttribute('id', patternId);
+    defs.appendChild(pattern);
 
-        if (!defs) {
-          defs = document.createElementNS(svgns, 'defs');
-          svg.prepend(defs);
-        }
+    const image = document.createElementNS(svgns, 'image');
+    pattern.appendChild(image);
+  }
 
-        let pattern = svg.querySelector(`#${patternId}`);
+  // Pattern that matches each shape's bounding box (0..1)
+  pattern.setAttribute('patternUnits', 'objectBoundingBox');
+  pattern.setAttribute('patternContentUnits', 'objectBoundingBox');
+  pattern.setAttribute('x', 0);
+  pattern.setAttribute('y', 0);
+  pattern.setAttribute('width', 1);
+  pattern.setAttribute('height', 1);
+  pattern.removeAttribute('viewBox');
+  pattern.removeAttribute('patternTransform');
 
-        if (!pattern) {
-          pattern = document.createElementNS(svgns, 'pattern');
-          pattern.setAttribute('id', patternId);
-          defs.appendChild(pattern);
+  const imageEl = pattern.querySelector('image');
+  if (imageEl) {
+    imageEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+    imageEl.setAttribute('x', 0);
+    imageEl.setAttribute('y', 0);
+    imageEl.setAttribute('width', 1);
+    imageEl.setAttribute('height', 1);
 
-          const image = document.createElementNS(svgns, 'image');
-          image.setAttribute('vector-effect', 'non-scaling-stroke');
-          pattern.appendChild(image);
-        }
+    // Cross-browser href
+    imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
+    imageEl.setAttribute('href', imageUrl);
+  }
 
-        const bbox = targetElement.getBBox?.();
-        if (!bbox || bbox.width === 0 || bbox.height === 0) return null;
-
-        // Anchor the pattern directly in user space so the ostrich bitmap uses
-        // the real pixel size of the target instead of normalized 0–1 units
-        // (which can collapse to nothing in some browsers). This guarantees one
-        // clipped copy of the image without tiling or disappearing.
-        pattern.setAttribute('patternUnits', 'userSpaceOnUse');
-        pattern.setAttribute('patternContentUnits', 'userSpaceOnUse');
-        pattern.setAttribute('x', bbox.x);
-        pattern.setAttribute('y', bbox.y);
-        pattern.setAttribute('width', bbox.width);
-        pattern.setAttribute('height', bbox.height);
-        pattern.removeAttribute('viewBox');
-        pattern.removeAttribute('patternTransform');
-
-        const imageEl = pattern.querySelector('image');
-        if (imageEl) {
-          imageEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-          imageEl.setAttributeNS(xlinkns, 'href', imageUrl);
-          imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
-          imageEl.setAttribute('href', imageUrl);
-          imageEl.setAttribute('x', bbox.x);
-          imageEl.setAttribute('y', bbox.y);
-          imageEl.setAttribute('width', bbox.width);
-          imageEl.setAttribute('height', bbox.height);
-        }
-
-        return `url(#${patternId})`;
-      }
+  return `url(#${patternId})`;
+}
 
       mappings.forEach(({ inputId, inputGroup, mode }) => {
         const $select = $('#' + inputId);
