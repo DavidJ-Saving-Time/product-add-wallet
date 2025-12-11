@@ -176,6 +176,26 @@
             </select>
           </div>
 
+          <div class="col-sm-12">
+            <label class="form-label" for="lining-leather">Lining leather</label>
+            <select class="form-select" id="lining-leather"></select>
+            <div class="form-text">Goat-skin lining selection (not shown on the SVG preview).</div>
+          </div>
+
+          <div class="col-sm-12">
+            <label class="form-label" for="metal-corners">Metal corners</label>
+            <select class="form-select" id="metal-corners">
+              <option value="none" selected>No metal corners</option>
+              <option value="brass">Brass</option>
+              <option value="silver">Silver</option>
+              <option value="gunmetal-grey">Gunmetal Grey</option>
+              <option value="black">Black</option>
+              <option value="gold">Gold</option>
+              <option value="rose-gold">Rose Gold</option>
+            </select>
+            <div class="form-text">Add optional metal corner finishes.</div>
+          </div>
+
           <div class="col-sm-6">
             <label class="form-label" for="color-stitching">Stitching</label>
             <select class="form-select" id="color-stitching">
@@ -1878,6 +1898,15 @@
       { label: "Yellow Ostrich", color: "#e1980b", image: "images/Ostrich/yellow.webp" },
     ];
 
+    const liningLeatherSwatches = [
+      { label: "Chevre Yellow", color: "#d6d45a", image: "images/goat-skin/goat-skin-chevre-leather (1).jpg" },
+      { label: "Chevre Green", color: "#429a5b", image: "images/goat-skin/goat-skin-chevre-leather (2).jpg" },
+      { label: "Chevre Sand", color: "#c3b596", image: "images/goat-skin/goat-skin-chevre-leather (3).jpg" },
+      { label: "Chevre Charcoal", color: "#444444", image: "images/goat-skin/goat-skin-chevre-leather (4).jpg" },
+      { label: "Chevre Cognac", color: "#a56024", image: "images/goat-skin/goat-skin-chevre-leather (5).jpg" },
+      { label: "Chevre Rust", color: "#b13431", image: "images/goat-skin/goat-skin-chevre-leather.jpg" },
+    ];
+
     const leatherSelectIds = ["color-outer", "color-interior", "color-pockets"];
     let currentLeatherCollection = "buttero";
     let useOstrichBottom = false;
@@ -2316,6 +2345,8 @@
 
     $(function () {
       rebuildLeatherSelects(currentLeatherCollection);
+
+      populateSelectWithSwatches($('#lining-leather'), liningLeatherSwatches);
 
       $('#color-stitching, #color-stitching2').each(function () {
         buildSwatchSelect($(this));
