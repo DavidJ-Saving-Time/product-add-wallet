@@ -2347,6 +2347,9 @@
       function ensurePatternFill(svg, patternId, imageUrl, targetElement) {
         if (!svg || !imageUrl || !targetElement) return null;
 
+        const bbox = targetElement.getBBox?.();
+        if (!bbox || bbox.width === 0 || bbox.height === 0) return null;
+
         const svgns = 'http://www.w3.org/2000/svg';
         const xlinkns = 'http://www.w3.org/1999/xlink';
 
@@ -2374,14 +2377,15 @@
           pattern.appendChild(image);
         }
 
-        // Use objectBoundingBox units so a single image covers the target bounds
-        // once, respecting its aspect ratio and avoiding tiling.
+        // Use the target's bounding box as the viewBox for a single, clipped image.
+        // This avoids tiling and lets the browser crop instead of stretching.
         pattern.setAttribute('patternUnits', 'objectBoundingBox');
         pattern.setAttribute('patternContentUnits', 'objectBoundingBox');
-        pattern.setAttribute('x', 0);
-        pattern.setAttribute('y', 0);
-        pattern.setAttribute('width', 1);
-        pattern.setAttribute('height', 1);
+        pattern.setAttribute('x', '0');
+        pattern.setAttribute('y', '0');
+        pattern.setAttribute('width', '1');
+        pattern.setAttribute('height', '1');
+        pattern.setAttribute('viewBox', `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
         pattern.removeAttribute('patternTransform');
 
         const imageEl = pattern.querySelector('image');
@@ -2390,10 +2394,10 @@
           imageEl.setAttributeNS(xlinkns, 'href', imageUrl);
           imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
           imageEl.setAttribute('href', imageUrl);
-          imageEl.setAttribute('x', 0);
-          imageEl.setAttribute('y', 0);
-          imageEl.setAttribute('width', 1);
-          imageEl.setAttribute('height', 1);
+          imageEl.setAttribute('x', '0');
+          imageEl.setAttribute('y', '0');
+          imageEl.setAttribute('width', '1');
+          imageEl.setAttribute('height', '1');
         }
 
         return `url(#${patternId})`;
