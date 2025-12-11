@@ -2236,6 +2236,12 @@
 
         const svgns = 'http://www.w3.org/2000/svg';
         const xlinkns = 'http://www.w3.org/1999/xlink';
+
+        // Ensure xlink namespace is present for SVG image references
+        if (!svg.getAttribute('xmlns:xlink')) {
+          svg.setAttribute('xmlns:xlink', xlinkns);
+        }
+
         let defs = svg.querySelector('defs');
 
         if (!defs) {
@@ -2245,32 +2251,37 @@
 
         let pattern = svg.querySelector(`#${patternId}`);
 
-        const bbox = targetElement.getBBox();
-
         if (!pattern) {
           pattern = document.createElementNS(svgns, 'pattern');
           pattern.setAttribute('id', patternId);
-          pattern.setAttribute('patternUnits', 'userSpaceOnUse');
-          pattern.setAttribute('patternContentUnits', 'userSpaceOnUse');
+          defs.appendChild(pattern);
 
           const image = document.createElementNS(svgns, 'image');
-          image.setAttribute('preserveAspectRatio', 'xMidYMid slice');
           image.setAttribute('vector-effect', 'non-scaling-stroke');
           pattern.appendChild(image);
-          defs.appendChild(pattern);
         }
 
-        pattern.setAttribute('x', bbox.x);
-        pattern.setAttribute('y', bbox.y);
-        pattern.setAttribute('width', bbox.width);
-        pattern.setAttribute('height', bbox.height);
+        // Use objectBoundingBox units so a single image covers the target bounds
+        // once, respecting its aspect ratio and avoiding tiling.
+        pattern.setAttribute('patternUnits', 'objectBoundingBox');
+        pattern.setAttribute('patternContentUnits', 'objectBoundingBox');
+        pattern.setAttribute('x', 0);
+        pattern.setAttribute('y', 0);
+        pattern.setAttribute('width', 1);
+        pattern.setAttribute('height', 1);
+        pattern.removeAttribute('patternTransform');
 
         const imageEl = pattern.querySelector('image');
-        imageEl?.setAttributeNS(xlinkns, 'href', imageUrl);
-        imageEl?.setAttribute('x', bbox.x);
-        imageEl?.setAttribute('y', bbox.y);
-        imageEl?.setAttribute('width', bbox.width);
-        imageEl?.setAttribute('height', bbox.height);
+        if (imageEl) {
+          imageEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+          imageEl.setAttributeNS(xlinkns, 'href', imageUrl);
+          imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
+          imageEl.setAttribute('href', imageUrl);
+          imageEl.setAttribute('x', 0);
+          imageEl.setAttribute('y', 0);
+          imageEl.setAttribute('width', 1);
+          imageEl.setAttribute('height', 1);
+        }
 
         return `url(#${patternId})`;
       }
