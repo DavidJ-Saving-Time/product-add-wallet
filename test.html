@@ -2268,7 +2268,7 @@
         const imageEl = pattern.querySelector('image');
         if (imageEl) {
           imageEl.setAttribute('href', imageUrl);
-          imageEl.setAttributeNS(xlinkns, 'href', imageUrl);
+          imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
           imageEl.setAttribute('x', bbox.x);
           imageEl.setAttribute('y', bbox.y);
           imageEl.setAttribute('width', bbox.width);
