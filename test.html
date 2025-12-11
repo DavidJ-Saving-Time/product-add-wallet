@@ -1778,6 +1778,11 @@
   </div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"
+  ></script>
   <script>
     const leatherCollections = {
       buttero: {
@@ -1846,10 +1851,14 @@
       const $previewBtn = isColorOnly
         ? null
         : $('<button type="button" class="btn btn-link btn-sm text-decoration-none">View leather</button>');
+      const $modalBtn = isColorOnly
+        ? null
+        : $('<button type="button" class="btn btn-outline-primary btn-sm">Choose leather</button>');
       const $chevron = $('<span class="ms-2">▼</span>');
       const $rightStack = $('<span class="d-flex align-items-center gap-2"></span>');
 
       if ($previewBtn) $rightStack.append($previewBtn);
+      if ($modalBtn) $rightStack.append($modalBtn);
       $rightStack.append($chevron);
 
       $toggle.append($selected, $rightStack);
@@ -1857,6 +1866,23 @@
       const $menu = $('<ul class="swatch-menu" role="listbox"></ul>');
       let currentImage = null;
       let currentLabel = '';
+
+      function syncFromSelect() {
+        const $selectedOption = $select.find(':selected');
+        const label = $selectedOption.text().trim();
+        const colorHex = $selectedOption.data('color') || $selectedOption.val();
+        const image = isColorOnly ? null : $selectedOption.data('image') || swatchImages[label] || fallbackSwatch;
+
+        updateSelection($thumb, $name, $value, image, label, colorHex, isColorOnly);
+        currentImage = image;
+        currentLabel = label;
+
+        $menu.find('[aria-selected]')?.removeAttr('aria-selected');
+        const $matchedItem = $menu.find(`[data-value="${$selectedOption.val()}"]`);
+        if ($matchedItem.length) {
+          $matchedItem.attr('aria-selected', 'true');
+        }
+      }
 
       $select.find('option').each(function () {
         const $option = $(this);
@@ -1919,6 +1945,16 @@
           }
         });
       }
+
+      if ($modalBtn) {
+        $modalBtn.on('click', function (event) {
+          event.stopPropagation();
+          openLeatherModal($select, syncFromSelect);
+        });
+      }
+
+      $select.off('change.swatch').on('change.swatch', syncFromSelect);
+      syncFromSelect();
 
       const docEventNamespace = `click.swatch-${$select.attr('id') || Math.random().toString(36).slice(2)}`;
       $(document)
@@ -2014,6 +2050,74 @@
 
     function hideSwatchPreview() {
       $('#swatch-preview').addClass('d-none');
+    }
+
+    function ensureLeatherPickerModal() {
+      let $modal = $('#leather-picker-modal');
+      if ($modal.length) return $modal;
+
+      $modal = $(
+        '<div class="modal fade" id="leather-picker-modal" tabindex="-1" aria-hidden="true">\
+          <div class="modal-dialog modal-dialog-centered">\
+            <div class="modal-content">\
+              <div class="modal-header">\
+                <h5 class="modal-title leather-modal-title">Choose leather</h5>\
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+              </div>\
+              <div class="modal-body">\
+                <div class="list-group leather-modal-options"></div>\
+              </div>\
+            </div>\
+          </div>\
+        </div>'
+      );
+
+      $('body').append($modal);
+      return $modal;
+    }
+
+    function openLeatherModal($select, onSelect) {
+      const $modal = ensureLeatherPickerModal();
+      const modalInstance = bootstrap.Modal.getOrCreateInstance($modal[0]);
+      const $optionsList = $modal.find('.leather-modal-options');
+      const titleLabel = $(`label[for="${$select.attr('id')}"]`).text().trim() || 'Leather';
+
+      $modal.find('.leather-modal-title').text(`${titleLabel} options`);
+      $optionsList.empty();
+
+      const currentValue = $select.val();
+
+      $select.find('option').each(function () {
+        const $option = $(this);
+        const optionLabel = $option.text().trim();
+        const value = $option.val();
+        const colorHex = $option.data('color') || value;
+        const image = $option.data('image') || swatchImages[optionLabel] || fallbackSwatch;
+
+        const $item = $(
+          '<button type="button" class="list-group-item list-group-item-action d-flex align-items-center gap-3"></button>'
+        );
+        const $thumb = $('<span class="swatch-thumb flex-shrink-0"></span>').css('background-image', `url(${image})`);
+        const $textColumn = $('<span class="d-flex flex-column text-start"></span>');
+        const $itemName = $('<span class="fw-semibold"></span>').text(optionLabel);
+        const $itemValue = $('<small class="text-muted"></small>').text(colorHex);
+        $textColumn.append($itemName, $itemValue);
+
+        if (value === currentValue) {
+          $item.addClass('active');
+        }
+
+        $item.on('click', function () {
+          $select.val(value).trigger('change');
+          onSelect?.();
+          modalInstance.hide();
+        });
+
+        $item.append($thumb, $textColumn);
+        $optionsList.append($item);
+      });
+
+      modalInstance.show();
     }
 
     function buildSvgOverlayButtons() {
