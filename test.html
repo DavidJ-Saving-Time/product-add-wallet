@@ -122,7 +122,7 @@
 
       <div class="col-12 col-lg-6">
         <div class="row g-3">
-          <div class="col-sm-6">
+          <div class="col-sm-12">
             <label class="form-label" for="color-outer">Outer leather</label>
             <select class="form-select" id="color-outer">
               <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Dark Brown</option>
@@ -138,7 +138,7 @@
             </select>
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-sm-12">
             <label class="form-label" for="color-interior">Top Pcoket</label>
             <select class="form-select" id="color-interior">
               <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
@@ -154,7 +154,7 @@
             </select>
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-sm-12">
             <div class="d-flex justify-content-between align-items-center">
               <label class="form-label mb-0" for="color-pockets">Bottom Pocket</label>
               <div class="form-check form-switch mb-0">
@@ -2210,7 +2210,7 @@
           showSwatchPreview(image, label);
         });
 
-        const $chooseButton = $('<button type="button" class="btn btn-outline-primary btn-sm shadow-sm">Choose leather</button>');
+        const $chooseButton = $('<button type="button" class="btn btn-primary btn-sm shadow-sm">Choose leather</button>');
         $chooseButton.on('click', function (event) {
           event.stopPropagation();
           openLeatherModal($select);
