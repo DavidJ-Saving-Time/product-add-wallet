@@ -2265,22 +2265,22 @@
           pattern.appendChild(image);
         }
 
+        // Place one image over the target area without tiling or distortion.
         pattern.setAttribute('patternUnits', 'userSpaceOnUse');
         pattern.setAttribute('patternContentUnits', 'userSpaceOnUse');
         pattern.setAttribute('x', bbox.x);
         pattern.setAttribute('y', bbox.y);
         pattern.setAttribute('width', bbox.width);
         pattern.setAttribute('height', bbox.height);
-        pattern.setAttribute('viewBox', `0 0 ${bbox.width} ${bbox.height}`);
-        pattern.setAttribute('patternTransform', `translate(${bbox.x} ${bbox.y})`);
+        pattern.removeAttribute('patternTransform');
 
         const imageEl = pattern.querySelector('image');
         if (imageEl) {
           imageEl.setAttributeNS(xlinkns, 'href', imageUrl);
           imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
           imageEl.setAttribute('href', imageUrl);
-          imageEl.setAttribute('x', 0);
-          imageEl.setAttribute('y', 0);
+          imageEl.setAttribute('x', bbox.x);
+          imageEl.setAttribute('y', bbox.y);
           imageEl.setAttribute('width', bbox.width);
           imageEl.setAttribute('height', bbox.height);
         }
