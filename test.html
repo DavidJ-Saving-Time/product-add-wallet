@@ -2347,6 +2347,9 @@
       function ensurePatternFill(svg, patternId, imageUrl, targetElement) {
         if (!svg || !imageUrl || !targetElement) return null;
 
+        const bbox = targetElement.getBBox?.();
+        if (!bbox || bbox.width === 0 || bbox.height === 0) return null;
+
         const svgns = 'http://www.w3.org/2000/svg';
         const xlinkns = 'http://www.w3.org/1999/xlink';
 
@@ -2393,10 +2396,10 @@
           imageEl.setAttributeNS(xlinkns, 'href', imageUrl);
           imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
           imageEl.setAttribute('href', imageUrl);
-          imageEl.setAttribute('x', 0);
-          imageEl.setAttribute('y', 0);
-          imageEl.setAttribute('width', 1);
-          imageEl.setAttribute('height', 1);
+          imageEl.setAttribute('x', bbox.x);
+          imageEl.setAttribute('y', bbox.y);
+          imageEl.setAttribute('width', bbox.width);
+          imageEl.setAttribute('height', bbox.height);
         }
 
         return `url(#${patternId})`;
