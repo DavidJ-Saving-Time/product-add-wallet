@@ -2344,58 +2344,92 @@
         { inputId: 'color-stitching2', inputGroup: '#g42', mode: 'stroke' },
       ];
 
- function ensurePatternFill(svg, patternId, imageUrl) {
-  if (!svg || !imageUrl) return null;
+      function ensureClippedTexture(svg, imageId, clipId, imageUrl, targetGroup) {
+        if (!svg || !imageUrl || !targetGroup) return null;
 
-  const svgns = 'http://www.w3.org/2000/svg';
-  const xlinkns = 'http://www.w3.org/1999/xlink';
+        const svgns = 'http://www.w3.org/2000/svg';
+        const xlinkns = 'http://www.w3.org/1999/xlink';
 
-  // Ensure xlink namespace is present for SVG image references
-  if (!svg.getAttribute('xmlns:xlink')) {
-    svg.setAttribute('xmlns:xlink', xlinkns);
-  }
+        // Ensure xlink namespace is present for SVG image references
+        if (!svg.getAttribute('xmlns:xlink')) {
+          svg.setAttribute('xmlns:xlink', xlinkns);
+        }
 
-  let defs = svg.querySelector('defs');
-  if (!defs) {
-    defs = document.createElementNS(svgns, 'defs');
-    svg.prepend(defs);
-  }
+        let defs = svg.querySelector('defs');
+        if (!defs) {
+          defs = document.createElementNS(svgns, 'defs');
+          svg.prepend(defs);
+        }
 
-  let pattern = svg.querySelector(`#${patternId}`);
-  if (!pattern) {
-    pattern = document.createElementNS(svgns, 'pattern');
-    pattern.setAttribute('id', patternId);
-    defs.appendChild(pattern);
+        let clipPath = svg.querySelector(`#${clipId}`);
+        if (!clipPath) {
+          clipPath = document.createElementNS(svgns, 'clipPath');
+          clipPath.setAttribute('id', clipId);
+          clipPath.setAttribute('clipPathUnits', 'userSpaceOnUse');
+          defs.appendChild(clipPath);
+        }
 
-    const image = document.createElementNS(svgns, 'image');
-    pattern.appendChild(image);
-  }
+        let clipUse = clipPath.querySelector('use');
+        if (!clipUse) {
+          clipUse = document.createElementNS(svgns, 'use');
+          clipPath.appendChild(clipUse);
+        }
+        clipUse.setAttributeNS(xlinkns, 'xlink:href', `#${targetGroup.id}`);
+        clipUse.setAttribute('href', `#${targetGroup.id}`);
 
-  // Pattern that matches each shape's bounding box (0..1)
-  pattern.setAttribute('patternUnits', 'objectBoundingBox');
-  pattern.setAttribute('patternContentUnits', 'objectBoundingBox');
-  pattern.setAttribute('x', 0);
-  pattern.setAttribute('y', 0);
-  pattern.setAttribute('width', 1);
-  pattern.setAttribute('height', 1);
-  pattern.removeAttribute('viewBox');
-  pattern.removeAttribute('patternTransform');
+        let imageEl = svg.querySelector(`#${imageId}`);
+        if (!imageEl) {
+          imageEl = document.createElementNS(svgns, 'image');
+          imageEl.setAttribute('id', imageId);
+          imageEl.setAttribute('preserveAspectRatio', 'none');
+          imageEl.style.pointerEvents = 'none';
+          svg.appendChild(imageEl);
+        }
 
-  const imageEl = pattern.querySelector('image');
-  if (imageEl) {
-    imageEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-    imageEl.setAttribute('x', 0);
-    imageEl.setAttribute('y', 0);
-    imageEl.setAttribute('width', 1);
-    imageEl.setAttribute('height', 1);
+        imageEl.setAttribute('clip-path', `url(#${clipId})`);
 
-    // Cross-browser href
-    imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
-    imageEl.setAttribute('href', imageUrl);
-  }
+        const updateLayout = (naturalWidth, naturalHeight) => {
+          if (!naturalWidth || !naturalHeight) return;
+          const bbox = targetGroup.getBBox();
+          const scale = Math.max(bbox.width / naturalWidth, bbox.height / naturalHeight);
+          const width = naturalWidth * scale;
+          const height = naturalHeight * scale;
+          const x = bbox.x + (bbox.width - width) / 2;
+          const y = bbox.y + (bbox.height - height) / 2;
 
-  return `url(#${patternId})`;
-}
+          imageEl.setAttribute('x', x);
+          imageEl.setAttribute('y', y);
+          imageEl.setAttribute('width', width);
+          imageEl.setAttribute('height', height);
+        };
+
+        const currentHref = imageEl.getAttribute('href') || imageEl.getAttributeNS(xlinkns, 'href');
+        if (currentHref !== imageUrl) {
+          const loader = new Image();
+          loader.onload = function () {
+            imageEl.dataset.naturalWidth = this.naturalWidth;
+            imageEl.dataset.naturalHeight = this.naturalHeight;
+            updateLayout(this.naturalWidth, this.naturalHeight);
+          };
+          loader.src = imageUrl;
+
+          imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
+          imageEl.setAttribute('href', imageUrl);
+        }
+
+        if (imageEl.dataset.naturalWidth && imageEl.dataset.naturalHeight) {
+          updateLayout(Number(imageEl.dataset.naturalWidth), Number(imageEl.dataset.naturalHeight));
+        }
+
+        return imageEl;
+      }
+
+      function removeClippedTexture(svg, imageId) {
+        const existingImage = svg?.querySelector(`#${imageId}`);
+        if (existingImage) {
+          existingImage.remove();
+        }
+      }
 
       mappings.forEach(({ inputId, inputGroup, mode }) => {
         const $select = $('#' + inputId);
@@ -2408,12 +2442,14 @@
           const svg = document.querySelector('#svg-wrapper svg');
           const shouldUseOstrichTexture = inputId === 'color-pockets' && useOstrichBottom;
 
-          const textureFill = shouldUseOstrichTexture
-            ? ensurePatternFill(svg, 'pocket-ostrich-pattern', image, $group[0])
-            : null;
+          if (shouldUseOstrichTexture) {
+            ensureClippedTexture(svg, 'pocket-ostrich-texture', 'pocket-ostrich-clip', image, $group[0]);
+          } else {
+            removeClippedTexture(svg, 'pocket-ostrich-texture');
+          }
           $group.find('*').each(function () {
             if (mode === 'fill') {
-              this.style.fill = textureFill || color;
+              this.style.fill = color;
             } else if (mode === 'stroke') {
               this.style.stroke = color;
             }
