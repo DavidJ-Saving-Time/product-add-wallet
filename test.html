@@ -2347,6 +2347,9 @@
       function ensurePatternFill(svg, patternId, imageUrl, targetElement) {
         if (!svg || !imageUrl || !targetElement) return null;
 
+        const bbox = targetElement.getBBox?.();
+        if (!bbox || bbox.width === 0 || bbox.height === 0) return null;
+
         const svgns = 'http://www.w3.org/2000/svg';
         const xlinkns = 'http://www.w3.org/1999/xlink';
 
@@ -2374,14 +2377,14 @@
           pattern.appendChild(image);
         }
 
-        // Use objectBoundingBox units so a single image covers the target bounds
-        // once, respecting its aspect ratio and avoiding tiling.
-        pattern.setAttribute('patternUnits', 'objectBoundingBox');
-        pattern.setAttribute('patternContentUnits', 'objectBoundingBox');
-        pattern.setAttribute('x', 0);
-        pattern.setAttribute('y', 0);
-        pattern.setAttribute('width', 1);
-        pattern.setAttribute('height', 1);
+        // Lock the pattern to the target's real pixel bounds so a single copy of
+        // the image is clipped to the pocket without tiling or stretching.
+        pattern.setAttribute('patternUnits', 'userSpaceOnUse');
+        pattern.setAttribute('patternContentUnits', 'userSpaceOnUse');
+        pattern.setAttribute('x', bbox.x);
+        pattern.setAttribute('y', bbox.y);
+        pattern.setAttribute('width', bbox.width);
+        pattern.setAttribute('height', bbox.height);
         pattern.removeAttribute('patternTransform');
 
         const imageEl = pattern.querySelector('image');
@@ -2390,10 +2393,10 @@
           imageEl.setAttributeNS(xlinkns, 'href', imageUrl);
           imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
           imageEl.setAttribute('href', imageUrl);
-          imageEl.setAttribute('x', 0);
-          imageEl.setAttribute('y', 0);
-          imageEl.setAttribute('width', 1);
-          imageEl.setAttribute('height', 1);
+          imageEl.setAttribute('x', bbox.x);
+          imageEl.setAttribute('y', bbox.y);
+          imageEl.setAttribute('width', bbox.width);
+          imageEl.setAttribute('height', bbox.height);
         }
 
         return `url(#${patternId})`;
