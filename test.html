@@ -1953,7 +1953,12 @@
         const $selectedOption = $select.find(':selected');
         const label = $selectedOption.text().trim();
         const colorHex = $selectedOption.data('color') || $selectedOption.val();
-        const image = isColorOnly ? null : $selectedOption.data('image') || swatchImages[label] || fallbackSwatch;
+        const explicitImage = $selectedOption.data('image');
+        const image = isColorOnly
+          ? null
+          : explicitImage !== undefined
+            ? explicitImage || null
+            : swatchImages[label] || fallbackSwatch;
 
         updateSelection($thumb, $name, $value, image, label, colorHex, isColorOnly);
         currentImage = image;
@@ -1970,9 +1975,14 @@
         const $option = $(this);
         const label = $option.text().trim();
         const colorHex = $option.data('color') || $option.val();
-        const image = isColorOnly ? null : $option.data('image') || swatchImages[label] || fallbackSwatch;
-        if (image) {
-          $option.attr('data-image', image);
+        const explicitImage = $option.data('image');
+        const image = isColorOnly
+          ? null
+          : explicitImage !== undefined
+            ? explicitImage || null
+            : swatchImages[label] || fallbackSwatch;
+        if (image !== undefined) {
+          $option.attr('data-image', image || '');
         }
 
         const $item = $('<li class="swatch-item" role="option"></li>');
@@ -1980,7 +1990,11 @@
         if (isColorOnly) {
           $itemThumb.addClass('color-only').css('background-color', colorHex);
         } else {
-          $itemThumb.css('background-image', `url(${image})`);
+          if (image) {
+            $itemThumb.css('background-image', `url("${image}")`);
+          } else {
+            $itemThumb.addClass('color-only').css('background-color', colorHex);
+          }
         }
         const $itemText = $('<span class="swatch-name fw-semibold"></span>').text(label);
         const $itemValue = $('<span class="swatch-value"></span>').text(colorHex);
@@ -2085,10 +2099,12 @@
     }
 
     function updateSelection($thumb, $name, $value, image, label, colorHex, isColorOnly) {
-      if (isColorOnly) {
-        $thumb.addClass('color-only').css({ backgroundColor: colorHex, backgroundImage: 'none' });
+      const safeColor = colorHex || '#f8f9fa';
+
+      if (isColorOnly || !image) {
+        $thumb.addClass('color-only').css({ backgroundColor: safeColor, backgroundImage: 'none' });
       } else {
-        $thumb.removeClass('color-only').css({ backgroundImage: `url(${image})`, backgroundColor: '' });
+        $thumb.removeClass('color-only').css({ backgroundImage: `url("${image}")`, backgroundColor: '' });
       }
       $name.text(label);
       $value.text(colorHex);
@@ -2173,10 +2189,18 @@
         const optionLabel = $option.text().trim();
         const value = $option.val();
         const colorHex = $option.data('color') || value;
-        const image = $option.data('image') || swatchImages[optionLabel] || fallbackSwatch;
+        const explicitImage = $option.data('image');
+        const image = explicitImage !== undefined
+          ? explicitImage || null
+          : swatchImages[optionLabel] || fallbackSwatch;
 
         const $item = $('<button type="button" class="leather-modal-option"></button>');
-        const $thumb = $('<span class="leather-swatch-thumb"></span>').css('background-image', `url(${image})`);
+        const $thumb = $('<span class="leather-swatch-thumb"></span>');
+        if (image) {
+          $thumb.css('background-image', `url("${image}")`);
+        } else {
+          $thumb.addClass('color-only').css('background-color', colorHex || '#f8f9fa');
+        }
         const $itemName = $('<span class="leather-modal-label"></span>').text(optionLabel);
         const $itemValue = $('<span class="leather-modal-value"></span>').text(colorHex);
 
@@ -2347,6 +2371,25 @@
       rebuildLeatherSelects(currentLeatherCollection);
 
       populateSelectWithSwatches($('#lining-leather'), liningLeatherSwatches);
+
+      const metalCornerImages = {
+        none: '',
+        brass: 'images/metal-corners/brass.webp',
+        silver: 'images/metal-corners/silver.webp',
+        'gunmetal-grey': 'images/metal-corners/grey.webp',
+        black: 'images/metal-corners/black.webp',
+        gold: 'images/metal-corners/gold.webp',
+        'rose-gold': 'images/metal-corners/rosegold.webp',
+      };
+
+      $('#metal-corners option').each(function () {
+        const value = $(this).val();
+        const colorValue = value === 'none' ? '#f8f9fa' : value;
+        $(this)
+          .attr('data-color', colorValue)
+          .attr('data-image', metalCornerImages[value] ?? '');
+      });
+      buildSwatchSelect($('#metal-corners'));
 
       $('#color-stitching, #color-stitching2').each(function () {
         buildSwatchSelect($(this));
