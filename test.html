@@ -2369,13 +2369,29 @@
           defs.appendChild(clipPath);
         }
 
-        let clipUse = clipPath.querySelector('use');
-        if (!clipUse) {
-          clipUse = document.createElementNS(svgns, 'use');
-          clipPath.appendChild(clipUse);
+        // Clone the target group directly into the clipPath. Some browsers
+        // fail to render when a <clipPath> only references an external
+        // element with <use>, so we recreate the geometry in-place every time.
+        while (clipPath.firstChild) {
+          clipPath.firstChild.remove();
         }
-        clipUse.setAttributeNS(xlinkns, 'xlink:href', `#${targetGroup.id}`);
-        clipUse.setAttribute('href', `#${targetGroup.id}`);
+        const clipContent = targetGroup.cloneNode(true);
+        clipContent.removeAttribute('id');
+        // Clip paths ignore strokes and respect only filled regions. Ensure the
+        // cloned geometry is fully filled so the ostrich texture remains
+        // visible even when the source artwork only uses strokes.
+        clipContent.setAttribute('fill', 'white');
+        clipContent.setAttribute('stroke', 'none');
+        clipContent.querySelectorAll('*').forEach((node) => {
+          node.removeAttribute('id');
+          node.setAttribute('fill', 'white');
+          node.setAttribute('stroke', 'none');
+          if (node.style) {
+            node.style.fill = 'white';
+            node.style.stroke = 'none';
+          }
+        });
+        clipPath.appendChild(clipContent);
 
         let imageEl = svg.querySelector(`#${imageId}`);
         if (!imageEl) {
