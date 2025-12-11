@@ -2377,14 +2377,15 @@
           pattern.appendChild(image);
         }
 
-        // Lock the pattern to the target's real pixel bounds so a single copy of
-        // the image is clipped to the pocket without tiling or stretching.
-        pattern.setAttribute('patternUnits', 'userSpaceOnUse');
-        pattern.setAttribute('patternContentUnits', 'userSpaceOnUse');
-        pattern.setAttribute('x', bbox.x);
-        pattern.setAttribute('y', bbox.y);
-        pattern.setAttribute('width', bbox.width);
-        pattern.setAttribute('height', bbox.height);
+        // Use the target's bounding box as the viewBox for a single, clipped image.
+        // This avoids tiling and lets the browser crop instead of stretching.
+        pattern.setAttribute('patternUnits', 'objectBoundingBox');
+        pattern.setAttribute('patternContentUnits', 'objectBoundingBox');
+        pattern.setAttribute('x', '0');
+        pattern.setAttribute('y', '0');
+        pattern.setAttribute('width', '1');
+        pattern.setAttribute('height', '1');
+        pattern.setAttribute('viewBox', `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
         pattern.removeAttribute('patternTransform');
 
         const imageEl = pattern.querySelector('image');
@@ -2393,10 +2394,10 @@
           imageEl.setAttributeNS(xlinkns, 'href', imageUrl);
           imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
           imageEl.setAttribute('href', imageUrl);
-          imageEl.setAttribute('x', bbox.x);
-          imageEl.setAttribute('y', bbox.y);
-          imageEl.setAttribute('width', bbox.width);
-          imageEl.setAttribute('height', bbox.height);
+          imageEl.setAttribute('x', '0');
+          imageEl.setAttribute('y', '0');
+          imageEl.setAttribute('width', '1');
+          imageEl.setAttribute('height', '1');
         }
 
         return `url(#${patternId})`;
