@@ -2374,14 +2374,20 @@
           pattern.appendChild(image);
         }
 
-        // Use objectBoundingBox units so a single image covers the target bounds
-        // once, respecting its aspect ratio and avoiding tiling.
-        pattern.setAttribute('patternUnits', 'objectBoundingBox');
-        pattern.setAttribute('patternContentUnits', 'objectBoundingBox');
-        pattern.setAttribute('x', 0);
-        pattern.setAttribute('y', 0);
-        pattern.setAttribute('width', 1);
-        pattern.setAttribute('height', 1);
+        const bbox = targetElement.getBBox?.();
+        if (!bbox || bbox.width === 0 || bbox.height === 0) return null;
+
+        // Anchor the pattern directly in user space so the ostrich bitmap uses
+        // the real pixel size of the target instead of normalized 0–1 units
+        // (which can collapse to nothing in some browsers). This guarantees one
+        // clipped copy of the image without tiling or disappearing.
+        pattern.setAttribute('patternUnits', 'userSpaceOnUse');
+        pattern.setAttribute('patternContentUnits', 'userSpaceOnUse');
+        pattern.setAttribute('x', bbox.x);
+        pattern.setAttribute('y', bbox.y);
+        pattern.setAttribute('width', bbox.width);
+        pattern.setAttribute('height', bbox.height);
+        pattern.removeAttribute('viewBox');
         pattern.removeAttribute('patternTransform');
 
         const imageEl = pattern.querySelector('image');
@@ -2390,10 +2396,10 @@
           imageEl.setAttributeNS(xlinkns, 'href', imageUrl);
           imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
           imageEl.setAttribute('href', imageUrl);
-          imageEl.setAttribute('x', 0);
-          imageEl.setAttribute('y', 0);
-          imageEl.setAttribute('width', 1);
-          imageEl.setAttribute('height', 1);
+          imageEl.setAttribute('x', bbox.x);
+          imageEl.setAttribute('y', bbox.y);
+          imageEl.setAttribute('width', bbox.width);
+          imageEl.setAttribute('height', bbox.height);
         }
 
         return `url(#${patternId})`;
