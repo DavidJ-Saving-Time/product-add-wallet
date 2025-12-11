@@ -2266,11 +2266,14 @@
         pattern.setAttribute('height', bbox.height);
 
         const imageEl = pattern.querySelector('image');
-        imageEl?.setAttributeNS(xlinkns, 'href', imageUrl);
-        imageEl?.setAttribute('x', bbox.x);
-        imageEl?.setAttribute('y', bbox.y);
-        imageEl?.setAttribute('width', bbox.width);
-        imageEl?.setAttribute('height', bbox.height);
+        if (imageEl) {
+          imageEl.setAttribute('href', imageUrl);
+          imageEl.setAttributeNS(xlinkns, 'href', imageUrl);
+          imageEl.setAttribute('x', bbox.x);
+          imageEl.setAttribute('y', bbox.y);
+          imageEl.setAttribute('width', bbox.width);
+          imageEl.setAttribute('height', bbox.height);
+        }
 
         return `url(#${patternId})`;
       }
