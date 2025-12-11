@@ -2231,6 +2231,41 @@
         { inputId: 'color-stitching2', inputGroup: '#g42', mode: 'stroke' },
       ];
 
+      function ensurePatternFill(svg, patternId, imageUrl) {
+        if (!svg || !imageUrl) return null;
+
+        const svgns = 'http://www.w3.org/2000/svg';
+        const xlinkns = 'http://www.w3.org/1999/xlink';
+        let defs = svg.querySelector('defs');
+
+        if (!defs) {
+          defs = document.createElementNS(svgns, 'defs');
+          svg.prepend(defs);
+        }
+
+        let pattern = svg.querySelector(`#${patternId}`);
+
+        if (!pattern) {
+          pattern = document.createElementNS(svgns, 'pattern');
+          pattern.setAttribute('id', patternId);
+          pattern.setAttribute('patternUnits', 'userSpaceOnUse');
+          pattern.setAttribute('width', '120');
+          pattern.setAttribute('height', '120');
+
+          const image = document.createElementNS(svgns, 'image');
+          image.setAttribute('width', '120');
+          image.setAttribute('height', '120');
+          image.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+          pattern.appendChild(image);
+          defs.appendChild(pattern);
+        }
+
+        const imageEl = pattern.querySelector('image');
+        imageEl?.setAttributeNS(xlinkns, 'href', imageUrl);
+
+        return `url(#${patternId})`;
+      }
+
       mappings.forEach(({ inputId, inputGroup, mode }) => {
         const $select = $('#' + inputId);
         const $group = $(inputGroup);
@@ -2238,9 +2273,16 @@
 
         function applyColor() {
           const color = $select.val();
+          const image = $select.find(':selected').data('image');
+          const svg = document.querySelector('#svg-wrapper svg');
+          const shouldUseOstrichTexture = inputId === 'color-pockets' && useOstrichBottom;
+
+          const textureFill = shouldUseOstrichTexture
+            ? ensurePatternFill(svg, 'pocket-ostrich-pattern', image)
+            : null;
           $group.find('*').each(function () {
             if (mode === 'fill') {
-              this.style.fill = color;
+              this.style.fill = textureFill || color;
             } else if (mode === 'stroke') {
               this.style.stroke = color;
             }
