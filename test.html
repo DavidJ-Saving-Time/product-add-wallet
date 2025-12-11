@@ -2377,16 +2377,19 @@
           pattern.appendChild(image);
         }
 
-        // Anchor the pattern to the target's bounding box so a single image is drawn
-        // and clipped without tiling. Using object bounding box units keeps the
-        // coordinates normalized (0–1) so the image always covers the target even
-        // when it is transformed or nested in another viewBox.
-        pattern.setAttribute('patternUnits', 'objectBoundingBox');
-        pattern.setAttribute('patternContentUnits', 'objectBoundingBox');
-        pattern.setAttribute('x', 0);
-        pattern.setAttribute('y', 0);
-        pattern.setAttribute('width', 1);
-        pattern.setAttribute('height', 1);
+        const bbox = targetElement.getBBox?.();
+        if (!bbox || bbox.width === 0 || bbox.height === 0) return null;
+
+        // Anchor the pattern directly in user space so the ostrich bitmap uses
+        // the real pixel size of the target instead of normalized 0–1 units
+        // (which can collapse to nothing in some browsers). This guarantees one
+        // clipped copy of the image without tiling or disappearing.
+        pattern.setAttribute('patternUnits', 'userSpaceOnUse');
+        pattern.setAttribute('patternContentUnits', 'userSpaceOnUse');
+        pattern.setAttribute('x', bbox.x);
+        pattern.setAttribute('y', bbox.y);
+        pattern.setAttribute('width', bbox.width);
+        pattern.setAttribute('height', bbox.height);
         pattern.removeAttribute('viewBox');
         pattern.removeAttribute('patternTransform');
 
