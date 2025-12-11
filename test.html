@@ -2059,6 +2059,61 @@
       $select.after($wrapper).addClass('visually-hidden');
     }
 
+    function buildLeatherPicker($select) {
+      const $existing = $select.next('.swatch-select, .leather-picker');
+      if ($existing.length) {
+        $existing.remove();
+      }
+
+      const $wrapper = $('<div class="leather-picker d-flex align-items-center gap-3 p-3 border rounded bg-white shadow-sm"></div>');
+      const $thumb = $('<span class="swatch-thumb flex-shrink-0"></span>');
+      const $textWrap = $('<div class="d-flex flex-column flex-grow-1"></div>');
+      const $name = $('<span class="fw-semibold"></span>');
+      const $value = $('<span class="swatch-value"></span>');
+      const $buttonRow = $('<div class="d-flex align-items-center gap-2"></div>');
+      const $viewBtn = $('<button type="button" class="btn btn-outline-secondary btn-sm">View leather</button>');
+      const $chooseBtn = $('<button type="button" class="btn btn-primary btn-sm">Choose leather</button>');
+
+      let currentImage = null;
+      let currentLabel = '';
+
+      function syncFromSelect() {
+        const $selected = $select.find(':selected');
+        const label = $selected.text().trim();
+        const colorHex = $selected.data('color') || $selected.val();
+        const explicitImage = $selected.data('image');
+        const image = explicitImage !== undefined
+          ? explicitImage || null
+          : swatchImages[label] || fallbackSwatch;
+
+        updateSelection($thumb, $name, $value, image, label, colorHex, false);
+        currentImage = image;
+        currentLabel = label;
+      }
+
+      $viewBtn.on('click', function (event) {
+        event.stopPropagation();
+        if (currentImage) {
+          showSwatchPreview(currentImage, currentLabel);
+        }
+      });
+
+      $chooseBtn.on('click', function (event) {
+        event.stopPropagation();
+        openLeatherModal($select, syncFromSelect);
+      });
+
+      $textWrap.append($name, $value);
+      $buttonRow.append($viewBtn, $chooseBtn);
+      $wrapper.append($thumb, $textWrap, $buttonRow);
+
+      $select.addClass('visually-hidden');
+      $select.after($wrapper);
+
+      $select.off('change.leather').on('change.leather', syncFromSelect);
+      syncFromSelect();
+    }
+
     function populateSelectWithSwatches($select, swatches) {
       const previousValue = $select.val();
       $select.empty();
@@ -2076,9 +2131,14 @@
       const nextValue = swatches.some((swatch) => swatch.color === previousValue) ? previousValue : fallbackValue;
       $select.val(nextValue);
 
-      $select.next('.swatch-select').remove();
+      $select.next('.swatch-select, .leather-picker').remove();
       $select.removeClass('visually-hidden');
-      buildSwatchSelect($select);
+
+      if (leatherSelectIds.includes($select.attr('id'))) {
+        buildLeatherPicker($select);
+      } else {
+        buildSwatchSelect($select);
+      }
       $select.trigger('change');
     }
 
