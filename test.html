@@ -2231,8 +2231,8 @@
         { inputId: 'color-stitching2', inputGroup: '#g42', mode: 'stroke' },
       ];
 
-      function ensurePatternFill(svg, patternId, imageUrl) {
-        if (!svg || !imageUrl) return null;
+      function ensurePatternFill(svg, patternId, imageUrl, targetElement) {
+        if (!svg || !imageUrl || !targetElement) return null;
 
         const svgns = 'http://www.w3.org/2000/svg';
         const xlinkns = 'http://www.w3.org/1999/xlink';
@@ -2245,26 +2245,32 @@
 
         let pattern = svg.querySelector(`#${patternId}`);
 
+        const bbox = targetElement.getBBox();
+
         if (!pattern) {
           pattern = document.createElementNS(svgns, 'pattern');
           pattern.setAttribute('id', patternId);
-          // Ensure a single texture render that scales to the target shape instead of tiling.
-          pattern.setAttribute('patternUnits', 'objectBoundingBox');
-          pattern.setAttribute('patternContentUnits', 'objectBoundingBox');
-          pattern.setAttribute('width', '1');
-          pattern.setAttribute('height', '1');
+          pattern.setAttribute('patternUnits', 'userSpaceOnUse');
+          pattern.setAttribute('patternContentUnits', 'userSpaceOnUse');
 
           const image = document.createElementNS(svgns, 'image');
-          image.setAttribute('width', '1');
-          image.setAttribute('height', '1');
           image.setAttribute('preserveAspectRatio', 'xMidYMid slice');
           image.setAttribute('vector-effect', 'non-scaling-stroke');
           pattern.appendChild(image);
           defs.appendChild(pattern);
         }
 
+        pattern.setAttribute('x', bbox.x);
+        pattern.setAttribute('y', bbox.y);
+        pattern.setAttribute('width', bbox.width);
+        pattern.setAttribute('height', bbox.height);
+
         const imageEl = pattern.querySelector('image');
         imageEl?.setAttributeNS(xlinkns, 'href', imageUrl);
+        imageEl?.setAttribute('x', bbox.x);
+        imageEl?.setAttribute('y', bbox.y);
+        imageEl?.setAttribute('width', bbox.width);
+        imageEl?.setAttribute('height', bbox.height);
 
         return `url(#${patternId})`;
       }
@@ -2281,7 +2287,7 @@
           const shouldUseOstrichTexture = inputId === 'color-pockets' && useOstrichBottom;
 
           const textureFill = shouldUseOstrichTexture
-            ? ensurePatternFill(svg, 'pocket-ostrich-pattern', image)
+            ? ensurePatternFill(svg, 'pocket-ostrich-pattern', image, $group[0])
             : null;
           $group.find('*').each(function () {
             if (mode === 'fill') {
