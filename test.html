@@ -155,7 +155,13 @@
           </div>
 
           <div class="col-sm-6">
-            <label class="form-label" for="color-pockets">Bottom Pocket</label>
+            <div class="d-flex justify-content-between align-items-center">
+              <label class="form-label mb-0" for="color-pockets">Bottom Pocket</label>
+              <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" role="switch" id="bottom-ostrich-toggle">
+                <label class="form-check-label" for="bottom-ostrich-toggle">Use Ostrich</label>
+              </div>
+            </div>
             <select class="form-select" id="color-pockets">
               <option value="#3b2a1a" data-color="#3b2a1a" class="swatch-option">Chocolate</option>
               <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Dark Brown</option>
@@ -1860,8 +1866,21 @@
       },
     };
 
+    const ostrichSwatches = [
+      { label: "Blue Ostrich", color: "#2f3983", image: "images/Ostrich/blue.webp" },
+      { label: "Dark Brown Ostrich", color: "#955f3a", image: "images/Ostrich/dark_brown.webp" },
+      { label: "Dark Grey Ostrich", color: "#645e5c", image: "images/Ostrich/dark_grey.webp" },
+      { label: "Green Ostrich", color: "#77854d", image: "images/Ostrich/green.webp" },
+      { label: "Light Brown Ostrich", color: "#b3693c", image: "images/Ostrich/light_brown.webp" },
+      { label: "Light Grey Ostrich", color: "#6e7170", image: "images/Ostrich/light_grey.webp" },
+      { label: "Medium Brown Ostrich", color: "#c05a27", image: "images/Ostrich/med_brown.webp" },
+      { label: "Red Brown Ostrich", color: "#c34d30", image: "images/Ostrich/red_brown.webp" },
+      { label: "Yellow Ostrich", color: "#e1980b", image: "images/Ostrich/yellow.webp" },
+    ];
+
     const leatherSelectIds = ["color-outer", "color-interior", "color-pockets"];
     let currentLeatherCollection = "buttero";
+    let useOstrichBottom = false;
     const fallbackSwatch = "leather.jpg";
 
     function buildSwatchImageMap(collectionKey) {
@@ -1997,34 +2016,40 @@
       $select.after($wrapper).addClass('visually-hidden');
     }
 
+    function populateSelectWithSwatches($select, swatches) {
+      const previousValue = $select.val();
+      $select.empty();
+
+      swatches.forEach(({ label, color, image }) => {
+        const $option = $('<option></option>')
+          .text(label)
+          .val(color)
+          .attr('data-color', color)
+          .attr('data-image', image);
+        $select.append($option);
+      });
+
+      const fallbackValue = swatches[0]?.color;
+      const nextValue = swatches.some((swatch) => swatch.color === previousValue) ? previousValue : fallbackValue;
+      $select.val(nextValue);
+
+      $select.next('.swatch-select').remove();
+      $select.removeClass('visually-hidden');
+      buildSwatchSelect($select);
+      $select.trigger('change');
+    }
+
     function rebuildLeatherSelects(collectionKey) {
       swatchImages = buildSwatchImageMap(collectionKey);
       leatherSelectIds.forEach((id) => {
         const $select = $('#' + id);
         if (!$select.length) return;
 
-        const previousValue = $select.val();
-        $select.empty();
+        const swatches = id === 'color-pockets' && useOstrichBottom
+          ? ostrichSwatches
+          : leatherCollections[collectionKey].swatches;
 
-        leatherCollections[collectionKey].swatches.forEach(({ label, color, image }) => {
-          const $option = $('<option></option>')
-            .text(label)
-            .val(color)
-            .attr('data-color', color)
-            .attr('data-image', image);
-          $select.append($option);
-        });
-
-        const fallbackValue = leatherCollections[collectionKey].swatches[0]?.color;
-        const nextValue = leatherCollections[collectionKey].swatches.some((swatch) => swatch.color === previousValue)
-          ? previousValue
-          : fallbackValue;
-        $select.val(nextValue);
-
-        $select.next('.swatch-select').remove();
-        $select.removeClass('visually-hidden');
-        buildSwatchSelect($select);
-        $select.trigger('change');
+        populateSelectWithSwatches($select, swatches);
       });
 
       buildSvgOverlayButtons();
@@ -2236,6 +2261,11 @@
 
       $('#leather-collection').on('change', function () {
         currentLeatherCollection = $(this).val();
+        rebuildLeatherSelects(currentLeatherCollection);
+      });
+
+      $('#bottom-ostrich-toggle').on('change', function () {
+        useOstrichBottom = $(this).is(':checked');
         rebuildLeatherSelects(currentLeatherCollection);
       });
 
