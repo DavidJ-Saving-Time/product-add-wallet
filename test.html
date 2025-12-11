@@ -2377,6 +2377,20 @@
         }
         const clipContent = targetGroup.cloneNode(true);
         clipContent.removeAttribute('id');
+        // Clip paths ignore strokes and respect only filled regions. Ensure the
+        // cloned geometry is fully filled so the ostrich texture remains
+        // visible even when the source artwork only uses strokes.
+        clipContent.setAttribute('fill', 'white');
+        clipContent.setAttribute('stroke', 'none');
+        clipContent.querySelectorAll('*').forEach((node) => {
+          node.removeAttribute('id');
+          node.setAttribute('fill', 'white');
+          node.setAttribute('stroke', 'none');
+          if (node.style) {
+            node.style.fill = 'white';
+            node.style.stroke = 'none';
+          }
+        });
         clipPath.appendChild(clipContent);
 
         let imageEl = svg.querySelector(`#${imageId}`);
