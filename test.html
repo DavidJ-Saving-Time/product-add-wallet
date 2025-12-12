@@ -187,6 +187,52 @@
           </div>
 
           <div class="col-sm-12">
+            <label class="form-label" for="edge-style">Edge style</label>
+            <select class="form-select" id="edge-style">
+              <option value="burnished" selected>Burnished</option>
+              <option value="painted">Painted</option>
+            </select>
+            <div class="form-text">Choose a burnished or painted edge finish.</div>
+          </div>
+
+          <div class="col-sm-12 d-none" id="painted-edge-options">
+            <label class="form-label d-block">Painted edge colour</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="edge-paint-choice" id="edge-paint-lining" value="lining" checked>
+              <label class="form-check-label" for="edge-paint-lining">Same colour as lining leather</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="edge-paint-choice" id="edge-paint-custom" value="custom">
+              <label class="form-check-label" for="edge-paint-custom">Pick a colour</label>
+            </div>
+            <div class="mt-3 ms-3 d-none" id="edge-colour-picker-wrapper">
+              <label class="form-label" for="edge-colour">Edge paint colour</label>
+              <select class="form-select" id="edge-colour">
+                <option value="#000000" data-color="#000000">Black</option>
+                <option value="#ffffff" data-color="#ffffff">White</option>
+                <option value="#f5e6c8" data-color="#f5e6c8">Cream</option>
+                <option value="#c28e5a" data-color="#c28e5a">Tan</option>
+                <option value="#8b5a2b" data-color="#8b5a2b">Dark Brown</option>
+                <option value="#3b2a1a" data-color="#3b2a1a">Chocolate</option>
+                <option value="#6b4f3a" data-color="#6b4f3a">Walnut</option>
+                <option value="#d2a679" data-color="#d2a679">Sand</option>
+                <option value="#3a4f6b" data-color="#3a4f6b">Navy</option>
+                <option value="#7b3f61" data-color="#7b3f61">Burgundy</option>
+                <option value="#374331" data-color="#374331">Olive</option>
+                <option value="#2f5a32" data-color="#2f5a32">Forest Green</option>
+                <option value="#1f4aa5" data-color="#1f4aa5">Royal Blue</option>
+                <option value="#b22222" data-color="#b22222">Red</option>
+                <option value="#f4801f" data-color="#f4801f">Orange</option>
+                <option value="#ffdd33" data-color="#ffdd33">Yellow</option>
+                <option value="#ffc0cb" data-color="#ffc0cb">Pink</option>
+                <option value="#6a0dad" data-color="#6a0dad">Purple</option>
+                <option value="#7b7b7b" data-color="#7b7b7b">Grey</option>
+                <option value="#2f8886" data-color="#2f8886">Teal</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-sm-12">
             <label class="form-label" for="metal-corners">Metal corners</label>
             <select class="form-select" id="metal-corners">
               <option value="none" selected>No metal corners</option>
@@ -765,7 +811,7 @@
     let swatchImages = buildSwatchImageMap(currentLeatherCollection);
 
     function buildSwatchSelect($select) {
-      const isColorOnly = $select.is('#color-stitching, #color-stitching2');
+      const isColorOnly = $select.is('#color-stitching, #color-stitching2, #edge-colour');
       const $wrapper = $('<div class="swatch-select"></div>');
       const $toggle = $(
         '<button type="button" class="swatch-toggle w-100 d-flex align-items-center justify-content-between" aria-haspopup="listbox" aria-expanded="false"></button>'
@@ -1370,6 +1416,26 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
       $('#color-stitching, #color-stitching2').each(function () {
         buildSwatchSelect($(this));
       });
+
+      buildSwatchSelect($('#edge-colour'));
+
+      $('#edge-style').on('change', function () {
+        const isPainted = $(this).val() === 'painted';
+        $('#painted-edge-options').toggleClass('d-none', !isPainted);
+        if (!isPainted) {
+          $('#edge-colour-picker-wrapper').addClass('d-none');
+          $('#edge-paint-lining').prop('checked', true);
+        } else {
+          $('input[name="edge-paint-choice"]:checked').trigger('change');
+        }
+      });
+
+      $('input[name="edge-paint-choice"]').on('change', function () {
+        const useCustom = $(this).val() === 'custom';
+        $('#edge-colour-picker-wrapper').toggleClass('d-none', !useCustom);
+      });
+
+      $('#edge-style').trigger('change');
 
       $('#leather-collection').on('change', function () {
         currentLeatherCollection = $(this).val();
