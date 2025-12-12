@@ -1216,13 +1216,23 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetGrou
     defs.appendChild(clipPath);
   }
 
-  // Rebuild geometry each time (no <use>, no external refs)
+  // Rebuild geometry each time inside the SAME SVG
   while (clipPath.firstChild) {
     clipPath.firstChild.remove();
   }
-  const clone = targetGroup.cloneNode(true);
-  clone.removeAttribute('id');
-  clipPath.appendChild(clone);
+
+  // Prefer a <use> reference so we keep the exact same coordinate system
+  if (targetGroup.id) {
+    const useEl = document.createElementNS(svgns, 'use');
+    useEl.setAttributeNS(xlinkns, 'xlink:href', `#${targetGroup.id}`);
+    useEl.setAttribute('href', `#${targetGroup.id}`);
+    clipPath.appendChild(useEl);
+  } else {
+    // Fallback to a clone if no id is available
+    const clone = targetGroup.cloneNode(true);
+    clone.removeAttribute('id');
+    clipPath.appendChild(clone);
+  }
 
   // --- single image, positioned by the group's bbox, in SAME SVG ---
   let imageEl = svg.querySelector('#' + imageId);
