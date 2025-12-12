@@ -2,53 +2,6 @@
 /* Template Name: Wallet Configurator */
 if (!defined('ABSPATH')) { exit; }
 
-if (!function_exists('wallet_configurator_register_hooks')) {
-    function wallet_configurator_register_hooks() {
-        add_filter('woocommerce_add_cart_item_data', 'wallet_configurator_add_cart_item_data', 10, 3);
-        add_action('woocommerce_before_calculate_totals', 'wallet_configurator_set_cart_item_price');
-        add_filter('woocommerce_get_item_data', 'wallet_configurator_render_item_data', 10, 2);
-    }
-
-    function wallet_configurator_add_cart_item_data($cart_item_data, $product_id, $variation_id) {
-        if (!empty($_POST['wallet_options_json'])) {
-            $decoded = json_decode(stripslashes(wp_unslash($_POST['wallet_options_json'])), true);
-            if (is_array($decoded)) {
-                $cart_item_data['wallet_options'] = array_map('sanitize_text_field', $decoded);
-            }
-        }
-
-        if (isset($_POST['wallet_price'])) {
-            $cart_item_data['wallet_price'] = wc_format_decimal(sanitize_text_field(wp_unslash($_POST['wallet_price'])));
-        }
-        return $cart_item_data;
-    }
-
-    function wallet_configurator_set_cart_item_price($cart) {
-        if (is_admin() && !defined('DOING_AJAX')) {
-            return;
-        }
-        foreach ($cart->get_cart() as $cart_item) {
-            if (!empty($cart_item['wallet_price'])) {
-                $cart_item['data']->set_price((float) $cart_item['wallet_price']);
-            }
-        }
-    }
-
-    function wallet_configurator_render_item_data($item_data, $cart_item) {
-        if (!empty($cart_item['wallet_options']) && is_array($cart_item['wallet_options'])) {
-            foreach ($cart_item['wallet_options'] as $label => $value) {
-                $item_data[] = [
-                    'name'  => wc_clean(wp_kses_post(ucwords(str_replace('_', ' ', $label)))),
-                    'value' => wc_clean(wp_kses_post($value)),
-                ];
-            }
-        }
-        return $item_data;
-    }
-
-    wallet_configurator_register_hooks();
-}
-
 // Allow product id to be managed from a Customizer setting or page meta (_wallet_config_product_id).
 $wallet_product_id = absint(get_theme_mod('wallet_configurator_product_id', 0));
 if (!$wallet_product_id && isset($post)) {
@@ -168,7 +121,6 @@ get_header();
 >
   <?php wp_nonce_field('wallet_configurator_add_to_cart', 'wallet_configurator_nonce'); ?>
   <input type="hidden" name="add-to-cart" value="<?php echo esc_attr($wallet_product_id); ?>">
-  <input type="hidden" name="wallet_price" id="wallet-price-field" value="">
   <input type="hidden" name="wallet_options_json" id="wallet-options-field" value="">
 
   <div class="container py-4">
@@ -1581,19 +1533,20 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
 
     function gatherSelections() {
       return {
-        leather_collection: $('#leather-collection option:selected').text(),
-        outer_leather: $('#color-outer option:selected').text(),
-        top_pocket: $('#color-interior option:selected').text(),
-        bottom_pocket: $('#color-pockets option:selected').text(),
-        bottom_ostrich: $('#bottom-ostrich-toggle').is(':checked') ? 'Yes' : 'No',
-        stitching: $('#color-stitching option:selected').text(),
-        stitching_secondary: $('#color-stitching2 option:selected').text(),
-        lining: $('#lining-leather option:selected').text(),
-        lining_coverage: $('input[name="lining-coverage"]:checked').next('label').text(),
-        debossing: $('input[name="deboss-choice"]:checked').next('label').text(),
-        edge_style: $('#edge-style option:selected').text(),
-        edge_colour: $('#edge-style').val() === 'painted' ? $('#edge-colour option:selected').text() : 'Burnished',
-        metal_corners: $('#metal-corners option:selected').text(),
+        leather_collection: $('#leather-collection').val(),
+        outer_leather: $('#color-outer').val(),
+        top_pocket: $('#color-interior').val(),
+        bottom_pocket: $('#color-pockets').val(),
+        bottom_ostrich: $('#bottom-ostrich-toggle').is(':checked'),
+        stitching: $('#color-stitching').val(),
+        stitching_secondary: $('#color-stitching2').val(),
+        lining: $('#lining-leather').val(),
+        lining_coverage: $('input[name="lining-coverage"]:checked').val(),
+        debossing: $('input[name="deboss-choice"]:checked').val(),
+        edge_style: $('#edge-style').val(),
+        edge_paint_choice: $('input[name="edge-paint-choice"]:checked').val() || 'lining',
+        edge_colour: $('#edge-style').val() === 'painted' ? $('#edge-colour').val() : '',
+        metal_corners: $('#metal-corners').val(),
       };
     }
 
@@ -1629,11 +1582,9 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
       const selections = gatherSelections();
       const total = calculatePrice();
 
-      const priceField = document.getElementById('wallet-price-field');
       const optionsField = document.getElementById('wallet-options-field');
       const priceDisplay = document.getElementById('wallet-price-display');
 
-      if (priceField) priceField.value = total.toFixed(2);
       if (optionsField) optionsField.value = JSON.stringify(selections);
       if (priceDisplay) priceDisplay.textContent = `${currencySymbol}${total.toFixed(2)}`;
     }
