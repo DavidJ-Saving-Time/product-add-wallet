@@ -44,6 +44,7 @@
       max-width: 520px;
       width: 92%;
     }
+    .leather-picker { cursor: pointer; }
     .leather-modal-options {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1065,10 +1066,6 @@
       const $textWrap = $('<div class="d-flex flex-column flex-grow-1"></div>');
       const $name = $('<span class="fw-semibold"></span>');
       const $value = $('<span class="swatch-value"></span>');
-      const $buttonRow = $('<div class="d-flex align-items-center gap-2"></div>');
-      const $viewBtn = $('<button type="button" class="btn btn-outline-secondary btn-sm">View leather</button>');
-      const $chooseBtn = $('<button type="button" class="btn btn-primary btn-sm">Choose leather</button>');
-
       let currentImage = null;
       let currentLabel = '';
 
@@ -1086,21 +1083,12 @@
         currentLabel = label;
       }
 
-      $viewBtn.on('click', function (event) {
-        event.stopPropagation();
-        if (currentImage) {
-          showSwatchPreview(currentImage, currentLabel);
-        }
-      });
+      $textWrap.append($name, $value);
+      $wrapper.append($thumb, $textWrap);
 
-      $chooseBtn.on('click', function (event) {
-        event.stopPropagation();
+      $wrapper.on('click', function () {
         openLeatherModal($select, syncFromSelect);
       });
-
-      $textWrap.append($name, $value);
-      $buttonRow.append($viewBtn, $chooseBtn);
-      $wrapper.append($thumb, $textWrap, $buttonRow);
 
       $select.addClass('visually-hidden');
       $select.after($wrapper);
