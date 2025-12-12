@@ -1178,7 +1178,7 @@ stitching.parentNode.insertBefore(imageEl, stitching);
 
     function bindSvgColoring() {
       const mappings = [
-        { inputId: 'color-outer', inputGroup: '#g46', mode: 'fill', exclude: ['#bottompocket'] },
+        { inputId: 'color-outer', inputGroup: '#g46', mode: 'fill' },
         { inputId: 'color-interior', inputGroup: '#g45', mode: 'fill' },
         { inputId: 'color-pockets', inputGroup: '#bottompocket', mode: 'fill' },
         { inputId: 'color-stitching', inputGroup: '#g43', mode: 'stroke' },
@@ -1265,8 +1265,7 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
         }
       }
 
-      mappings.forEach((m) => {
-        const { inputId, inputGroup, mode, exclude = [] } = m;
+      mappings.forEach(({ inputId, inputGroup, mode }) => {
         const $select = $('#' + inputId);
         const $group = $(inputGroup);
         if (!$select.length || !$group.length) return;
@@ -1284,12 +1283,7 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
           } else {
             removeClippedTexture(svg, 'pocket-ostrich-texture');
           }
-          let $targets = $group.add($group.find('*'));
-          if (Array.isArray(exclude) && exclude.length) {
-            $targets = $targets.not(exclude.join(','));
-          }
-
-          $targets.each(function () {
+          $group.find('*').each(function () {
             if (mode === 'fill') {
               this.style.fill = color;
             } else if (mode === 'stroke') {
