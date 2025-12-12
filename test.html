@@ -1282,7 +1282,8 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
             }
           }
 
-          $group.find('*').each(function () {
+          // Apply the style to the target element and any descendants (important for lone paths)
+          $group.find('*').addBack().each(function () {
             if (mode === 'fill') {
               this.style.fill = color;
             } else if (mode === 'stroke') {
