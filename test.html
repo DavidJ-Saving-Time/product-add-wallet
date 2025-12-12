@@ -1221,17 +1221,36 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetGrou
     clipPath.firstChild.remove();
   }
 
-  // Prefer a <use> reference so we keep the exact same coordinate system
-  if (targetGroup.id) {
-    const useEl = document.createElementNS(svgns, 'use');
-    useEl.setAttributeNS(xlinkns, 'xlink:href', `#${targetGroup.id}`);
-    useEl.setAttribute('href', `#${targetGroup.id}`);
-    clipPath.appendChild(useEl);
+  // Build a fresh, flattened clip shape in the SVG's user space so we don't
+  // accidentally double-apply Inkscape's transforms.
+  const geometryNodes = targetGroup.querySelectorAll(
+    'path,rect,circle,ellipse,polygon,polyline'
+  );
+
+  if (geometryNodes.length) {
+    geometryNodes.forEach((node) => {
+      const clone = node.cloneNode(true);
+      const ctm = node.getCTM();
+
+      clone.removeAttribute('id');
+      clone.removeAttribute('transform');
+
+      if (ctm) {
+        const matrix = `matrix(${ctm.a} ${ctm.b} ${ctm.c} ${ctm.d} ${ctm.e} ${ctm.f})`;
+        clone.setAttribute('transform', matrix);
+      }
+
+      clipPath.appendChild(clone);
+    });
   } else {
-    // Fallback to a clone if no id is available
-    const clone = targetGroup.cloneNode(true);
-    clone.removeAttribute('id');
-    clipPath.appendChild(clone);
+    // Fallback: at least clip to the group's bounding box
+    const bbox = targetGroup.getBBox();
+    const rect = document.createElementNS(svgns, 'rect');
+    rect.setAttribute('x', bbox.x);
+    rect.setAttribute('y', bbox.y);
+    rect.setAttribute('width', bbox.width);
+    rect.setAttribute('height', bbox.height);
+    clipPath.appendChild(rect);
   }
 
   // --- single image, positioned by the group's bbox, in SAME SVG ---
