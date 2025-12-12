@@ -1229,9 +1229,15 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
     imageEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
     imageEl.style.pointerEvents = 'none';
 
-    // insert right after the pocket shape to control z-order
+    // insert before stitching overlay so stitches stay on top
     const parent = targetShape.parentNode;
-    parent.insertBefore(imageEl, targetShape.nextSibling);
+    const stitching = svg.querySelector('#g354');
+
+    if (stitching && stitching.parentNode === parent) {
+      parent.insertBefore(imageEl, stitching);
+    } else {
+      parent.insertBefore(imageEl, targetShape.nextSibling);
+    }
   }
 
   const bbox = targetShape.getBBox();
