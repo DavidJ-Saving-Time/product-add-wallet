@@ -185,12 +185,24 @@
             <select class="form-select" id="lining-leather"></select>
             <div class="form-text">Nappa lambskin lining selection (not shown on the SVG preview).</div>
             <div class="form-check mt-2">
-              <input class="form-check-input" type="checkbox" value="" id="lining-main-body">
+              <input class="form-check-input" type="radio" name="lining-coverage" value="body" id="lining-main-body" checked>
               <label class="form-check-label" for="lining-main-body">Add lining to the main body</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="lining-all-pockets">
+              <input class="form-check-input" type="radio" name="lining-coverage" value="all" id="lining-all-pockets">
               <label class="form-check-label" for="lining-all-pockets">Use a liner for all the pockets and the main body</label>
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <label class="form-label d-block">Debossing</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="deboss-choice" id="deboss-no" value="no" checked>
+              <label class="form-check-label" for="deboss-no">No debossing</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="deboss-choice" id="deboss-atelier" value="atelier">
+              <label class="form-check-label" for="deboss-atelier">Deboss Atelier D. James into the wallet</label>
             </div>
           </div>
 
