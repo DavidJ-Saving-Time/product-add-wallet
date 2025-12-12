@@ -1271,15 +1271,17 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
           const color = $select.val();
           const image = $select.find(':selected').data('image');
           const svg = document.querySelector('#svg-wrapper svg');
-          const shouldUseOstrichTexture = inputId === 'color-pockets' && useOstrichBottom;
+          const isPocketSelector = inputId === 'color-pockets';
+          const shouldUseOstrichTexture = isPocketSelector && useOstrichBottom;
 
-          if (shouldUseOstrichTexture) {
-            ensureClippedTexture(svg, 'pocket-ostrich-texture', 'pocket-ostrich-clip', image, $group[0]);
-
-
-          } else {
-            removeClippedTexture(svg, 'pocket-ostrich-texture');
+          if (isPocketSelector) {
+            if (shouldUseOstrichTexture) {
+              ensureClippedTexture(svg, 'pocket-ostrich-texture', 'pocket-ostrich-clip', image, $group[0]);
+            } else {
+              removeClippedTexture(svg, 'pocket-ostrich-texture');
+            }
           }
+
           $group.find('*').each(function () {
             if (mode === 'fill') {
               this.style.fill = color;
