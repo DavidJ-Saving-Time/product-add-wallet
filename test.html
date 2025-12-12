@@ -236,7 +236,6 @@
  
 
 
-
 <svg
    width="100.26486mm"
    height="85.264595mm"
@@ -259,12 +258,6 @@
        style="fill:none;stroke:#000000"
        d="m -51.471652,785.98929 c -46.912319,-1.89461 -91.006748,-5.52025 -132.283278,-10.8769 l 9.2e-4,-55.3096 c 43.91242,5.57511 88.050081,9.20425 132.283421,10.87678 33.38805,25.81259 79.99778,25.81259 113.38583,0 44.233339,-1.67253 88.370999,-5.30167 132.283619,-10.87678 l -0.001,55.3113 c -23.59055,2.2032 -74.74619,9.82091 -132.283276,10.8752 -34.445656,25.88548 -76.88023,25.806 -113.385826,0 z"
        transform="matrix(0.26458333,0,0,0.26458333,103.12884,-64.416075)" /></g><g
-     id="g44"
-     transform="translate(-52.99659,-168.45165)"><path
-       id="path48-8"
-       style="fill:#000000;fill-opacity:1;stroke:#000000"
-       d="m 61.914194,785.98929 c 44.233296,-1.6714 88.370956,-5.2995 132.283276,-10.8752 v 170.0794 c 2.2e-4,10.4379 -8.46055,18.8987 -18.89732,18.8988 h -340.15774 c -10.43677,-1e-4 -18.89754,-8.4609 -18.89732,-18.8988 v -170.0811 c 43.91227,5.5752 88.049931,9.2043 132.283278,10.8769 33.388092,25.8125 79.997734,25.8125 113.385826,0 z"
-       transform="matrix(0.26458333,0,0,0.26458333,101.74737,-1.4987918)" /></g><g
      id="g354"><path
        style="fill:none;stroke:#ff0000;stroke-width:0.2;stroke-dashoffset:0.871181"
        d="M 4.2433631,3.8600088 3.0217819,6.1544755"
@@ -629,7 +622,13 @@
        id="path385" /><path
        style="fill:none;stroke:#ff0000;stroke-width:0.2;stroke-dashoffset:0.871181"
        d="m 91.702169,3.0633421 2.111375,1.1377083"
-       id="path386" /></g></svg>
+       id="path386" /></g>
+       <path
+     id="bottompocket"
+     style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.264583;stroke-opacity:1"
+     d="m 65.132244,38.009224 c 11.703392,-0.442225 23.381481,-1.40216 34.999946,-2.877397 v 45.000174 c 6e-5,2.761694 -2.238517,5.000281 -4.999913,5.000308 H 5.1322099 C 2.3708145,85.132282 0.1322358,82.893695 0.13229401,80.132001 V 35.131377 C 11.750749,36.606482 23.428838,37.566682 35.132244,38.009224 c 8.833933,6.829557 21.166067,6.829557 30,0 z" />
+
+       </svg>
 
 
 
@@ -1098,7 +1097,7 @@
       const overlayMappings = [
         { selectId: 'color-outer', groupSelector: '#g46', label: 'Outer leather', customTop: 80 },
         { selectId: 'color-interior', groupSelector: '#g45', label: 'Top pocket' },
-        { selectId: 'color-pockets', groupSelector: '#g44', label: 'Bottom pocket' },
+        { selectId: 'color-pockets', groupSelector: '#bottompocket', label: 'Bottom pocket' },
       ];
 
       const wrapperRect = $wrapper[0].getBoundingClientRect();
@@ -1153,7 +1152,8 @@
     imageEl = document.createElementNS(svgns, 'image');
     imageEl.setAttribute('id', imageId);
     imageEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-    svg.appendChild(imageEl);
+    const stitching = svg.querySelector('#g354'); // or whatever must be on top
+stitching.parentNode.insertBefore(imageEl, stitching);
   }
 
   const vb = svg.viewBox && svg.viewBox.baseVal;
@@ -1180,21 +1180,20 @@
       const mappings = [
         { inputId: 'color-outer', inputGroup: '#g46', mode: 'fill' },
         { inputId: 'color-interior', inputGroup: '#g45', mode: 'fill' },
-        { inputId: 'color-pockets', inputGroup: '#g44', mode: 'fill' },
+        { inputId: 'color-pockets', inputGroup: '#bottompocket', mode: 'fill' },
         { inputId: 'color-stitching', inputGroup: '#g43', mode: 'stroke' },
-        { inputId: 'color-stitching2', inputGroup: '#g42', mode: 'stroke' },
+        { inputId: 'color-stitching2', inputGroup: '#g354', mode: 'stroke' },
       ];
 
 
 
-function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetGroup) {
-  if (!imageUrl || !targetGroup) return null;
+function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShape) {
+  if (!imageUrl || !targetShape) return null;
 
   const svgns   = 'http://www.w3.org/2000/svg';
   const xlinkns = 'http://www.w3.org/1999/xlink';
 
-  // Use the SVG that actually owns this group
-  const svg = targetGroup.ownerSVGElement || svgFallback;
+  const svg = targetShape.ownerSVGElement || svgFallback;
   if (!svg) return null;
 
   if (!svg.getAttribute('xmlns:xlink')) {
@@ -1207,7 +1206,7 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetGrou
     svg.prepend(defs);
   }
 
-  // --- clipPath in the SAME SVG as the group ---
+  // clipPath based on the actual shape (path), not the group
   let clipPath = svg.querySelector('#' + clipId);
   if (!clipPath) {
     clipPath = document.createElementNS(svgns, 'clipPath');
@@ -1216,73 +1215,40 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetGrou
     defs.appendChild(clipPath);
   }
 
-  // Rebuild geometry each time inside the SAME SVG
-  while (clipPath.firstChild) {
-    clipPath.firstChild.remove();
-  }
+  while (clipPath.firstChild) clipPath.firstChild.remove();
 
-  // Build a fresh, flattened clip shape in the SVG's user space so we don't
-  // accidentally double-apply Inkscape's transforms.
-  const geometryNodes = targetGroup.querySelectorAll(
-    'path,rect,circle,ellipse,polygon,polyline'
-  );
+  const clone = targetShape.cloneNode(true);
+  clone.removeAttribute('id');
+  clipPath.appendChild(clone);
 
-  if (geometryNodes.length) {
-    geometryNodes.forEach((node) => {
-      const clone = node.cloneNode(true);
-      const ctm = node.getCTM();
-
-      clone.removeAttribute('id');
-      clone.removeAttribute('transform');
-
-      if (ctm) {
-        const matrix = `matrix(${ctm.a} ${ctm.b} ${ctm.c} ${ctm.d} ${ctm.e} ${ctm.f})`;
-        clone.setAttribute('transform', matrix);
-      }
-
-      clipPath.appendChild(clone);
-    });
-  } else {
-    // Fallback: at least clip to the group's bounding box
-    const bbox = targetGroup.getBBox();
-    const rect = document.createElementNS(svgns, 'rect');
-    rect.setAttribute('x', bbox.x);
-    rect.setAttribute('y', bbox.y);
-    rect.setAttribute('width', bbox.width);
-    rect.setAttribute('height', bbox.height);
-    clipPath.appendChild(rect);
-  }
-
-  // --- single image, positioned by the group's bbox, in SAME SVG ---
+  // image
   let imageEl = svg.querySelector('#' + imageId);
   if (!imageEl) {
     imageEl = document.createElementNS(svgns, 'image');
     imageEl.setAttribute('id', imageId);
     imageEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
     imageEl.style.pointerEvents = 'none';
-    svg.appendChild(imageEl);
+
+    // insert right after the pocket shape to control z-order
+    const parent = targetShape.parentNode;
+    parent.insertBefore(imageEl, targetShape.nextSibling);
   }
 
-  const bbox = targetGroup.getBBox();
-  console.log('pockets bbox', bbox);
-
-  if (!bbox || !bbox.width || !bbox.height) {
-    console.warn('bbox is empty, nothing to show');
-    return null;
-  }
+  const bbox = targetShape.getBBox();
+  if (!bbox.width || !bbox.height) return null;
 
   imageEl.setAttribute('clip-path', 'url(#' + clipId + ')');
   imageEl.setAttribute('x', bbox.x);
   imageEl.setAttribute('y', bbox.y);
   imageEl.setAttribute('width', bbox.width);
   imageEl.setAttribute('height', bbox.height);
-  imageEl.style.opacity = 0.9;
 
   imageEl.setAttributeNS(xlinkns, 'xlink:href', imageUrl);
   imageEl.setAttribute('href', imageUrl);
 
   return imageEl;
 }
+
 
 
 
