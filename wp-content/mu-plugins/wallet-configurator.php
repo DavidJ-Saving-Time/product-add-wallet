@@ -157,6 +157,37 @@ function wallet_configurator_allowed_options() {
     ];
 }
 
+function wallet_configurator_upload_reference_photo($file) {
+    if (empty($file) || !is_array($file) || empty($file['tmp_name'])) {
+        return null;
+    }
+
+    if (!empty($file['error'])) {
+        return null;
+    }
+
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+
+    $overrides = [
+        'test_form' => false,
+        'mimes' => [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+            'webp' => 'image/webp',
+        ],
+    ];
+
+    $uploaded = wp_handle_upload($file, $overrides);
+
+    if (!empty($uploaded['error'])) {
+        return null;
+    }
+
+    return $uploaded;
+}
+
 function wallet_configurator_validate_choice($value, $allowed, $default) {
     $clean = sanitize_key($value);
     return in_array($clean, $allowed, true) ? $clean : $default;
@@ -257,6 +288,9 @@ function wallet_configurator_normalize_options($raw_options) {
         'none'
     );
 
+    $normalized['additional_notes'] = sanitize_textarea_field($raw_options['additional_notes'] ?? '');
+    $normalized['reference_photo'] = '';
+
     return $normalized;
 }
 
@@ -324,6 +358,14 @@ function wallet_configurator_build_display_values($options) {
 
     $display['Metal corners'] = $allowed['metal_corners'][$options['metal_corners']] ?? $options['metal_corners'];
 
+    if (!empty($options['additional_notes'])) {
+        $display['Additional notes'] = $options['additional_notes'];
+    }
+
+    if (!empty($options['reference_photo'])) {
+        $display['Reference photo'] = $options['reference_photo'];
+    }
+
     return $display;
 }
 
@@ -341,6 +383,11 @@ add_filter('woocommerce_add_cart_item_data', function ($cart_item_data, $product
     $raw_json = wp_unslash($_POST['wallet_options_json']);
     $decoded = json_decode($raw_json, true);
     $normalized = wallet_configurator_normalize_options($decoded);
+
+    $reference_upload = wallet_configurator_upload_reference_photo($_FILES['reference_photo'] ?? null);
+    if (!empty($reference_upload['url'])) {
+        $normalized['reference_photo'] = esc_url_raw($reference_upload['url']);
+    }
 
     if (empty($normalized)) {
         wc_add_notice(__('Your wallet configuration could not be processed. Please try again.', 'wallet-configurator'), 'error');
