@@ -132,6 +132,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add-to-cart'])) {
       background-color: #fff;
       position: relative;
     }
+    .example-images {
+      max-width: 720px;
+    }
     svg { width: 100%; height: auto; }
     #svg-overlay-buttons {
       position: absolute;
@@ -878,24 +881,6 @@ method="post"
           <div id="svg-overlay-buttons"></div>
 
           </div>
-          <div class="row row-cols-1 row-cols-md-2 g-3 mt-3">
-            <figure class="mb-0 h-100">
-              <img
-                src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251204_0026-.jpg"
-                class="img-fluid rounded shadow-sm w-100 h-100 object-fit-cover"
-                alt="Wallet with burnished edges made from Badalassi Carlo Wax"
-              >
-              <figcaption class="mt-2 small text-muted">An example of a wallet with burnished edges made from Badalassi Carlo - Wax</figcaption>
-            </figure>
-            <figure class="mb-0 h-100">
-              <img
-                src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251207_0008-.jpg"
-                class="img-fluid rounded shadow-sm w-100 h-100 object-fit-cover"
-                alt="Wallet with burnished edges made from Conceria Walpier Buttero with painted edges and an ostrich leather pocket"
-              >
-              <figcaption class="mt-2 small text-muted">An example of a wallet with burnished edges made from Conceria Walpier - Buttero with painted edges and an ostrich leather pocket</figcaption>
-            </figure>
-          </div>
           <p class="mt-3 mb-3">I’ve used a simple colour illustration here to help you visualise the piece. Please refer to the photos below for real examples. If you order the ostrich option, I’ll send you an image of the leather with the cutting template so you can approve it before I begin.</p>
           <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 mt-4">
             <div>
@@ -914,6 +899,24 @@ method="post"
                 <div class="form-text text-danger">Set a product ID to enable cart submissions.</div>
               <?php endif; ?>
             </div>
+          </div>
+          <div class="example-images row row-cols-1 row-cols-md-2 g-3 mt-3 mx-auto">
+            <figure class="mb-0 h-100">
+              <img
+                src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251204_0026-.jpg"
+                class="img-fluid rounded shadow-sm w-100 h-100 object-fit-cover"
+                alt="Wallet with burnished edges made from Badalassi Carlo Wax"
+              >
+              <figcaption class="mt-2 small text-muted">An example of a wallet with burnished edges made from Badalassi Carlo - Wax</figcaption>
+            </figure>
+            <figure class="mb-0 h-100">
+              <img
+                src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251207_0008-.jpg"
+                class="img-fluid rounded shadow-sm w-100 h-100 object-fit-cover"
+                alt="Wallet with burnished edges made from Conceria Walpier Buttero with painted edges and an ostrich leather pocket"
+              >
+              <figcaption class="mt-2 small text-muted">An example of a wallet with burnished edges made from Conceria Walpier - Buttero with painted edges and an ostrich leather pocket</figcaption>
+            </figure>
           </div>
         </div>
       </div>
