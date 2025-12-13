@@ -8,33 +8,9 @@ if (!defined('ABSPATH')) {
 }
 
 
-add_action('init', function () {
-  if (!class_exists('WC_Form_Handler')) return;
-
-  if (!has_action('wp_loaded', ['WC_Form_Handler','add_to_cart_action'])) {
-    add_action('wp_loaded', ['WC_Form_Handler', 'add_to_cart_action'], 20);
-  }
-});
-
-
-
-add_action('wp_footer', function () {
-  if (!current_user_can('manage_options')) return;
-  echo "\n<!-- has wp_loaded WC_Form_Handler::add_to_cart_action = "
-    . (int) has_action('wp_loaded', ['WC_Form_Handler','add_to_cart_action'])
-    . " -->\n";
-});
-
-add_action('woocommerce_add_to_cart', function ($cart_item_key, $product_id, $qty) {
-  error_log("WALLET DEBUG woocommerce_add_to_cart fired: product_id={$product_id} qty={$qty} key={$cart_item_key}");
-}, 10, 3);
-
-add_filter('woocommerce_add_to_cart_validation', function ($passed, $product_id, $qty) {
-  if (isset($_REQUEST['add-to-cart']) && (int)$_REQUEST['add-to-cart'] === (int)$product_id) {
-    error_log("WALLET DEBUG validation for {$product_id}: " . ($passed ? 'PASS' : 'FAIL'));
-  }
-  return $passed;
-}, 10, 3);
+// Bootscore replaces WooCommerce's POST add-to-cart handler with an AJAX endpoint.
+// To avoid double-processing or fighting the theme, we rely on that AJAX flow from JS
+// instead of re-attaching the core handler here.
 
 
 
