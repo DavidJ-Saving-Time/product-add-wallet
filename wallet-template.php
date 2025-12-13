@@ -148,6 +148,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add-to-cart'])) {
     .example-images {
       max-width: 720px;
     }
+
+    .example-image-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .example-image-wrapper::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.35) 100%);
+      pointer-events: none;
+    }
+
+    .buy-wallet-btn {
+      position: absolute;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      z-index: 2;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    }
     svg { width: 100%; height: auto; }
     #svg-overlay-buttons {
       position: absolute;
@@ -958,19 +980,37 @@ enctype="multipart/form-data"
           <p class="mt-3 mb-3">I’ve used a simple colour illustration here to help you visualise the piece. Please refer to the photos below for real examples. If you order the ostrich option, I’ll send you an image of the leather with the cutting template so you can approve it before I begin.</p>
           <div class="example-images row row-cols-1  g-3 mt-3 mx-auto">
             <figure class="mb-0 h-100">
-              <img
-                src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251204_0026-.jpg"
-                class="img-fluid rounded shadow-sm w-100 h-100 object-fit-cover"
-                alt="Wallet with burnished edges made from Badalassi Carlo Wax"
-              >
+              <div class="example-image-wrapper rounded shadow-sm">
+                <img
+                  src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251204_0026-.jpg"
+                  class="img-fluid w-100 h-100 object-fit-cover"
+                  alt="Wallet with burnished edges made from Badalassi Carlo Wax"
+                >
+                <button
+                  type="button"
+                  class="btn btn-primary buy-wallet-btn"
+                  data-config-key="badalassi-ortensia"
+                >
+                  Buy this wallet
+                </button>
+              </div>
               <figcaption class="mt-2 small text-muted">An example of a wallet with burnished edges made from Badalassi Carlo - Wax</figcaption>
             </figure>
             <figure class="mb-0 h-100">
-              <img
-                src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251207_0008-.jpg"
-                class="img-fluid rounded shadow-sm w-100 h-100 object-fit-cover"
-                alt="Wallet with burnished edges made from Conceria Walpier Buttero with painted edges and an ostrich leather pocket"
-              >
+              <div class="example-image-wrapper rounded shadow-sm">
+                <img
+                  src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251207_0008-.jpg"
+                  class="img-fluid w-100 h-100 object-fit-cover"
+                  alt="Wallet with burnished edges made from Conceria Walpier Buttero with painted edges and an ostrich leather pocket"
+                >
+                <button
+                  type="button"
+                  class="btn btn-primary buy-wallet-btn"
+                  data-config-key="buttero-ostrich"
+                >
+                  Buy this wallet
+                </button>
+              </div>
               <figcaption class="mt-2 small text-muted">An example of a wallet with burnished edges made from Conceria Walpier - Buttero with painted edges and an ostrich leather pocket</figcaption>
             </figure>
           </div>
@@ -1175,6 +1215,26 @@ enctype="multipart/form-data"
       { label: "Lambskin Dark Green", color: "#1f3f2f", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-dark-green.jpg" },
       { label: "Lambskin Green", color: "#2f6b3c", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-green.jpg" },
     ];
+
+    const exampleWalletPresets = {
+      'badalassi-ortensia': {
+        leather_collection: 'badalassi',
+        outer_leather: '#2f4f9f',
+        top_pocket: '#b36a3c',
+        bottom_pocket: '#566d3b',
+        bottom_ostrich: false,
+        stitching: '#ffdd33',
+        stitching_secondary: '#374331',
+        lining: '#5a3a24',
+        lining_coverage: 'body',
+        debossing: 'atelier',
+        edge_style: 'burnished',
+        edge_paint_choice: 'lining',
+        edge_colour: '#000000',
+        metal_corners: 'none',
+        additional_notes: '',
+      },
+    };
 
     const leatherSelectIds = ["color-outer", "color-interior", "color-pockets"];
     let currentLeatherCollection = "buttero";
@@ -1832,6 +1892,61 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
       if (priceDisplay) priceDisplay.textContent = `${currencySymbol}${total.toFixed(2)}`;
     }
 
+    function applyExampleConfiguration(config) {
+      if (!config) return;
+
+      const setSelectValue = (id, value) => {
+        if (!value) return;
+        const $select = $('#' + id);
+        if (!$select.length) return;
+        $select.val(value).trigger('change');
+      };
+
+      if (config.leather_collection) {
+        $('#leather-collection').val(config.leather_collection).trigger('change');
+      }
+
+      if (typeof config.bottom_ostrich === 'boolean') {
+        $('#bottom-ostrich-toggle').prop('checked', config.bottom_ostrich).trigger('change');
+      }
+
+      setSelectValue('color-outer', config.outer_leather);
+      setSelectValue('color-interior', config.top_pocket);
+      setSelectValue('color-pockets', config.bottom_pocket);
+      setSelectValue('color-stitching', config.stitching);
+      setSelectValue('color-stitching2', config.stitching_secondary);
+      setSelectValue('lining-leather', config.lining);
+
+      if (config.lining_coverage) {
+        $(`input[name="lining-coverage"][value="${config.lining_coverage}"]`).prop('checked', true).trigger('change');
+      }
+
+      if (config.debossing) {
+        $(`input[name="deboss-choice"][value="${config.debossing}"]`).prop('checked', true).trigger('change');
+      }
+
+      if (config.edge_style) {
+        $('#edge-style').val(config.edge_style).trigger('change');
+      }
+
+      if (config.edge_paint_choice) {
+        $(`input[name="edge-paint-choice"][value="${config.edge_paint_choice}"]`).prop('checked', true).trigger('change');
+      }
+
+      setSelectValue('edge-colour', config.edge_colour);
+
+      if (config.metal_corners) {
+        $('#metal-corners').val(config.metal_corners).trigger('change');
+      }
+
+      if (config.additional_notes !== undefined) {
+        $('#additional-notes').val(config.additional_notes);
+      }
+
+      syncWooCommerceFields();
+      buildSvgOverlayButtons();
+    }
+
     $(function () {
       const galleryModal = document.getElementById('galleryModal');
       const galleryModalImage = galleryModal?.querySelector('.modal-body img');
@@ -1852,6 +1967,33 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
       hydrateTanneryDescriptions();
       rebuildLeatherSelects(currentLeatherCollection);
       updateLeatherDescription(currentLeatherCollection);
+
+      const basePreset = gatherSelections();
+      exampleWalletPresets['buttero-ostrich'] = {
+        ...basePreset,
+        leather_collection: 'buttero',
+        bottom_ostrich: true,
+        bottom_pocket: ostrichSwatches[0]?.color || basePreset.bottom_pocket,
+        edge_style: 'painted',
+        edge_paint_choice: 'lining',
+      };
+
+      $('.buy-wallet-btn').on('click', function () {
+        const presetKey = $(this).data('config-key');
+        const preset = exampleWalletPresets[presetKey];
+
+        if (!preset) {
+          alert('Preset details are not available yet.');
+          return;
+        }
+
+        applyExampleConfiguration(preset);
+
+        const form = document.getElementById('wallet-configurator-form');
+        if (form) {
+          window.scrollTo({ top: form.offsetTop - 12, behavior: 'smooth' });
+        }
+      });
 
       $('#wallet-configurator-form').on('change input', 'select, input', syncWooCommerceFields);
       syncWooCommerceFields();
