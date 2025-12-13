@@ -79,12 +79,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add-to-cart'])) {
       background: #fff3cd;
       border: 1px solid #f3d9a4;
       border-radius: 8px;
-      padding: 8px 12px;
-      gap: 8px;
+      padding: 10px 12px;
+      gap: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .ostrich-toggle:hover,
+    .ostrich-toggle:focus-visible,
+    .ostrich-toggle:focus-within {
+      border-color: #e0b743;
+      box-shadow: 0 0 0 4px rgba(224, 183, 67, 0.25);
+      outline: none;
     }
     .ostrich-toggle-label {
       font-weight: 600;
       color: #7c5a00;
+    }
+    .ostrich-toggle-hint {
+      color: #856404;
+      font-size: 0.9rem;
     }
     .leather-modal-options {
       display: grid;
@@ -324,11 +337,20 @@ method="post"
                   <option value="#d2a679" data-color="#d2a679" class="swatch-option">Sand</option>
                   <option value="#4a2f2f" data-color="#4a2f2f" class="swatch-option">Oxblood</option>
                 </select>
-                <div class="form-check form-switch d-flex align-items-center ostrich-toggle mt-2 mb-0">
+                <div
+                  class="form-check form-switch d-flex align-items-center ostrich-toggle mt-2 mb-0"
+                  id="bottom-ostrich-toggle-wrapper"
+                  role="button"
+                  tabindex="0"
+                  aria-controls="bottom-ostrich-toggle"
+                >
                   <input class="form-check-input" type="checkbox" role="switch" id="bottom-ostrich-toggle">
-                  <label class="form-check-label ostrich-toggle-label" for="bottom-ostrich-toggle">Use Ostrich</label>
+                  <div class="ms-2 flex-grow-1">
+                    <label class="form-check-label ostrich-toggle-label mb-0" for="bottom-ostrich-toggle">Use Ostrich</label>
+                    <div class="ostrich-toggle-hint small">Click anywhere on this panel to toggle.</div>
+                  </div>
                 </div>
-                <div class="form-text ms-5">Adds &euro;20.</div>
+                <div class="form-text ms-1">Adds &euro;20.</div>
               </div>
             </div>
           </div>
@@ -1895,6 +1917,18 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
       $('#bottom-ostrich-toggle').on('change', function () {
         useOstrichBottom = $(this).is(':checked');
         rebuildLeatherSelects(currentLeatherCollection);
+      });
+
+      $('#bottom-ostrich-toggle-wrapper').on('click keydown', function (event) {
+        const isKeyboardToggle = event.type === 'keydown' && (event.key === 'Enter' || event.key === ' ');
+        const isClickToggle = event.type === 'click';
+
+        if (!isKeyboardToggle && !isClickToggle) return;
+        if (event.target.tagName.toLowerCase() === 'input') return;
+
+        const checkbox = $('#bottom-ostrich-toggle');
+        checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+        event.preventDefault();
       });
 
       bindSvgColoring();
