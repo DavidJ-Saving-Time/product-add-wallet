@@ -311,9 +311,9 @@ method="post"
                 </select>
                 <div class="form-check form-switch d-flex align-items-center ostrich-toggle mt-2 mb-0">
                   <input class="form-check-input" type="checkbox" role="switch" id="bottom-ostrich-toggle">
-                  <label class="form-check-label ostrich-toggle-label" for="bottom-ostrich-toggle">Use Ostrich (adds texture)</label>
+                  <label class="form-check-label ostrich-toggle-label" for="bottom-ostrich-toggle">Use Ostrich</label>
                 </div>
-                <div class="form-text ms-5">Adds £20.</div>
+                <div class="form-text ms-5">Adds &euro;20.</div>
               </div>
             </div>
           </div>
@@ -381,7 +381,7 @@ method="post"
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="lining-coverage" value="all" id="lining-all-pockets">
                   <label class="form-check-label" for="lining-all-pockets">Use a liner for all the pockets and the main body</label>
-                  <div class="form-text ms-4">Adds £20.</div>
+                  <div class="form-text ms-4">Adds &euro;20.</div>
                 </div>
               </div>
 
