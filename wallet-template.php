@@ -148,6 +148,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add-to-cart'])) {
       object-fit: cover;
     }
 
+    .step-guide-card {
+      display: block;
+      height: 100%;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid #dee2e6;
+      background: linear-gradient(145deg, #ffffff, #f8f9fa);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .step-guide-card:hover,
+    .step-guide-card:focus-visible {
+      transform: translateY(-2px);
+      border-color: #0d6efd;
+      box-shadow: 0 10px 24px rgba(13, 110, 253, 0.12);
+      outline: none;
+      text-decoration: none;
+    }
+
+    .step-guide-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #0d6efd;
+      color: #fff;
+      font-weight: 700;
+      margin-right: 12px;
+    }
+
+    .step-guide-title {
+      margin: 0;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .step-section {
+      border: 1px solid #dee2e6;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    .step-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .step-heading .badge {
+      font-size: 0.85rem;
+    }
+
 </style>
 
 
@@ -166,198 +225,275 @@ method="post"
   <input type="hidden" name="add-to-cart" value="<?php echo esc_attr($wallet_product_id); ?>">
   <input type="hidden" name="wallet_options_json" id="wallet-options-field" value="">
 <input type="hidden" name="quantity" value="1">
-  <div class="container py-4">
-    <div class="text-center mb-4">
-      <h1 class="h3 mb-2">Wallet Colour Test (Static Palette)</h1>
-      <p class="text-muted mb-0">Pick a colour for each part of the wallet and preview it instantly.</p>
-    </div>
+    <div class="container py-4">
+      <div class="text-center mb-4">
+        <h1 class="h3 mb-2">Wallet Colour Test (Static Palette)</h1>
+        <p class="text-muted mb-0">Pick a colour for each part of the wallet and preview it instantly.</p>
+      </div>
 
-    <div class="row g-4">
-      <div class="col-12">
-        <label class="form-label" for="leather-collection">Leather collection</label>
-        <select class="form-select" id="leather-collection">
-          <option value="buttero" selected>Buttero</option>
-          <option value="badalassi">Badalassi Carlo Wax</option>
-        </select>
-        <div class="form-text">Swap between Buttero and Badalassi Carlo Wax leather swatches.</div>
-        <div class="form-text leather-description" data-collection="buttero">
-          Buttero is one of the leading products of the Tuscan Walpier Tannery with unique characteristics. As it is firmer than a vachetta leather, watch straps made from Buttero have a nice rigidity to them. They will also patina very well over time. The leather is full grain and aniline finished meaning dyed with no colour correction which ensures a natural look and feel. Due to the material’s natural qualities, any irregularities and imperfections on the surface are considered an added value rather than a defect.
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 mb-4">
+        <div class="col">
+          <a class="step-guide-card" href="#step-tannery">
+            <div class="d-flex align-items-center mb-2">
+              <span class="step-guide-number">1</span>
+              <h3 class="step-guide-title">Choose a tannery</h3>
+            </div>
+            <p class="mb-0 text-muted">Select the leather house you want to work with for your build.</p>
+          </a>
         </div>
-        <div class="form-text leather-description d-none" data-collection="badalassi">
-          The Badalassi Wax leather stands out through its dry-milled waxed finish, also known as pull-up or lightening effect, which gives it a distressed look when it is pulled or folded. It may show signs of scratches and scuffs, but it is durable and ages gracefully to serve as a canvas for memories.
+        <div class="col">
+          <a class="step-guide-card" href="#step-leather">
+            <div class="d-flex align-items-center mb-2">
+              <span class="step-guide-number">2</span>
+              <h3 class="step-guide-title">Leather or exotic skin</h3>
+            </div>
+            <p class="mb-0 text-muted">Pick your outer, pocket leathers, and toggle ostrich if you want texture.</p>
+          </a>
+        </div>
+        <div class="col">
+          <a class="step-guide-card" href="#step-stitching">
+            <div class="d-flex align-items-center mb-2">
+              <span class="step-guide-number">3</span>
+              <h3 class="step-guide-title">Stitching colours</h3>
+            </div>
+            <p class="mb-0 text-muted">Set the primary and accent stitch colours to match or contrast.</p>
+          </a>
+        </div>
+        <div class="col">
+          <a class="step-guide-card" href="#step-extras">
+            <div class="d-flex align-items-center mb-2">
+              <span class="step-guide-number">4</span>
+              <h3 class="step-guide-title">Optional extras &amp; lining</h3>
+            </div>
+            <p class="mb-0 text-muted">Choose lining coverage, debossing, edges, and any metal corners.</p>
+          </a>
         </div>
       </div>
 
+      <div class="row g-4">
       <div class="col-12 col-lg-6">
-        <div class="row g-3">
-          <div class="col-sm-12">
-            <label class="form-label" for="color-outer">Outer leather</label>
-            <select class="form-select" id="color-outer">
-              <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Dark Brown</option>
-              <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
-              <option value="#3b2a1a" data-color="#3b2a1a" class="swatch-option">Chocolate</option>
-              <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
-              <option value="#4a2f2f" data-color="#4a2f2f" class="swatch-option">Oxblood</option>
-              <option value="#6b4f3a" data-color="#6b4f3a" class="swatch-option">Walnut</option>
-              <option value="#d2a679" data-color="#d2a679" class="swatch-option">Sand</option>
-              <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
-              <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
-              <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
+        <div class="step-section card mb-4" id="step-tannery">
+          <div class="card-body">
+            <div class="step-heading">
+              <span class="badge bg-primary">Step 1</span>
+              <h2 class="h5 mb-0">Choose a leather tannery</h2>
+            </div>
+            <p class="text-muted">Start by picking the leather house whose colours and finish you want to explore.</p>
+            <label class="form-label" for="leather-collection">Leather collection</label>
+            <select class="form-select" id="leather-collection">
+              <option value="buttero" selected>Buttero</option>
+              <option value="badalassi">Badalassi Carlo Wax</option>
             </select>
-          </div>
-
-          <div class="col-sm-12">
-            <label class="form-label" for="color-interior">Top Pcoket</label>
-            <select class="form-select" id="color-interior">
-              <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
-              <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Dark Brown</option>
-              <option value="#3b2a1a" data-color="#3b2a1a" class="swatch-option">Chocolate</option>
-              <option value="#d2a679" data-color="#d2a679" class="swatch-option">Sand</option>
-              <option value="#6b4f3a" data-color="#6b4f3a" class="swatch-option">Walnut</option>
-              <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
-              <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
-              <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
-              <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
-              <option value="#4a2f2f" data-color="#4a2f2f" class="swatch-option">Oxblood</option>
-            </select>
-          </div>
-
-          <div class="col-sm-12">
-            <label class="form-label mb-0" for="color-pockets">Bottom Pocket</label>
-            <select class="form-select" id="color-pockets">
-              <option value="#3b2a1a" data-color="#3b2a1a" class="swatch-option">Chocolate</option>
-              <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Dark Brown</option>
-              <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
-              <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
-              <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
-              <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
-              <option value="#6b4f3a" data-color="#6b4f3a" class="swatch-option">Walnut</option>
-              <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
-              <option value="#d2a679" data-color="#d2a679" class="swatch-option">Sand</option>
-              <option value="#4a2f2f" data-color="#4a2f2f" class="swatch-option">Oxblood</option>
-            </select>
-            <div class="form-check form-switch d-flex align-items-center ostrich-toggle mt-2 mb-0">
-              <input class="form-check-input" type="checkbox" role="switch" id="bottom-ostrich-toggle">
-              <label class="form-check-label ostrich-toggle-label" for="bottom-ostrich-toggle">Use Ostrich (adds texture)</label>
+            <div class="form-text">Swap between Buttero and Badalassi Carlo Wax leather swatches.</div>
+            <div class="form-text leather-description" data-collection="buttero">
+              Buttero is one of the leading products of the Tuscan Walpier Tannery with unique characteristics. As it is firmer than a vachetta leather, watch straps made from Buttero have a nice rigidity to them. They will also patina very well over time. The leather is full grain and aniline finished meaning dyed with no colour correction which ensures a natural look and feel. Due to the material’s natural qualities, any irregularities and imperfections on the surface are considered an added value rather than a defect.
+            </div>
+            <div class="form-text leather-description d-none" data-collection="badalassi">
+              The Badalassi Wax leather stands out through its dry-milled waxed finish, also known as pull-up or lightening effect, which gives it a distressed look when it is pulled or folded. It may show signs of scratches and scuffs, but it is durable and ages gracefully to serve as a canvas for memories.
             </div>
           </div>
+        </div>
 
-          <div class="col-sm-6">
-            <label class="form-label" for="color-stitching">Stitching</label>
-            <select class="form-select" id="color-stitching">
-              <option value="#ffffff" data-color="#ffffff" class="swatch-option">White</option>
-              <option value="#f5e6c8" data-color="#f5e6c8" class="swatch-option">Cream</option>
-              <option value="#d2a679" data-color="#d2a679" class="swatch-option">Beige</option>
-              <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
-              <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Brown</option>
-              <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
-              <option value="#ffdd33" data-color="#ffdd33" class="swatch-option">Yellow</option>
-              <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
-              <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
-              <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
-            </select>
-          </div>
+        <div class="step-section card mb-4" id="step-leather">
+          <div class="card-body">
+            <div class="step-heading">
+              <span class="badge bg-primary">Step 2</span>
+              <h2 class="h5 mb-0">Choose leather or exotic skin</h2>
+            </div>
+            <p class="text-muted">Pick the main leathers for the outside and pockets, then toggle ostrich if you want an exotic texture.</p>
+            <div class="row g-3">
+              <div class="col-sm-12">
+                <label class="form-label" for="color-outer">Outer leather</label>
+                <select class="form-select" id="color-outer">
+                  <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Dark Brown</option>
+                  <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
+                  <option value="#3b2a1a" data-color="#3b2a1a" class="swatch-option">Chocolate</option>
+                  <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
+                  <option value="#4a2f2f" data-color="#4a2f2f" class="swatch-option">Oxblood</option>
+                  <option value="#6b4f3a" data-color="#6b4f3a" class="swatch-option">Walnut</option>
+                  <option value="#d2a679" data-color="#d2a679" class="swatch-option">Sand</option>
+                  <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
+                  <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
+                  <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
+                </select>
+              </div>
 
-          <div class="col-sm-6">
-            <label class="form-label" for="color-stitching2">Stitching 2</label>
-            <select class="form-select" id="color-stitching2">
-              <option value="#ffffff" data-color="#ffffff" class="swatch-option">White</option>
-              <option value="#f5e6c8" data-color="#f5e6c8" class="swatch-option">Cream</option>
-              <option value="#d2a679" data-color="#d2a679" class="swatch-option">Beige</option>
-              <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
-              <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Brown</option>
-              <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
-              <option value="#ffdd33" data-color="#ffdd33" class="swatch-option">Yellow</option>
-              <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
-              <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
-              <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
-            </select>
-          </div>
+              <div class="col-sm-12">
+                <label class="form-label" for="color-interior">Top Pcoket</label>
+                <select class="form-select" id="color-interior">
+                  <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
+                  <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Dark Brown</option>
+                  <option value="#3b2a1a" data-color="#3b2a1a" class="swatch-option">Chocolate</option>
+                  <option value="#d2a679" data-color="#d2a679" class="swatch-option">Sand</option>
+                  <option value="#6b4f3a" data-color="#6b4f3a" class="swatch-option">Walnut</option>
+                  <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
+                  <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
+                  <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
+                  <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
+                  <option value="#4a2f2f" data-color="#4a2f2f" class="swatch-option">Oxblood</option>
+                </select>
+              </div>
 
-          <div class="col-sm-12">
-            <label class="form-label" for="lining-leather">Lining leather</label>
-            <select class="form-select" id="lining-leather"></select>
-            <div class="form-text">Nappa lambskin lining selection (not shown on the SVG preview).</div>
-            <div class="form-check mt-2">
-              <input class="form-check-input" type="radio" name="lining-coverage" value="body" id="lining-main-body" checked>
-              <label class="form-check-label" for="lining-main-body">Add lining to the main body</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="lining-coverage" value="all" id="lining-all-pockets">
-              <label class="form-check-label" for="lining-all-pockets">Use a liner for all the pockets and the main body</label>
-            </div>
-          </div>
-
-          <div class="col-sm-12">
-            <label class="form-label d-block">Debossing</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="deboss-choice" id="deboss-no" value="no" checked>
-              <label class="form-check-label" for="deboss-no">No debossing</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="deboss-choice" id="deboss-atelier" value="atelier">
-              <label class="form-check-label" for="deboss-atelier">Deboss Atelier D. James into the wallet</label>
-            </div>
-          </div>
-
-          <div class="col-sm-12">
-            <label class="form-label" for="edge-style">Edge style</label>
-            <select class="form-select" id="edge-style">
-              <option value="burnished" selected>Burnished</option>
-              <option value="painted">Painted</option>
-            </select>
-            <div class="form-text">Choose a burnished or painted edge finish.</div>
-          </div>
-
-          <div class="col-sm-12 d-none" id="painted-edge-options">
-            <label class="form-label d-block">Painted edge colour</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="edge-paint-choice" id="edge-paint-lining" value="lining" checked>
-              <label class="form-check-label" for="edge-paint-lining">Same colour as lining leather</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="edge-paint-choice" id="edge-paint-custom" value="custom">
-              <label class="form-check-label" for="edge-paint-custom">Pick a colour</label>
-            </div>
-            <div class="mt-3 ms-3 d-none" id="edge-colour-picker-wrapper">
-              <label class="form-label" for="edge-colour">Edge paint colour</label>
-              <select class="form-select" id="edge-colour">
-                <option value="#000000" data-color="#000000">Black</option>
-                <option value="#ffffff" data-color="#ffffff">White</option>
-                <option value="#f5e6c8" data-color="#f5e6c8">Cream</option>
-                <option value="#c28e5a" data-color="#c28e5a">Tan</option>
-                <option value="#8b5a2b" data-color="#8b5a2b">Dark Brown</option>
-                <option value="#3b2a1a" data-color="#3b2a1a">Chocolate</option>
-                <option value="#6b4f3a" data-color="#6b4f3a">Walnut</option>
-                <option value="#d2a679" data-color="#d2a679">Sand</option>
-                <option value="#3a4f6b" data-color="#3a4f6b">Navy</option>
-                <option value="#7b3f61" data-color="#7b3f61">Burgundy</option>
-                <option value="#374331" data-color="#374331">Olive</option>
-                <option value="#2f5a32" data-color="#2f5a32">Forest Green</option>
-                <option value="#1f4aa5" data-color="#1f4aa5">Royal Blue</option>
-                <option value="#b22222" data-color="#b22222">Red</option>
-                <option value="#f4801f" data-color="#f4801f">Orange</option>
-                <option value="#ffdd33" data-color="#ffdd33">Yellow</option>
-                <option value="#ffc0cb" data-color="#ffc0cb">Pink</option>
-                <option value="#6a0dad" data-color="#6a0dad">Purple</option>
-                <option value="#7b7b7b" data-color="#7b7b7b">Grey</option>
-                <option value="#2f8886" data-color="#2f8886">Teal</option>
-              </select>
+              <div class="col-sm-12">
+                <label class="form-label mb-0" for="color-pockets">Bottom Pocket</label>
+                <select class="form-select" id="color-pockets">
+                  <option value="#3b2a1a" data-color="#3b2a1a" class="swatch-option">Chocolate</option>
+                  <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Dark Brown</option>
+                  <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
+                  <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
+                  <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
+                  <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
+                  <option value="#6b4f3a" data-color="#6b4f3a" class="swatch-option">Walnut</option>
+                  <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
+                  <option value="#d2a679" data-color="#d2a679" class="swatch-option">Sand</option>
+                  <option value="#4a2f2f" data-color="#4a2f2f" class="swatch-option">Oxblood</option>
+                </select>
+                <div class="form-check form-switch d-flex align-items-center ostrich-toggle mt-2 mb-0">
+                  <input class="form-check-input" type="checkbox" role="switch" id="bottom-ostrich-toggle">
+                  <label class="form-check-label ostrich-toggle-label" for="bottom-ostrich-toggle">Use Ostrich (adds texture)</label>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
 
-          <div class="col-sm-12">
-            <label class="form-label" for="metal-corners">Metal corners</label>
-            <select class="form-select" id="metal-corners">
-              <option value="none" selected>No metal corners</option>
-              <option value="brass">Brass</option>
-              <option value="silver">Silver</option>
-              <option value="gunmetal-grey">Gunmetal Grey</option>
-              <option value="black">Black</option>
-              <option value="gold">Gold</option>
-              <option value="rose-gold">Rose Gold</option>
-            </select>
-            <div class="form-text">Add optional metal corner finishes.</div>
+        <div class="step-section card mb-4" id="step-stitching">
+          <div class="card-body">
+            <div class="step-heading">
+              <span class="badge bg-primary">Step 3</span>
+              <h2 class="h5 mb-0">Choose stitching colours</h2>
+            </div>
+            <p class="text-muted">Dial in the thread colours that bring the outside and inside together.</p>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label class="form-label" for="color-stitching">Stitching</label>
+                <select class="form-select" id="color-stitching">
+                  <option value="#ffffff" data-color="#ffffff" class="swatch-option">White</option>
+                  <option value="#f5e6c8" data-color="#f5e6c8" class="swatch-option">Cream</option>
+                  <option value="#d2a679" data-color="#d2a679" class="swatch-option">Beige</option>
+                  <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
+                  <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Brown</option>
+                  <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
+                  <option value="#ffdd33" data-color="#ffdd33" class="swatch-option">Yellow</option>
+                  <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
+                  <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
+                  <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
+                </select>
+              </div>
+
+              <div class="col-sm-6">
+                <label class="form-label" for="color-stitching2">Stitching 2</label>
+                <select class="form-select" id="color-stitching2">
+                  <option value="#ffffff" data-color="#ffffff" class="swatch-option">White</option>
+                  <option value="#f5e6c8" data-color="#f5e6c8" class="swatch-option">Cream</option>
+                  <option value="#d2a679" data-color="#d2a679" class="swatch-option">Beige</option>
+                  <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
+                  <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Brown</option>
+                  <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
+                  <option value="#ffdd33" data-color="#ffdd33" class="swatch-option">Yellow</option>
+                  <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
+                  <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
+                  <option value="#374331" data-color="#374331" class="swatch-option">Olive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-section card" id="step-extras">
+          <div class="card-body">
+            <div class="step-heading">
+              <span class="badge bg-primary">Step 4</span>
+              <h2 class="h5 mb-0">Optional extras &amp; lining</h2>
+            </div>
+            <p class="text-muted">Finish with lining, branding, edge work, and metal hardware.</p>
+            <div class="row g-3">
+              <div class="col-sm-12">
+                <label class="form-label" for="lining-leather">Lining leather</label>
+                <select class="form-select" id="lining-leather"></select>
+                <div class="form-text">Nappa lambskin lining selection (not shown on the SVG preview).</div>
+                <div class="form-check mt-2">
+                  <input class="form-check-input" type="radio" name="lining-coverage" value="body" id="lining-main-body" checked>
+                  <label class="form-check-label" for="lining-main-body">Add lining to the main body</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="lining-coverage" value="all" id="lining-all-pockets">
+                  <label class="form-check-label" for="lining-all-pockets">Use a liner for all the pockets and the main body</label>
+                </div>
+              </div>
+
+              <div class="col-sm-12">
+                <label class="form-label d-block">Debossing</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="deboss-choice" id="deboss-no" value="no" checked>
+                  <label class="form-check-label" for="deboss-no">No debossing</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="deboss-choice" id="deboss-atelier" value="atelier">
+                  <label class="form-check-label" for="deboss-atelier">Deboss Atelier D. James into the wallet</label>
+                </div>
+              </div>
+
+              <div class="col-sm-12">
+                <label class="form-label" for="edge-style">Edge style</label>
+                <select class="form-select" id="edge-style">
+                  <option value="burnished" selected>Burnished</option>
+                  <option value="painted">Painted</option>
+                </select>
+                <div class="form-text">Choose a burnished or painted edge finish.</div>
+              </div>
+
+              <div class="col-sm-12 d-none" id="painted-edge-options">
+                <label class="form-label d-block">Painted edge colour</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="edge-paint-choice" id="edge-paint-lining" value="lining" checked>
+                  <label class="form-check-label" for="edge-paint-lining">Same colour as lining leather</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="edge-paint-choice" id="edge-paint-custom" value="custom">
+                  <label class="form-check-label" for="edge-paint-custom">Pick a colour</label>
+                </div>
+                <div class="mt-3 ms-3 d-none" id="edge-colour-picker-wrapper">
+                  <label class="form-label" for="edge-colour">Edge paint colour</label>
+                  <select class="form-select" id="edge-colour">
+                    <option value="#000000" data-color="#000000">Black</option>
+                    <option value="#ffffff" data-color="#ffffff">White</option>
+                    <option value="#f5e6c8" data-color="#f5e6c8">Cream</option>
+                    <option value="#c28e5a" data-color="#c28e5a">Tan</option>
+                    <option value="#8b5a2b" data-color="#8b5a2b">Dark Brown</option>
+                    <option value="#3b2a1a" data-color="#3b2a1a">Chocolate</option>
+                    <option value="#6b4f3a" data-color="#6b4f3a">Walnut</option>
+                    <option value="#d2a679" data-color="#d2a679">Sand</option>
+                    <option value="#3a4f6b" data-color="#3a4f6b">Navy</option>
+                    <option value="#7b3f61" data-color="#7b3f61">Burgundy</option>
+                    <option value="#374331" data-color="#374331">Olive</option>
+                    <option value="#2f5a32" data-color="#2f5a32">Forest Green</option>
+                    <option value="#1f4aa5" data-color="#1f4aa5">Royal Blue</option>
+                    <option value="#b22222" data-color="#b22222">Red</option>
+                    <option value="#f4801f" data-color="#f4801f">Orange</option>
+                    <option value="#ffdd33" data-color="#ffdd33">Yellow</option>
+                    <option value="#ffc0cb" data-color="#ffc0cb">Pink</option>
+                    <option value="#6a0dad" data-color="#6a0dad">Purple</option>
+                    <option value="#7b7b7b" data-color="#7b7b7b">Grey</option>
+                    <option value="#2f8886" data-color="#2f8886">Teal</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-sm-12">
+                <label class="form-label" for="metal-corners">Metal corners</label>
+                <select class="form-select" id="metal-corners">
+                  <option value="none" selected>No metal corners</option>
+                  <option value="brass">Brass</option>
+                  <option value="silver">Silver</option>
+                  <option value="gunmetal-grey">Gunmetal Grey</option>
+                  <option value="black">Black</option>
+                  <option value="gold">Gold</option>
+                  <option value="rose-gold">Rose Gold</option>
+                </select>
+                <div class="form-text">Add optional metal corner finishes.</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
