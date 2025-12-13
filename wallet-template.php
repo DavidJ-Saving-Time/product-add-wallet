@@ -64,6 +64,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add-to-cart'])) {
       width: 92%;
     }
     .leather-picker { cursor: pointer; }
+    .leather-picker .picker-caret {
+      margin-left: auto;
+      color: #6c757d;
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+    .leather-picker:hover,
+    .leather-picker:focus-within {
+      border-color: #86b7fe;
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+    .ostrich-toggle {
+      background: #fff3cd;
+      border: 1px solid #f3d9a4;
+      border-radius: 8px;
+      padding: 8px 12px;
+      gap: 8px;
+    }
+    .ostrich-toggle-label {
+      font-weight: 600;
+      color: #7c5a00;
+    }
     .leather-modal-options {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -203,9 +225,9 @@ method="post"
           <div class="col-sm-12">
             <div class="d-flex justify-content-between align-items-center">
               <label class="form-label mb-0" for="color-pockets">Bottom Pocket</label>
-              <div class="form-check form-switch mb-0">
+              <div class="form-check form-switch d-flex align-items-center ostrich-toggle mb-0">
                 <input class="form-check-input" type="checkbox" role="switch" id="bottom-ostrich-toggle">
-                <label class="form-check-label" for="bottom-ostrich-toggle">Use Ostrich</label>
+                <label class="form-check-label ostrich-toggle-label" for="bottom-ostrich-toggle">Use Ostrich (adds texture)</label>
               </div>
             </div>
             <select class="form-select" id="color-pockets">
@@ -1140,6 +1162,7 @@ method="post"
       const $textWrap = $('<div class="d-flex flex-column flex-grow-1"></div>');
       const $name = $('<span class="fw-semibold"></span>');
       const $value = $('<span class="swatch-value"></span>');
+      const $caret = $('<span class="picker-caret" aria-hidden="true">▾</span>');
       let currentImage = null;
       let currentLabel = '';
 
@@ -1158,7 +1181,7 @@ method="post"
       }
 
       $textWrap.append($name, $value);
-      $wrapper.append($thumb, $textWrap);
+      $wrapper.append($thumb, $textWrap, $caret);
 
       $wrapper.on('click', function () {
         openLeatherModal($select, syncFromSelect);
@@ -1385,13 +1408,7 @@ method="post"
           showSwatchPreview(image, label);
         });
 
-        const $chooseButton = $('<button type="button" class="btn btn-primary btn-sm shadow-sm">Choose leather</button>');
-        $chooseButton.on('click', function (event) {
-          event.stopPropagation();
-          openLeatherModal($select);
-        });
-
-        $buttonContainer.append($viewButton, $chooseButton);
+        $buttonContainer.append($viewButton);
 
         $overlay.append($buttonContainer);
       });
