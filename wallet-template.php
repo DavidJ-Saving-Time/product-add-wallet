@@ -742,9 +742,8 @@ method="post"
           </div>
         </div>
       </div>
-    </div>
 
-  </div>
+
 
   <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 mt-4">
     <div>
@@ -764,6 +763,7 @@ method="post"
       <?php endif; ?>
     </div>
   </div>
+</div>
 
 </form>
 
