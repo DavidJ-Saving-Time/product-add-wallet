@@ -1979,6 +1979,7 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
         bottom_pocket: '#c05a27',
         stitching: '#f4801f',
         stitching_secondary: '#3a4f6b',
+        lining: '#2c5ea5',
         lining_coverage: 'all',
         edge_style: 'painted',
         edge_paint_choice: 'custom',
