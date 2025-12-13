@@ -223,13 +223,7 @@ method="post"
           </div>
 
           <div class="col-sm-12">
-            <div class="d-flex justify-content-between align-items-center">
-              <label class="form-label mb-0" for="color-pockets">Bottom Pocket</label>
-              <div class="form-check form-switch d-flex align-items-center ostrich-toggle mb-0">
-                <input class="form-check-input" type="checkbox" role="switch" id="bottom-ostrich-toggle">
-                <label class="form-check-label ostrich-toggle-label" for="bottom-ostrich-toggle">Use Ostrich (adds texture)</label>
-              </div>
-            </div>
+            <label class="form-label mb-0" for="color-pockets">Bottom Pocket</label>
             <select class="form-select" id="color-pockets">
               <option value="#3b2a1a" data-color="#3b2a1a" class="swatch-option">Chocolate</option>
               <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Dark Brown</option>
@@ -242,6 +236,10 @@ method="post"
               <option value="#d2a679" data-color="#d2a679" class="swatch-option">Sand</option>
               <option value="#4a2f2f" data-color="#4a2f2f" class="swatch-option">Oxblood</option>
             </select>
+            <div class="form-check form-switch d-flex align-items-center ostrich-toggle mt-2 mb-0">
+              <input class="form-check-input" type="checkbox" role="switch" id="bottom-ostrich-toggle">
+              <label class="form-check-label ostrich-toggle-label" for="bottom-ostrich-toggle">Use Ostrich (adds texture)</label>
+            </div>
           </div>
 
           <div class="col-sm-6">
