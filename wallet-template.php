@@ -460,7 +460,6 @@ method="post"
       </div>
 
       <div class="col-12 col-lg-6">
-        <p class="mb-3">I’ve used a simple colour illustration here to help you visualise the piece. Please refer to the photos below for real examples. If you order the ostrich option, I’ll send you an image of the leather with the cutting template so you can approve it before I begin.</p>
         <div id="svg-wrapper" class="shadow-sm">
     <!-- DEMO SVG – replace with your own later, keep group ids or update JS -->
 
@@ -854,7 +853,7 @@ method="post"
        style="fill:none;stroke:#ff0000;stroke-width:0.2;stroke-dashoffset:0.871181"
        d="m 88.950503,3.0633421 2.11402,1.1377083"
        id="path385" /><path
-       style="fill:none;stroke:#ff0000;stroke-width:0.2;stroke-dashoffset:0.871181"
+      style="fill:none;stroke:#ff0000;stroke-width:0.2;stroke-dashoffset:0.871181"
        d="m 91.702169,3.0633421 2.111375,1.1377083"
        id="path386" /></g></svg>
 
@@ -864,6 +863,7 @@ method="post"
           <div id="svg-overlay-buttons"></div>
 
           </div>
+          <p class="mt-3 mb-3">I’ve used a simple colour illustration here to help you visualise the piece. Please refer to the photos below for real examples. If you order the ostrich option, I’ll send you an image of the leather with the cutting template so you can approve it before I begin.</p>
           <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 mt-4">
             <div>
               <div class="fw-semibold">Live price</div>
