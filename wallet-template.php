@@ -3,13 +3,29 @@
 if (!defined('ABSPATH')) { exit; }
 
 // Allow product id to be managed from a Customizer setting or page meta (_wallet_config_product_id).
-$wallet_product_id = absint(get_theme_mod('wallet_configurator_product_id', 0));
+$wallet_product_id = absint(get_theme_mod('wallet_configurator_product_id', 1516));
 if (!$wallet_product_id && isset($post)) {
     $maybe_id = get_post_meta(get_the_ID(), '_wallet_config_product_id', true);
     $wallet_product_id = absint($maybe_id);
 }
 
 get_header();
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add-to-cart'])) {
+  if (function_exists('WC') && WC()->cart) {
+    echo '<div class="container py-3"><div class="alert alert-info">';
+    echo 'POST received. Cart count now: ' . (int) WC()->cart->get_cart_contents_count();
+    echo '</div></div>';
+  } else {
+    echo '<div class="container py-3"><div class="alert alert-warning">';
+    echo 'POST received but WC()->cart not available yet.';
+    echo '</div></div>';
+  }
+}
+
+
+
 ?>
 <style>
 
@@ -109,20 +125,25 @@ get_header();
     .object-fit-cover {
       object-fit: cover;
     }
-  
+
 </style>
 
 
 <form
   id="wallet-configurator-form"
   class="wallet-configurator-form"
-  action="<?php echo esc_url(wc_get_cart_url()); ?>"
-  method="post"
+action="<?php echo esc_url( add_query_arg('add-to-cart', $wallet_product_id, wc_get_cart_url()) ); ?>"
+
+method="post"
 >
+
+
+<?php woocommerce_output_all_notices(); ?>
+
   <?php wp_nonce_field('wallet_configurator_add_to_cart', 'wallet_configurator_nonce'); ?>
   <input type="hidden" name="add-to-cart" value="<?php echo esc_attr($wallet_product_id); ?>">
   <input type="hidden" name="wallet_options_json" id="wallet-options-field" value="">
-
+<input type="hidden" name="quantity" value="1">
   <div class="container py-4">
     <div class="text-center mb-4">
       <h1 class="h3 mb-2">Wallet Colour Test (Static Palette)</h1>
@@ -318,7 +339,7 @@ get_header();
       <div class="col-12 col-lg-6">
         <div id="svg-wrapper" class="shadow-sm">
     <!-- DEMO SVG – replace with your own later, keep group ids or update JS -->
- 
+
 
 
 

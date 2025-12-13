@@ -7,6 +7,37 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+
+add_action('init', function () {
+  if (!class_exists('WC_Form_Handler')) return;
+
+  if (!has_action('wp_loaded', ['WC_Form_Handler','add_to_cart_action'])) {
+    add_action('wp_loaded', ['WC_Form_Handler', 'add_to_cart_action'], 20);
+  }
+});
+
+
+
+add_action('wp_footer', function () {
+  if (!current_user_can('manage_options')) return;
+  echo "\n<!-- has wp_loaded WC_Form_Handler::add_to_cart_action = "
+    . (int) has_action('wp_loaded', ['WC_Form_Handler','add_to_cart_action'])
+    . " -->\n";
+});
+
+add_action('woocommerce_add_to_cart', function ($cart_item_key, $product_id, $qty) {
+  error_log("WALLET DEBUG woocommerce_add_to_cart fired: product_id={$product_id} qty={$qty} key={$cart_item_key}");
+}, 10, 3);
+
+add_filter('woocommerce_add_to_cart_validation', function ($passed, $product_id, $qty) {
+  if (isset($_REQUEST['add-to-cart']) && (int)$_REQUEST['add-to-cart'] === (int)$product_id) {
+    error_log("WALLET DEBUG validation for {$product_id}: " . ($passed ? 'PASS' : 'FAIL'));
+  }
+  return $passed;
+}, 10, 3);
+
+
+
 const WALLET_CONFIGURATOR_PRICING = [
     'base' => 185,
     'ostrich_premium' => 45,
