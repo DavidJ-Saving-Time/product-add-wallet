@@ -347,7 +347,6 @@ method="post"
                   <input class="form-check-input" type="checkbox" role="switch" id="bottom-ostrich-toggle">
                   <div class="ms-2 flex-grow-1">
                     <label class="form-check-label ostrich-toggle-label mb-0" for="bottom-ostrich-toggle">Use Ostrich</label>
-                    <div class="ostrich-toggle-hint small">Click anywhere on this panel to toggle.</div>
                   </div>
                 </div>
                 <div class="form-text ms-1">Adds &euro;20.</div>
@@ -914,7 +913,7 @@ method="post"
               >&mdash;</div>
             </div>
             <div class="text-md-end">
-              <button type="submit" class="btn btn-primary btn-lg" <?php echo $wallet_product_id ? '' : 'disabled'; ?>>
+              <button type="submit" class="btn btn-success btn-lg" <?php echo $wallet_product_id ? '' : 'disabled'; ?>>
                 Add to cart
               </button>
               <?php if (!$wallet_product_id) : ?>
