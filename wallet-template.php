@@ -244,7 +244,7 @@ method="post"
               <label class="form-label mb-0" for="leather-collection">Leather collection</label>
               <button
                 type="button"
-                class="btn btn-outline-secondary btn-sm rounded-circle"
+                class="btn btn-warning btn-sm mt-2 mb-2"
                 id="leather-description-trigger"
                 data-bs-toggle="tooltip"
                 data-bs-placement="right"
