@@ -1567,6 +1567,12 @@ method="post"
         const $buttonContainer = $('<div class="svg-overlay-btn d-flex gap-2"></div>');
         $buttonContainer.css({ top: `${top}px`, left: `${left}px` });
 
+        const $chooseButton = $('<button type="button" class="btn btn-primary btn-sm shadow">Choose leather</button>');
+        $chooseButton.on('click', function (event) {
+          event.stopPropagation();
+          openLeatherModal($select);
+        });
+
         const $viewButton = $('<button type="button" class="btn btn-light btn-sm shadow">View leather</button>');
         $viewButton.on('click', function (event) {
           event.stopPropagation();
@@ -1576,7 +1582,7 @@ method="post"
           showSwatchPreview(image, label);
         });
 
-        $buttonContainer.append($viewButton);
+        $buttonContainer.append($chooseButton, $viewButton);
 
         $overlay.append($buttonContainer);
       });
