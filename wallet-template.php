@@ -900,7 +900,7 @@ method="post"
               <?php endif; ?>
             </div>
           </div>
-          <div class="example-images row row-cols-1 row-cols-md-2 g-3 mt-3 mx-auto">
+          <div class="example-images row row-cols-1  g-3 mt-3 mx-auto">
             <figure class="mb-0 h-100">
               <img
                 src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251204_0026-.jpg"
