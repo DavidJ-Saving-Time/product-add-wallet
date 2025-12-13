@@ -1772,6 +1772,54 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
       $('#wallet-configurator-form').on('change input', 'select, input', syncWooCommerceFields);
       syncWooCommerceFields();
 
+      $('#wallet-configurator-form').on('submit', function (e) {
+        e.preventDefault();
+
+        const form = $(this);
+        const submitButton = form.find('button[type="submit"]');
+
+        syncWooCommerceFields();
+
+        const fd = new FormData(form[0]);
+        fd.set('add-to-cart', form.find('[name="add-to-cart"]').val());
+        fd.set('quantity', form.find('[name="quantity"]').val() || 1);
+
+        const ajaxUrl = window.wc_add_to_cart_params && window.wc_add_to_cart_params.wc_ajax_url
+          ? window.wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'ace_add_to_cart')
+          : '';
+
+        if (!ajaxUrl) {
+          alert('We could not start the add-to-cart request. Please refresh and try again.');
+          return;
+        }
+
+        submitButton.prop('disabled', true);
+
+        $.ajax({
+          url: ajaxUrl,
+          type: 'POST',
+          data: fd,
+          processData: false,
+          contentType: false,
+          success: function (resp) {
+            if (!resp) return;
+
+            if (resp.error && resp.product_url) {
+              window.location = resp.product_url;
+              return;
+            }
+
+            $(document.body).trigger('added_to_cart', [resp.fragments, resp.cart_hash, submitButton]);
+          },
+          error: function () {
+            alert('There was a problem adding the wallet to your cart. Please try again.');
+          },
+          complete: function () {
+            submitButton.prop('disabled', false);
+          },
+        });
+      });
+
       populateSelectWithSwatches($('#lining-leather'), liningLeatherSwatches);
 
       const metalCornerImages = {
