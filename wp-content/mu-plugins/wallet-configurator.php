@@ -40,20 +40,8 @@ add_filter('woocommerce_add_to_cart_validation', function ($passed, $product_id,
 
 const WALLET_CONFIGURATOR_PRICING = [
     'base' => 185,
-    'ostrich_premium' => 45,
-    'lining_all_premium' => 30,
-    'deboss_premium' => 10,
-    'painted_edge_premium' => 15,
-    'custom_edge_paint_premium' => 5,
-    'metal_corners' => [
-        'none' => 0,
-        'brass' => 20,
-        'silver' => 20,
-        'gunmetal-grey' => 18,
-        'black' => 18,
-        'gold' => 22,
-        'rose-gold' => 22,
-    ],
+    'ostrich_premium' => 20,
+    'lining_all_premium' => 20,
 ];
 
 function wallet_configurator_allowed_options() {
@@ -310,20 +298,6 @@ function wallet_configurator_calculate_price($options) {
     if (!empty($options['lining_coverage']) && 'all' === $options['lining_coverage']) {
         $total += WALLET_CONFIGURATOR_PRICING['lining_all_premium'];
     }
-
-    if (!empty($options['debossing']) && 'atelier' === $options['debossing']) {
-        $total += WALLET_CONFIGURATOR_PRICING['deboss_premium'];
-    }
-
-    if (!empty($options['edge_style']) && 'painted' === $options['edge_style']) {
-        $total += WALLET_CONFIGURATOR_PRICING['painted_edge_premium'];
-        if (!empty($options['edge_paint_choice']) && 'custom' === $options['edge_paint_choice']) {
-            $total += WALLET_CONFIGURATOR_PRICING['custom_edge_paint_premium'];
-        }
-    }
-
-    $metal_choice = $options['metal_corners'] ?? 'none';
-    $total += WALLET_CONFIGURATOR_PRICING['metal_corners'][$metal_choice] ?? 0;
 
     return $total;
 }
