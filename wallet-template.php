@@ -231,45 +231,6 @@ method="post"
         <p class="text-muted mb-0">Pick a colour for each part of the wallet and preview it instantly.</p>
       </div>
 
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 mb-4">
-        <div class="col">
-          <a class="step-guide-card" href="#step-tannery">
-            <div class="d-flex align-items-center mb-2">
-              <span class="step-guide-number">1</span>
-              <h3 class="step-guide-title">Choose a tannery</h3>
-            </div>
-            <p class="mb-0 text-muted">Select the leather house you want to work with for your build.</p>
-          </a>
-        </div>
-        <div class="col">
-          <a class="step-guide-card" href="#step-leather">
-            <div class="d-flex align-items-center mb-2">
-              <span class="step-guide-number">2</span>
-              <h3 class="step-guide-title">Leather or exotic skin</h3>
-            </div>
-            <p class="mb-0 text-muted">Pick your outer, pocket leathers, and toggle ostrich if you want texture.</p>
-          </a>
-        </div>
-        <div class="col">
-          <a class="step-guide-card" href="#step-stitching">
-            <div class="d-flex align-items-center mb-2">
-              <span class="step-guide-number">3</span>
-              <h3 class="step-guide-title">Stitching colours</h3>
-            </div>
-            <p class="mb-0 text-muted">Set the primary and accent stitch colours to match or contrast.</p>
-          </a>
-        </div>
-        <div class="col">
-          <a class="step-guide-card" href="#step-extras">
-            <div class="d-flex align-items-center mb-2">
-              <span class="step-guide-number">4</span>
-              <h3 class="step-guide-title">Optional extras &amp; lining</h3>
-            </div>
-            <p class="mb-0 text-muted">Choose lining coverage, debossing, edges, and any metal corners.</p>
-          </a>
-        </div>
-      </div>
-
       <div class="row g-4">
       <div class="col-12 col-lg-6">
         <div class="step-section card mb-4" id="step-tannery">
