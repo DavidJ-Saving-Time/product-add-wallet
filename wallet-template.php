@@ -231,7 +231,7 @@ method="post"
         </div>
 
       <div class="row g-4">
-      <div class="col-12 col-lg-6">
+      <div class="col-12 col-lg-6 order-lg-1">
         <div class="step-section card mb-4" id="step-tannery">
           <div class="card-body">
             <div class="step-heading">
@@ -473,7 +473,7 @@ method="post"
         </div>
       </div>
 
-      <div class="col-12 col-lg-6">
+      <div class="col-12 col-lg-6 order-lg-2">
         <p class="text-muted">All my leather work is made to order and fully bespoke to your requirements. This page is simply here to make visualising and ordering easier. You’re also very welcome to <a href="https://atelierdjames.com/contact-us/">get in touch</a> directly—send a reference image or describe what you have in mind and I’ll make it for you. Want to see how these are made watch the video.</p>
         <div id="svg-wrapper" class="shadow-sm">
     <!-- DEMO SVG – replace with your own later, keep group ids or update JS -->
