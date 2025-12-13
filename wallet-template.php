@@ -778,10 +778,10 @@ method="post"
               class="gallery-trigger"
               data-bs-toggle="modal"
               data-bs-target="#galleryModal"
-              data-image-src="images/wallet-images/20251016_0009-.jpg"
+              data-image-src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251016_0009-.jpg"
               data-image-alt="Wallet example 1"
             >
-              <img src="images/wallet-images/20251016_0009-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 1">
+              <img src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251016_0009-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 1">
             </button>
           </div>
         </div>
@@ -792,10 +792,10 @@ method="post"
               class="gallery-trigger"
               data-bs-toggle="modal"
               data-bs-target="#galleryModal"
-              data-image-src="images/wallet-images/20251027_0005-.jpg"
+              data-image-src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251027_0005-.jpg"
               data-image-alt="Wallet example 2"
             >
-              <img src="images/wallet-images/20251027_0005-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 2">
+              <img src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251027_0005-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 2">
             </button>
           </div>
         </div>
@@ -806,10 +806,10 @@ method="post"
               class="gallery-trigger"
               data-bs-toggle="modal"
               data-bs-target="#galleryModal"
-              data-image-src="images/wallet-images/20251204_0009-.jpg"
+              data-image-src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251204_0009-.jpg"
               data-image-alt="Wallet example 3"
             >
-              <img src="images/wallet-images/20251204_0009-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 3">
+              <img src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251204_0009-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 3">
             </button>
           </div>
         </div>
@@ -820,10 +820,10 @@ method="post"
               class="gallery-trigger"
               data-bs-toggle="modal"
               data-bs-target="#galleryModal"
-              data-image-src="images/wallet-images/20251204_0026-.jpg"
+              data-image-src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251204_0026-.jpg"
               data-image-alt="Wallet example 4"
             >
-              <img src="images/wallet-images/20251204_0026-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 4">
+              <img src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251204_0026-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 4">
             </button>
           </div>
         </div>
@@ -834,10 +834,10 @@ method="post"
               class="gallery-trigger"
               data-bs-toggle="modal"
               data-bs-target="#galleryModal"
-              data-image-src="images/wallet-images/20251207_0006-.jpg"
+              data-image-src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251207_0006-.jpg"
               data-image-alt="Wallet example 5"
             >
-              <img src="images/wallet-images/20251207_0006-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 5">
+              <img src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251207_0006-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 5">
             </button>
           </div>
         </div>
@@ -848,10 +848,10 @@ method="post"
               class="gallery-trigger"
               data-bs-toggle="modal"
               data-bs-target="#galleryModal"
-              data-image-src="images/wallet-images/20251207_0008-.jpg"
+              data-image-src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251207_0008-.jpg"
               data-image-alt="Wallet example 6"
             >
-              <img src="images/wallet-images/20251207_0008-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 6">
+              <img src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251207_0008-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 6">
             </button>
           </div>
         </div>
@@ -862,10 +862,10 @@ method="post"
               class="gallery-trigger"
               data-bs-toggle="modal"
               data-bs-target="#galleryModal"
-              data-image-src="images/wallet-images/20251207_0013-.jpg"
+              data-image-src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251207_0013-.jpg"
               data-image-alt="Wallet example 7"
             >
-              <img src="images/wallet-images/20251207_0013-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 7">
+              <img src="/wp-content/themes/bootscore-main-child/images/wallet-images/20251207_0013-.jpg" class="w-100 h-100 object-fit-cover" alt="Wallet example 7">
             </button>
           </div>
         </div>
@@ -912,64 +912,64 @@ method="post"
       buttero: {
         label: "Buttero",
         swatches: [
-          { label: "Tan", color: "#c28e5a", image: "images/buttero/WALPIER-BUTTERO-023-TAN-2-WM_b3c3cd0a-0a97-48cf-9a0a-172ad1b32709.webp" },
-          { label: "Dark Brown", color: "#8b5a2b", image: "images/buttero/WALPIER-BUTTERO-07-MEDUM-BROWN-2-WM.webp" },
-          { label: "Chocolate", color: "#3b2a1a", image: "images/buttero/WALPIER-BUTTERO-02-WHISKEY-2-WM.webp" },
-          { label: "Black", color: "#000000", image: "images/buttero/WALPIER-BUTTERO-04-NAVY-2-WM.webp" },
-          { label: "Oxblood", color: "#4a2f2f", image: "images/buttero/WALPIER-BUTTERO-05-BURGUNDY-2-WM.webp" },
-          { label: "Walnut", color: "#6b4f3a", image: "images/buttero/WALPIER-BUTTERO-03-BISCUIT-2-WM.webp" },
-          { label: "Sand", color: "#d2a679", image: "images/buttero/WALPIER-BUTTERO-016-YELLOW-2-WM_b3ef4c01-42f2-462c-ab4e-c282e573c76c.webp" },
-          { label: "Navy", color: "#3a4f6b", image: "images/buttero/WALPIER-BUTTERO-04-NAVY-2-WM.webp" },
-          { label: "Olive", color: "#374331", image: "images/buttero/WALPIER-BUTTERO-19-OLIVE-2-WM.webp" },
-          { label: "Burgundy", color: "#7b3f61", image: "images/buttero/WALPIER-BUTTERO-05-BURGUNDY-2-WM.webp" },
-          { label: "Yellow", color: "#ffdd33", image: "images/buttero/WALPIER-BUTTERO-016-YELLOW-2-WM_b3ef4c01-42f2-462c-ab4e-c282e573c76c.webp" },
-          { label: "Pink", color: "#ffc0cb", image: "images/buttero/WALPIER-BUTTERO-101-PINK-2-WM.jpg" },
-          { label: "Blue", color: "#102f6b", image: "images/buttero/WALPIER-BUTTERO-102-BLUE-2-WM.webp" },
-          { label: "Green", color: "#2f5a32", image: "images/buttero/WALPIER-BUTTERO-11-GREEN-2-WM_3dc4f045-eebd-490c-918f-e13e9d29e822.webp" },
-          { label: "Orange", color: "#f4801f", image: "images/buttero/WALPIER-BUTTERO-12-ORANGE-2-WM.webp" },
-          { label: "Foresta", color: "#37523d", image: "images/buttero/WALPIER-BUTTERO-FORESTA-2-WM_eca494e3-598d-4966-814d-4b236efe786e.webp" },
+          { label: "Tan", color: "#c28e5a", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-023-TAN-2-WM_b3c3cd0a-0a97-48cf-9a0a-172ad1b32709.webp" },
+          { label: "Dark Brown", color: "#8b5a2b", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-07-MEDUM-BROWN-2-WM.webp" },
+          { label: "Chocolate", color: "#3b2a1a", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-02-WHISKEY-2-WM.webp" },
+          { label: "Black", color: "#000000", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-04-NAVY-2-WM.webp" },
+          { label: "Oxblood", color: "#4a2f2f", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-05-BURGUNDY-2-WM.webp" },
+          { label: "Walnut", color: "#6b4f3a", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-03-BISCUIT-2-WM.webp" },
+          { label: "Sand", color: "#d2a679", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-016-YELLOW-2-WM_b3ef4c01-42f2-462c-ab4e-c282e573c76c.webp" },
+          { label: "Navy", color: "#3a4f6b", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-04-NAVY-2-WM.webp" },
+          { label: "Olive", color: "#374331", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-19-OLIVE-2-WM.webp" },
+          { label: "Burgundy", color: "#7b3f61", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-05-BURGUNDY-2-WM.webp" },
+          { label: "Yellow", color: "#ffdd33", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-016-YELLOW-2-WM_b3ef4c01-42f2-462c-ab4e-c282e573c76c.webp" },
+          { label: "Pink", color: "#ffc0cb", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-101-PINK-2-WM.jpg" },
+          { label: "Blue", color: "#102f6b", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-102-BLUE-2-WM.webp" },
+          { label: "Green", color: "#2f5a32", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-11-GREEN-2-WM_3dc4f045-eebd-490c-918f-e13e9d29e822.webp" },
+          { label: "Orange", color: "#f4801f", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-12-ORANGE-2-WM.webp" },
+          { label: "Foresta", color: "#37523d", image: "/wp-content/themes/bootscore-main-child/images/buttero/WALPIER-BUTTERO-FORESTA-2-WM_eca494e3-598d-4966-814d-4b236efe786e.webp" },
         ],
       },
       badalassi: {
         label: "Badalassi Carlo Wax",
         swatches: [
-          { label: "Cognac", color: "#b36a3c", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-cognac1.webp" },
-          { label: "Grigio", color: "#7b7b7b", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-grigio1.jpeg" },
-          { label: "Napoli", color: "#d8a23f", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-napoli1.webp" },
-          { label: "Oliva", color: "#566d3b", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-oliva1.webp" },
-          { label: "Olmo", color: "#8b5a2b", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-olmo1.webp" },
-          { label: "Ortensia", color: "#2f4f9f", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-ortensia1.webp" },
-          { label: "Papavero", color: "#b22222", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-papavero1.webp" },
-          { label: "Prugna", color: "#70304a", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-prugna1.webp" },
-          { label: "Tabacco", color: "#7b4b26", image: "images/badalassi-carlo-wax/badalassi-carlo-wax-tabacco1.webp" },
+          { label: "Cognac", color: "#b36a3c", image: "/wp-content/themes/bootscore-main-child/images/badalassi-carlo-wax/badalassi-carlo-wax-cognac1.webp" },
+          { label: "Grigio", color: "#7b7b7b", image: "/wp-content/themes/bootscore-main-child/images/badalassi-carlo-wax/badalassi-carlo-wax-grigio1.jpeg" },
+          { label: "Napoli", color: "#d8a23f", image: "/wp-content/themes/bootscore-main-child/images/badalassi-carlo-wax/badalassi-carlo-wax-napoli1.webp" },
+          { label: "Oliva", color: "#566d3b", image: "/wp-content/themes/bootscore-main-child/images/badalassi-carlo-wax/badalassi-carlo-wax-oliva1.webp" },
+          { label: "Olmo", color: "#8b5a2b", image: "/wp-content/themes/bootscore-main-child/images/badalassi-carlo-wax/badalassi-carlo-wax-olmo1.webp" },
+          { label: "Ortensia", color: "#2f4f9f", image: "/wp-content/themes/bootscore-main-child/images/badalassi-carlo-wax/badalassi-carlo-wax-ortensia1.webp" },
+          { label: "Papavero", color: "#b22222", image: "/wp-content/themes/bootscore-main-child/images/badalassi-carlo-wax/badalassi-carlo-wax-papavero1.webp" },
+          { label: "Prugna", color: "#70304a", image: "/wp-content/themes/bootscore-main-child/images/badalassi-carlo-wax/badalassi-carlo-wax-prugna1.webp" },
+          { label: "Tabacco", color: "#7b4b26", image: "/wp-content/themes/bootscore-main-child/images/badalassi-carlo-wax/badalassi-carlo-wax-tabacco1.webp" },
         ],
       },
     };
 
     const ostrichSwatches = [
-      { label: "Blue Ostrich", color: "#2f3983", image: "images/Ostrich/blue.webp" },
-      { label: "Dark Brown Ostrich", color: "#955f3a", image: "images/Ostrich/dark_brown.webp" },
-      { label: "Dark Grey Ostrich", color: "#645e5c", image: "images/Ostrich/dark_grey.webp" },
-      { label: "Green Ostrich", color: "#77854d", image: "images/Ostrich/green.webp" },
-      { label: "Light Brown Ostrich", color: "#b3693c", image: "images/Ostrich/light_brown.webp" },
-      { label: "Light Grey Ostrich", color: "#6e7170", image: "images/Ostrich/light_grey.webp" },
-      { label: "Medium Brown Ostrich", color: "#c05a27", image: "images/Ostrich/med_brown.webp" },
-      { label: "Red Brown Ostrich", color: "#c34d30", image: "images/Ostrich/red_brown.webp" },
-      { label: "Yellow Ostrich", color: "#e1980b", image: "images/Ostrich/yellow.webp" },
+      { label: "Blue Ostrich", color: "#2f3983", image: "/wp-content/themes/bootscore-main-child/images/Ostrich/blue.webp" },
+      { label: "Dark Brown Ostrich", color: "#955f3a", image: "/wp-content/themes/bootscore-main-child/images/Ostrich/dark_brown.webp" },
+      { label: "Dark Grey Ostrich", color: "#645e5c", image: "/wp-content/themes/bootscore-main-child/images/Ostrich/dark_grey.webp" },
+      { label: "Green Ostrich", color: "#77854d", image: "/wp-content/themes/bootscore-main-child/images/Ostrich/green.webp" },
+      { label: "Light Brown Ostrich", color: "#b3693c", image: "/wp-content/themes/bootscore-main-child/images/Ostrich/light_brown.webp" },
+      { label: "Light Grey Ostrich", color: "#6e7170", image: "/wp-content/themes/bootscore-main-child/images/Ostrich/light_grey.webp" },
+      { label: "Medium Brown Ostrich", color: "#c05a27", image: "/wp-content/themes/bootscore-main-child/images/Ostrich/med_brown.webp" },
+      { label: "Red Brown Ostrich", color: "#c34d30", image: "/wp-content/themes/bootscore-main-child/images/Ostrich/red_brown.webp" },
+      { label: "Yellow Ostrich", color: "#e1980b", image: "/wp-content/themes/bootscore-main-child/images/Ostrich/yellow.webp" },
     ];
 
     const liningLeatherSwatches = [
-      { label: "Lambskin Black", color: "#0c0c0c", image: "images/lambskin/nappa-aniline-lambskin-leather-black.jpg" },
-      { label: "Lambskin Blue", color: "#2c5ea5", image: "images/lambskin/nappa-aniline-lambskin-leather-blue.jpg" },
-      { label: "Lambskin Navy", color: "#1e2f4f", image: "images/lambskin/nappa-aniline-lambskin-leather-navy.jpg" },
-      { label: "Lambskin Dark Brown", color: "#5a3a24", image: "images/lambskin/nappa-aniline-lambskin-leather-dark-brown.jpg" },
-      { label: "Lambskin Light Brown", color: "#b27a4f", image: "images/lambskin/nappa-aniline-lambskin-leather-light-brown.jpg" },
-      { label: "Lambskin Oxblood", color: "#5b1b1f", image: "images/lambskin/nappa-aniline-lambskin-leather-oxblood.jpg" },
-      { label: "Lambskin Red", color: "#b0202f", image: "images/lambskin/nappa-aniline-lambskin-leather-red.jpg" },
-      { label: "Lambskin Orange", color: "#d86f1f", image: "images/lambskin/nappa-aniline-lambskin-leather-orange.jpg" },
-      { label: "Lambskin Yellow", color: "#d8b023", image: "images/lambskin/nappa-aniline-lambskin-leather-yellow.jpg" },
-      { label: "Lambskin Dark Green", color: "#1f3f2f", image: "images/lambskin/nappa-aniline-lambskin-leather-dark-green.jpg" },
-      { label: "Lambskin Green", color: "#2f6b3c", image: "images/lambskin/nappa-aniline-lambskin-leather-green.jpg" },
+      { label: "Lambskin Black", color: "#0c0c0c", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-black.jpg" },
+      { label: "Lambskin Blue", color: "#2c5ea5", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-blue.jpg" },
+      { label: "Lambskin Navy", color: "#1e2f4f", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-navy.jpg" },
+      { label: "Lambskin Dark Brown", color: "#5a3a24", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-dark-brown.jpg" },
+      { label: "Lambskin Light Brown", color: "#b27a4f", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-light-brown.jpg" },
+      { label: "Lambskin Oxblood", color: "#5b1b1f", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-oxblood.jpg" },
+      { label: "Lambskin Red", color: "#b0202f", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-red.jpg" },
+      { label: "Lambskin Orange", color: "#d86f1f", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-orange.jpg" },
+      { label: "Lambskin Yellow", color: "#d8b023", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-yellow.jpg" },
+      { label: "Lambskin Dark Green", color: "#1f3f2f", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-dark-green.jpg" },
+      { label: "Lambskin Green", color: "#2f6b3c", image: "/wp-content/themes/bootscore-main-child/images/lambskin/nappa-aniline-lambskin-leather-green.jpg" },
     ];
 
     const leatherSelectIds = ["color-outer", "color-interior", "color-pockets"];
