@@ -495,6 +495,25 @@ method="post"
             </div>
           </div>
         </div>
+
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 mt-4">
+          <div>
+            <div class="fw-semibold">Price</div>
+            <div
+              class="fs-3"
+              id="wallet-price-display"
+              data-currency="<?php echo esc_attr(get_woocommerce_currency_symbol()); ?>"
+            >&mdash;</div>
+          </div>
+          <div class="text-md-end">
+            <button type="submit" class="btn btn-success btn-lg" <?php echo $wallet_product_id ? '' : 'disabled'; ?>>
+              Add to cart
+            </button>
+            <?php if (!$wallet_product_id) : ?>
+              <div class="form-text text-danger">Set a product ID to enable cart submissions.</div>
+            <?php endif; ?>
+          </div>
+        </div>
       </div>
 
       <div class="col-12 col-lg-6 order-1 order-lg-1">
@@ -903,24 +922,6 @@ method="post"
 
           </div>
           <p class="mt-3 mb-3">I’ve used a simple colour illustration here to help you visualise the piece. Please refer to the photos below for real examples. If you order the ostrich option, I’ll send you an image of the leather with the cutting template so you can approve it before I begin.</p>
-          <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 mt-4">
-            <div>
-              <div class="fw-semibold">Price</div>
-              <div
-                class="fs-3"
-                id="wallet-price-display"
-                data-currency="<?php echo esc_attr(get_woocommerce_currency_symbol()); ?>"
-              >&mdash;</div>
-            </div>
-            <div class="text-md-end">
-              <button type="submit" class="btn btn-success btn-lg" <?php echo $wallet_product_id ? '' : 'disabled'; ?>>
-                Add to cart
-              </button>
-              <?php if (!$wallet_product_id) : ?>
-                <div class="form-text text-danger">Set a product ID to enable cart submissions.</div>
-              <?php endif; ?>
-            </div>
-          </div>
           <div class="example-images row row-cols-1  g-3 mt-3 mx-auto">
             <figure class="mb-0 h-100">
               <img
