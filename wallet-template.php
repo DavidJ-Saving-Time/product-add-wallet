@@ -226,10 +226,10 @@ method="post"
   <input type="hidden" name="wallet_options_json" id="wallet-options-field" value="">
 <input type="hidden" name="quantity" value="1">
     <div class="container py-4">
-      <div class="text-center mb-4">
-        <h1 class="h3 mb-2">Wallet Colour Test (Static Palette)</h1>
-        <p class="text-muted mb-0">Pick a colour for each part of the wallet and preview it instantly.</p>
-      </div>
+        <div class="text-center mb-4">
+          <h1 class="h3 mb-2">Wallet Colour Test (Static Palette)</h1>
+        <p class="text-muted mb-0">All my leather work is made to order and fully bespoke to your requirements. This page is simply here to make visualising and ordering easier. You’re also very welcome to <a href="https://atelierdjames.com/contact-us/">get in touch</a> directly—send a reference image or describe what you have in mind and I’ll make it for you. I prefer working with clients on a one-to-one basis.</p>
+        </div>
 
       <div class="row g-4">
       <div class="col-12 col-lg-6">
