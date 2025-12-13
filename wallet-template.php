@@ -226,9 +226,9 @@ method="post"
   <input type="hidden" name="wallet_options_json" id="wallet-options-field" value="">
 <input type="hidden" name="quantity" value="1">
     <div class="container py-4">
-        <div class="text-center mb-4">
+        <div class="mb-4">
           <h1 class="h3 mb-2">Wallet Colour Test (Static Palette)</h1>
-        <p class="text-muted mb-0">All my leather work is made to order and fully bespoke to your requirements. This page is simply here to make visualising and ordering easier. You’re also very welcome to <a href="https://atelierdjames.com/contact-us/">get in touch</a> directly—send a reference image or describe what you have in mind and I’ll make it for you. I prefer working with clients on a one-to-one basis.</p>
+        <p class="text-muted mb-0">All my leather work is made to order and fully bespoke to your requirements. This page is simply here to make visualising and ordering easier. You’re also very welcome to <a href="https://atelierdjames.com/contact-us/">get in touch</a> directly—send a reference image or describe what you have in mind and I’ll make it for you. Want to see how these are made watch the video.</p>
         </div>
 
       <div class="row g-4">
@@ -245,12 +245,12 @@ method="post"
               <option value="buttero" selected>Buttero</option>
               <option value="badalassi">Badalassi Carlo Wax</option>
             </select>
-            <div class="form-text">Swap between Buttero and Badalassi Carlo Wax leather swatches.</div>
+
             <div class="form-text leather-description" data-collection="buttero">
-              Buttero is one of the leading products of the Tuscan Walpier Tannery with unique characteristics. As it is firmer than a vachetta leather, watch straps made from Buttero have a nice rigidity to them. They will also patina very well over time. The leather is full grain and aniline finished meaning dyed with no colour correction which ensures a natural look and feel. Due to the material’s natural qualities, any irregularities and imperfections on the surface are considered an added value rather than a defect.
+              Conceria Walpier - Buttero is one of the leading products of the Tuscan Walpier Tannery with unique characteristics. As it is firmer than a vachetta leather, watch straps made from Buttero have a nice rigidity to them. They will also patina very well over time. The leather is full grain and aniline finished meaning dyed with no colour correction which ensures a natural look and feel. Due to the material’s natural qualities, any irregularities and imperfections on the surface are considered an added value rather than a defect.
             </div>
             <div class="form-text leather-description d-none" data-collection="badalassi">
-              The Badalassi Wax leather stands out through its dry-milled waxed finish, also known as pull-up or lightening effect, which gives it a distressed look when it is pulled or folded. It may show signs of scratches and scuffs, but it is durable and ages gracefully to serve as a canvas for memories.
+              The Badalassi Carlo Wax leather stands out through its dry-milled waxed finish, also known as pull-up or lightening effect, which gives it a distressed look when it is pulled or folded. It may show signs of scratches and scuffs, but it is durable and ages gracefully to serve as a canvas for memories.
             </div>
           </div>
         </div>
@@ -866,7 +866,7 @@ method="post"
           <p class="mt-3 mb-3">I’ve used a simple colour illustration here to help you visualise the piece. Please refer to the photos below for real examples. If you order the ostrich option, I’ll send you an image of the leather with the cutting template so you can approve it before I begin.</p>
           <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 mt-4">
             <div>
-              <div class="fw-semibold">Live price</div>
+              <div class="fw-semibold">Price</div>
               <div
                 class="fs-3"
                 id="wallet-price-display"
