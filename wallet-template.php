@@ -158,6 +158,12 @@ method="post"
           <option value="badalassi">Badalassi Carlo Wax</option>
         </select>
         <div class="form-text">Swap between Buttero and Badalassi Carlo Wax leather swatches.</div>
+        <div class="form-text leather-description" data-collection="buttero">
+          Buttero is one of the leading products of the Tuscan Walpier Tannery with unique characteristics. As it is firmer than a vachetta leather, watch straps made from Buttero have a nice rigidity to them. They will also patina very well over time. The leather is full grain and aniline finished meaning dyed with no colour correction which ensures a natural look and feel. Due to the material’s natural qualities, any irregularities and imperfections on the surface are considered an added value rather than a defect.
+        </div>
+        <div class="form-text leather-description d-none" data-collection="badalassi">
+          The Badalassi Wax leather stands out through its dry-milled waxed finish, also known as pull-up or lightening effect, which gives it a distressed look when it is pulled or folded. It may show signs of scratches and scuffs, but it is durable and ages gracefully to serve as a canvas for memories.
+        </div>
       </div>
 
       <div class="col-12 col-lg-6">
@@ -1208,6 +1214,11 @@ method="post"
       buildSvgOverlayButtons();
     }
 
+    function updateLeatherDescription(collectionKey) {
+      $('.leather-description').addClass('d-none');
+      $(`.leather-description[data-collection="${collectionKey}"]`).removeClass('d-none');
+    }
+
     function updateSelection($thumb, $name, $value, image, label, colorHex, isColorOnly) {
       const safeColor = colorHex || '#f8f9fa';
 
@@ -1626,6 +1637,7 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
         });
 
         rebuildLeatherSelects(currentLeatherCollection);
+        updateLeatherDescription(currentLeatherCollection);
 
         $('#wallet-configurator-form').on('change input', 'select, input', syncWooCommerceFields);
         syncWooCommerceFields();
@@ -1678,6 +1690,7 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
       $('#leather-collection').on('change', function () {
         currentLeatherCollection = $(this).val();
         rebuildLeatherSelects(currentLeatherCollection);
+        updateLeatherDescription(currentLeatherCollection);
       });
 
       $('#bottom-ostrich-toggle').on('change', function () {
