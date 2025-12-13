@@ -740,29 +740,27 @@ method="post"
           <div id="svg-overlay-buttons"></div>
 
           </div>
+          <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 mt-4">
+            <div>
+              <div class="fw-semibold">Live price</div>
+              <div
+                class="fs-3"
+                id="wallet-price-display"
+                data-currency="<?php echo esc_attr(get_woocommerce_currency_symbol()); ?>"
+              >&mdash;</div>
+            </div>
+            <div class="text-md-end">
+              <button type="submit" class="btn btn-primary btn-lg" <?php echo $wallet_product_id ? '' : 'disabled'; ?>>
+                Add to cart
+              </button>
+              <?php if (!$wallet_product_id) : ?>
+                <div class="form-text text-danger">Set a product ID to enable cart submissions.</div>
+              <?php endif; ?>
+            </div>
+          </div>
         </div>
       </div>
 
-
-
-  <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 mt-4">
-    <div>
-      <div class="fw-semibold">Live price</div>
-      <div
-        class="fs-3"
-        id="wallet-price-display"
-        data-currency="<?php echo esc_attr(get_woocommerce_currency_symbol()); ?>"
-      >&mdash;</div>
-    </div>
-    <div class="text-md-end">
-      <button type="submit" class="btn btn-primary btn-lg" <?php echo $wallet_product_id ? '' : 'disabled'; ?>>
-        Add to cart
-      </button>
-      <?php if (!$wallet_product_id) : ?>
-        <div class="form-text text-danger">Set a product ID to enable cart submissions.</div>
-      <?php endif; ?>
-    </div>
-  </div>
 </div>
 
 </form>
