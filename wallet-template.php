@@ -993,7 +993,7 @@ enctype="multipart/form-data"
                   class="btn btn-primary buy-wallet-btn"
                   data-config-key="badalassi-ortensia"
                 >
-                  Buy this wallet
+                  Use this as a base for yours
                 </button>
               </div>
               <figcaption class="mt-2 small text-muted">An example of a wallet with burnished edges made from Badalassi Carlo - Wax</figcaption>
@@ -1010,7 +1010,7 @@ enctype="multipart/form-data"
                   class="btn btn-primary buy-wallet-btn"
                   data-config-key="buttero-ostrich"
                 >
-                  Buy this wallet
+                  Use this as a base for yours
                 </button>
               </div>
               <figcaption class="mt-2 small text-muted">An example of a wallet with burnished edges made from Conceria Walpier - Buttero with painted edges and an ostrich leather pocket</figcaption>
@@ -1225,8 +1225,8 @@ enctype="multipart/form-data"
         top_pocket: '#b36a3c',
         bottom_pocket: '#566d3b',
         bottom_ostrich: false,
-        stitching: '#ffdd33',
-        stitching_secondary: '#374331',
+        stitching: '#374331',
+        stitching_secondary: '#ffdd33',
         lining: '#5a3a24',
         lining_coverage: 'body',
         debossing: 'atelier',
@@ -1977,8 +1977,8 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
         bottom_ostrich: true,
         top_pocket: '#f4801f',
         bottom_pocket: '#c05a27',
-        stitching: '#f4801f',
-        stitching_secondary: '#3a4f6b',
+        stitching: '#3a4f6b',
+        stitching_secondary: '#f4801f',
         lining: '#2c5ea5',
         lining_coverage: 'all',
         edge_style: 'painted',
