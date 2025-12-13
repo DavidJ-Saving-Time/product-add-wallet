@@ -78,6 +78,7 @@ function wallet_configurator_allowed_options() {
         '#000000' => 'Black',
         '#8b5a2b' => 'Brown',
         '#c28e5a' => 'Tan',
+        '#f4801f' => 'Orange',
         '#ffdd33' => 'Yellow',
         '#3a4f6b' => 'Navy',
         '#7b3f61' => 'Burgundy',
