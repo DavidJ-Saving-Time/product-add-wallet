@@ -232,6 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add-to-cart'])) {
 action="<?php echo esc_url( add_query_arg('add-to-cart', $wallet_product_id, wc_get_cart_url()) ); ?>"
 
 method="post"
+enctype="multipart/form-data"
 >
 
 
@@ -491,6 +492,39 @@ method="post"
                   <option value="rose-gold">Rose Gold</option>
                 </select>
                 <div class="form-text">Add optional metal corner finishes.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-section card" id="step-notes">
+          <div class="card-body">
+            <div class="step-heading">
+              <span class="badge bg-primary">Step 5</span>
+              <h2 class="h5 mb-0">Final details</h2>
+            </div>
+            <p class="text-muted">Share any final notes and attach a reference image to include with your order.</p>
+            <div class="row g-3">
+              <div class="col-sm-12">
+                <label class="form-label" for="additional-notes">Additional information</label>
+                <textarea
+                  class="form-control"
+                  id="additional-notes"
+                  name="additional_notes"
+                  rows="4"
+                  placeholder="Tell me about any special requests, deadlines, or inspiration."
+                ></textarea>
+              </div>
+              <div class="col-sm-12">
+                <label class="form-label" for="reference-photo">Attach a photo</label>
+                <input
+                  class="form-control"
+                  type="file"
+                  id="reference-photo"
+                  name="reference_photo"
+                  accept="image/*"
+                >
+                <div class="form-text">Optional: upload a reference image or sketch to accompany your order.</div>
               </div>
             </div>
           </div>
