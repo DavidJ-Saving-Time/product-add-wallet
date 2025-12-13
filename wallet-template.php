@@ -240,16 +240,29 @@ method="post"
               <h2 class="h5 mb-0">Choose a leather tannery</h2>
             </div>
             <p class="text-muted">Start by picking the leather house whose colours and finish you want to explore.</p>
-            <label class="form-label" for="leather-collection">Leather collection</label>
+            <div class="d-flex align-items-center gap-2">
+              <label class="form-label mb-0" for="leather-collection">Leather collection</label>
+              <button
+                type="button"
+                class="btn btn-outline-secondary btn-sm rounded-circle"
+                id="leather-description-trigger"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                aria-label="Learn more about the selected tannery"
+              >
+                <span aria-hidden="true">?</span>
+                <span class="visually-hidden">Tannery description</span>
+              </button>
+            </div>
             <select class="form-select" id="leather-collection">
               <option value="buttero" selected>Conceria Walpier - Buttero</option>
               <option value="badalassi">Badalassi Carlo - Wax</option>
             </select>
 
-            <div class="form-text leather-description" data-collection="buttero">
+            <div class="leather-description visually-hidden" data-collection="buttero">
               Conceria Walpier - Buttero is one of the leading products of the Tuscan Walpier Tannery with unique characteristics. As it is firmer than a vachetta leather, watch straps made from Buttero have a nice rigidity to them. They will also patina very well over time. The leather is full grain and aniline finished meaning dyed with no colour correction which ensures a natural look and feel. Due to the material’s natural qualities, any irregularities and imperfections on the surface are considered an added value rather than a defect.
             </div>
-            <div class="form-text leather-description d-none" data-collection="badalassi">
+            <div class="leather-description visually-hidden" data-collection="badalassi">
               The Badalassi Carlo Wax leather stands out through its dry-milled waxed finish, also known as pull-up or lightening effect, which gives it a distressed look when it is pulled or folded. It may show signs of scratches and scuffs, but it is durable and ages gracefully to serve as a canvas for memories.
             </div>
           </div>
@@ -1020,6 +1033,8 @@ method="post"
       liningAllPremium: 20,
     };
 
+    const tanneryDescriptions = {};
+
     const leatherCollections = {
       buttero: {
         label: "Buttero",
@@ -1323,9 +1338,34 @@ method="post"
       buildSvgOverlayButtons();
     }
 
+    function hydrateTanneryDescriptions() {
+      $('.leather-description').each(function () {
+        const key = $(this).data('collection');
+        if (key) {
+          tanneryDescriptions[key] = $(this).text().trim();
+        }
+      });
+    }
+
     function updateLeatherDescription(collectionKey) {
-      $('.leather-description').addClass('d-none');
-      $(`.leather-description[data-collection="${collectionKey}"]`).removeClass('d-none');
+      const descriptionText = tanneryDescriptions[collectionKey] || '';
+      const trigger = document.getElementById('leather-description-trigger');
+
+      if (!trigger) return;
+
+      const existingTooltip = bootstrap.Tooltip.getInstance(trigger);
+
+      if (existingTooltip) {
+        existingTooltip.setContent({ '.tooltip-inner': descriptionText });
+      } else {
+        new bootstrap.Tooltip(trigger, {
+          title: descriptionText,
+          trigger: 'hover focus',
+          placement: 'right',
+        });
+      }
+
+      trigger.setAttribute('data-bs-original-title', descriptionText);
     }
 
     function updateSelection($thumb, $name, $value, image, label, colorHex, isColorOnly) {
@@ -1708,28 +1748,29 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
       if (priceDisplay) priceDisplay.textContent = `${currencySymbol}${total.toFixed(2)}`;
     }
 
-      $(function () {
-        const galleryModal = document.getElementById('galleryModal');
-        const galleryModalImage = galleryModal?.querySelector('.modal-body img');
-        const galleryModalTitle = galleryModal?.querySelector('.modal-title');
+    $(function () {
+      const galleryModal = document.getElementById('galleryModal');
+      const galleryModalImage = galleryModal?.querySelector('.modal-body img');
+      const galleryModalTitle = galleryModal?.querySelector('.modal-title');
 
-        $('.gallery-trigger').on('click', function () {
-          const imageSrc = $(this).data('image-src');
-          const imageAlt = $(this).data('image-alt') || 'Gallery image';
-          if (galleryModalImage) {
-            galleryModalImage.src = imageSrc;
-            galleryModalImage.alt = imageAlt;
-          }
-          if (galleryModalTitle) {
-            galleryModalTitle.textContent = imageAlt;
-          }
-        });
+      $('.gallery-trigger').on('click', function () {
+        const imageSrc = $(this).data('image-src');
+        const imageAlt = $(this).data('image-alt') || 'Gallery image';
+        if (galleryModalImage) {
+          galleryModalImage.src = imageSrc;
+          galleryModalImage.alt = imageAlt;
+        }
+        if (galleryModalTitle) {
+          galleryModalTitle.textContent = imageAlt;
+        }
+      });
 
-        rebuildLeatherSelects(currentLeatherCollection);
-        updateLeatherDescription(currentLeatherCollection);
+      hydrateTanneryDescriptions();
+      rebuildLeatherSelects(currentLeatherCollection);
+      updateLeatherDescription(currentLeatherCollection);
 
-        $('#wallet-configurator-form').on('change input', 'select, input', syncWooCommerceFields);
-        syncWooCommerceFields();
+      $('#wallet-configurator-form').on('change input', 'select, input', syncWooCommerceFields);
+      syncWooCommerceFields();
 
       populateSelectWithSwatches($('#lining-leather'), liningLeatherSwatches);
 
