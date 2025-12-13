@@ -313,6 +313,7 @@ method="post"
                   <input class="form-check-input" type="checkbox" role="switch" id="bottom-ostrich-toggle">
                   <label class="form-check-label ostrich-toggle-label" for="bottom-ostrich-toggle">Use Ostrich (adds texture)</label>
                 </div>
+                <div class="form-text ms-5">Adds £20.</div>
               </div>
             </div>
           </div>
@@ -380,6 +381,7 @@ method="post"
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="lining-coverage" value="all" id="lining-all-pockets">
                   <label class="form-check-label" for="lining-all-pockets">Use a liner for all the pockets and the main body</label>
+                  <div class="form-text ms-4">Adds £20.</div>
                 </div>
               </div>
 
@@ -1014,20 +1016,8 @@ method="post"
     const currencySymbol = document.getElementById('wallet-price-display')?.dataset.currency || '£';
     const pricingRules = {
       basePrice: 185,
-      ostrichPremium: 45,
-      liningAllPremium: 30,
-      debossPremium: 10,
-      paintedEdgePremium: 15,
-      customEdgePaintPremium: 5,
-      metalCorners: {
-        none: 0,
-        brass: 20,
-        silver: 20,
-        'gunmetal-grey': 18,
-        black: 18,
-        gold: 22,
-        'rose-gold': 22,
-      },
+      ostrichPremium: 20,
+      liningAllPremium: 20,
     };
 
     const leatherCollections = {
@@ -1703,20 +1693,6 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
       if ($('input[name="lining-coverage"]:checked').val() === 'all') {
         total += pricingRules.liningAllPremium;
       }
-
-      if ($('input[name="deboss-choice"]:checked').val() === 'atelier') {
-        total += pricingRules.debossPremium;
-      }
-
-      if ($('#edge-style').val() === 'painted') {
-        total += pricingRules.paintedEdgePremium;
-        if ($('input[name="edge-paint-choice"]:checked').val() === 'custom') {
-          total += pricingRules.customEdgePaintPremium;
-        }
-      }
-
-      const metalChoice = $('#metal-corners').val();
-      total += pricingRules.metalCorners[metalChoice] ?? 0;
 
       return total;
     }
