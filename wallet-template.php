@@ -242,8 +242,8 @@ method="post"
             <p class="text-muted">Start by picking the leather house whose colours and finish you want to explore.</p>
             <label class="form-label" for="leather-collection">Leather collection</label>
             <select class="form-select" id="leather-collection">
-              <option value="buttero" selected>Buttero</option>
-              <option value="badalassi">Badalassi Carlo Wax</option>
+              <option value="buttero" selected>Conceria Walpier - Buttero</option>
+              <option value="badalassi">Badalassi Carlo - Wax</option>
             </select>
 
             <div class="form-text leather-description" data-collection="buttero">
