@@ -395,6 +395,7 @@ enctype="multipart/form-data"
                   <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
                   <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Brown</option>
                   <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
+                  <option value="#f4801f" data-color="#f4801f" class="swatch-option">Orange</option>
                   <option value="#ffdd33" data-color="#ffdd33" class="swatch-option">Yellow</option>
                   <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
                   <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
@@ -411,6 +412,7 @@ enctype="multipart/form-data"
                   <option value="#000000" data-color="#000000" class="swatch-option">Black</option>
                   <option value="#8b5a2b" data-color="#8b5a2b" class="swatch-option">Brown</option>
                   <option value="#c28e5a" data-color="#c28e5a" class="swatch-option">Tan</option>
+                  <option value="#f4801f" data-color="#f4801f" class="swatch-option">Orange</option>
                   <option value="#ffdd33" data-color="#ffdd33" class="swatch-option">Yellow</option>
                   <option value="#3a4f6b" data-color="#3a4f6b" class="swatch-option">Navy</option>
                   <option value="#7b3f61" data-color="#7b3f61" class="swatch-option">Burgundy</option>
@@ -1973,9 +1975,15 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
         ...basePreset,
         leather_collection: 'buttero',
         bottom_ostrich: true,
-        bottom_pocket: ostrichSwatches[0]?.color || basePreset.bottom_pocket,
+        top_pocket: '#f4801f',
+        bottom_pocket: '#c05a27',
+        stitching: '#f4801f',
+        stitching_secondary: '#3a4f6b',
+        lining_coverage: 'all',
         edge_style: 'painted',
-        edge_paint_choice: 'lining',
+        edge_paint_choice: 'custom',
+        edge_colour: '#1f4aa5',
+        metal_corners: 'gunmetal-grey',
       };
 
       $('.buy-wallet-btn').on('click', function () {
