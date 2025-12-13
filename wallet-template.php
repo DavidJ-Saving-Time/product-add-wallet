@@ -1803,6 +1803,7 @@ function ensureClippedTexture(svgFallback, imageId, clipId, imageUrl, targetShap
         edge_paint_choice: $('input[name="edge-paint-choice"]:checked').val() || 'lining',
         edge_colour: $('#edge-style').val() === 'painted' ? $('#edge-colour').val() : '',
         metal_corners: $('#metal-corners').val(),
+        additional_notes: $('#additional-notes').val() || '',
       };
     }
 
