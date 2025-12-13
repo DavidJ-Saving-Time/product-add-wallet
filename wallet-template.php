@@ -228,7 +228,6 @@ method="post"
     <div class="container py-4">
         <div class="mb-4">
           <h1 class="h3 mb-2">Wallet Colour Test (Static Palette)</h1>
-        <p class="text-muted mb-0">All my leather work is made to order and fully bespoke to your requirements. This page is simply here to make visualising and ordering easier. You’re also very welcome to <a href="https://atelierdjames.com/contact-us/">get in touch</a> directly—send a reference image or describe what you have in mind and I’ll make it for you. Want to see how these are made watch the video.</p>
         </div>
 
       <div class="row g-4">
@@ -475,6 +474,7 @@ method="post"
       </div>
 
       <div class="col-12 col-lg-6">
+        <p class="text-muted">All my leather work is made to order and fully bespoke to your requirements. This page is simply here to make visualising and ordering easier. You’re also very welcome to <a href="https://atelierdjames.com/contact-us/">get in touch</a> directly—send a reference image or describe what you have in mind and I’ll make it for you. Want to see how these are made watch the video.</p>
         <div id="svg-wrapper" class="shadow-sm">
     <!-- DEMO SVG – replace with your own later, keep group ids or update JS -->
 
